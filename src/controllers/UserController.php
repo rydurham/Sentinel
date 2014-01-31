@@ -104,7 +104,7 @@ class UserController extends BaseController {
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('UserController@create')
+            return Redirect::action('Sentinel\UserController@create')
                 ->withInput()
                 ->withErrors( $this->registerForm->errors() );
         }
@@ -179,11 +179,11 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::action('UserController@show', array($id));
+            return Redirect::action('Sentinel\UserController@show', array($id));
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('UserController@edit', array($id))
+            return Redirect::action('Sentinel\UserController@edit', array($id))
                 ->withInput()
                 ->withErrors( $this->userForm->errors() );
         }
@@ -369,7 +369,7 @@ class UserController extends BaseController {
         else 
         {
             Session::flash('error', $result['message']);
-            return Redirect::action('UserController@edit', array($id))
+            return Redirect::action('Sentinel\UserController@edit', array($id))
                 ->withInput()
                 ->withErrors( $this->changePasswordForm->errors() );
         }
@@ -400,7 +400,7 @@ class UserController extends BaseController {
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('UserController@suspend', array($id))
+            return Redirect::action('Sentinel\UserController@suspend', array($id))
                 ->withInput()
                 ->withErrors( $this->suspendUserForm->errors() );
         }

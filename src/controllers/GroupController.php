@@ -69,7 +69,7 @@ class GroupController extends BaseController {
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('GroupController@create')
+            return Redirect::action('Sentinel\GroupController@create')
                 ->withInput()
                 ->withErrors( $this->groupForm->errors() );
         }
@@ -117,7 +117,7 @@ class GroupController extends BaseController {
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('GroupController@create')
+            return Redirect::action('Sentinel\GroupController@create')
                 ->withInput()
                 ->withErrors( $this->groupForm->errors() );
         }
