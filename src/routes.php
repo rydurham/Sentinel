@@ -17,19 +17,19 @@ Route::get('register', 'Sentinel\UserController@create');
 Route::get('users/{id}/activate/{code}', 'Sentinel\UserController@activate')->where('id', '[0-9]+');
 Route::get('resend', array('as' => 'resendActivationForm', function()
 {
-	return View::make('users.resend');
+	return View::make('Sentinel::users.resend');
 }));
 Route::post('resend', 'Sentinel\UserController@resend');
 Route::get('forgot', array('as' => 'forgotPasswordForm', function()
 {
-	return View::make('users.forgot');
+	return View::make('Sentinel::users.forgot');
 }));
 Route::post('forgot', 'Sentinel\UserController@forgot');
 Route::post('users/{id}/change', 'Sentinel\UserController@change');
 Route::get('users/{id}/reset/{code}', 'Sentinel\UserController@reset')->where('id', '[0-9]+');
 Route::get('users/{id}/suspend', array('as' => 'suspendUserForm', function($id)
 {
-	return View::make('users.suspend')->with('id', $id);
+	return View::make('Sentinel::users.suspend')->with('id', $id);
 }));
 Route::post('users/{id}/suspend', 'Sentinel\UserController@suspend')->where('id', '[0-9]+');
 Route::get('users/{id}/unsuspend', 'Sentinel\UserController@unsuspend')->where('id', '[0-9]+');
