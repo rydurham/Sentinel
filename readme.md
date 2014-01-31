@@ -6,38 +6,47 @@ This package is based on my [L4withSentry](https://github.com/rydurham/L4withSen
 
 ### Instructions
 1. Add this package to your composer.json file: 
+        ```
         "require": {
             "laravel/framework": "4.1.*",
             "rydurham/sentinel": "1.*"
         },
+        ```
 2. Run Composer Update
 3. Make sure you have configured your app's Database and Mail settings. 
 4. Add the Service Provider to your ```app/config/app.php``` file:
-```
-'providers' => array(
-    ...
-    'Sentinel\SentinelServiceProvider',  
-)
-```  
-5. Run the Migrations
-6. Run DB Seed
-7. Publish Assets
-Set Home Route: 
-// Set Home Route
+        ```
+        'providers' => array(
+            ...
+            'Sentinel\SentinelServiceProvider',  
+        )
+        ```  
+5. Run the Migrations:
+        ```
+        php artisan migrate --package=rydurham/sentinel
+        ```
+6. Seed the Database: 
+        ```
+        php artisan db:seed --class="SentinelDatabaseSeeder"
+        ```
+7. Publish the package assets: 
+        ```
+        php artisan asset:publish rydurham/sentinel
+        ```
+8. Set a "Home" Route.  This package requires that you have a named 'home' route in your ```routes.php``` file: 
+        ```
+        // Set Home Route
+        Route::get('/', array('as' => 'home', function()
+        {
+            return View::make('home');
+        }));
+        ```
+9. Optional: Publish Views
+        ```
+        php artisan view:publish rydurham/sentinel
+        ```
 
-
-
-
-
-
-1. Clone the repo
-2. Run ```php composer.phar update```
-3. Set up your datbase configuration in ```app/config/database.php```
-4. Edit ```app/config/mail.php``` to work with your mail setup.
-5. Run the migrations: ```php artisan migrate```
-6. Seed the Database: ```php artisan db:seed```
-
-### Seeds
+### Database Seeds
 The seeds in this repo will create two groups and two user accounts.
 
 __Groups__
