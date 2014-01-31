@@ -40,8 +40,3 @@ Route::resource('users', 'Sentinel\UserController');
 // Group Routes
 Route::resource('groups', 'Sentinel\GroupController');
 
-// Set Home Route
-Route::get('/', array('as' => 'home', function()
-{
-	return View::make('home');
-}));

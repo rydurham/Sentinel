@@ -29,6 +29,8 @@ class SentinelServiceProvider extends ServiceProvider {
 
         $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
 
+        $this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
+
 	}
 
 	/**

@@ -54,19 +54,19 @@ Route::filter('inGroup', function($route, $request, $value)
 		 
 		if ($userId != Session::get('userId') && (! $user->inGroup($group))  )
 		{
-			Session::flash('error', trans('users.noaccess'));
+			Session::flash('error', trans('Sentinel::users.noaccess'));
 			return Redirect::route('home');
 		}
 	}
 	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 	{
-		Session::flash('error', trans('users.notfound'));
+		Session::flash('error', trans('Sentinel::users.notfound'));
 		return Redirect::route('login');
 	}
 	 
 	catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
 	{
-		Session::flash('error', trans('groups.notfound'));
+		Session::flash('error', trans('Sentinel::groups.notfound'));
 		return Redirect::route('login');
 	}
 });

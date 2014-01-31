@@ -3,6 +3,7 @@
 use Mail;
 use Cartalyst\Sentry\Sentry;
 use Sentinel\Repo\RepoAbstract;
+use Lang;
 
 class SentryUser extends RepoAbstract implements UserInterface {
 	
@@ -36,7 +37,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 
 			//success!
 	    	$result['success'] = true;
-	    	$result['message'] = trans('users.created');
+	    	$result['message'] = trans('Sentinel::users.created');
 	    	$result['mailData']['activationCode'] = $user->GetActivationCode();
 			$result['mailData']['userId'] = $user->getId();
 			$result['mailData']['email'] = e($data['email']);
@@ -44,12 +45,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.loginreq');
+	    	$result['message'] = trans('Sentinel::users.loginreq');
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.exists');
+	    	$result['message'] = trans('Sentinel::users.exists');
 		}
 
 		return $result;
@@ -97,24 +98,24 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    {
 		        // User information was updated
 		        $result['success'] = true;
-	    		$result['message'] = trans('users.updated');
+	    		$result['message'] = trans('Sentinel::users.updated');
 		    }
 		    else
 		    {
 		        // User information was not updated
 		        $result['success'] = false;
-	    		$result['message'] = trans('users.notupdated');
+	    		$result['message'] = trans('Sentinel::users.notupdated');
 		    }
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.exists');
+	    	$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 
 		return $result;
@@ -163,24 +164,24 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		        // User activation passed
 		        $result['success'] = true;
 		        $url = route('login');
-	    		$result['message'] = trans('users.activated', array('url' => $url));
+	    		$result['message'] = trans('Sentinel::users.activated', array('url' => $url));
 		    }
 		    else
 		    {
 		        // User activation failed
 		        $result['success'] = false;
-	    		$result['message'] = trans('users.notactivated');
+	    		$result['message'] = trans('Sentinel::users.notactivated');
 		    }
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.exists');
+	    	$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -201,7 +202,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
             {
                 //success!
             	$result['success'] = true;
-	    		$result['message'] = trans('users.emailconfirm');
+	    		$result['message'] = trans('Sentinel::users.emailconfirm');
 	    		$result['mailData']['activationCode'] = $user->GetActivationCode();
                 $result['mailData']['userId'] = $user->getId();
                 $result['mailData']['email'] = e($data['email']);
@@ -209,19 +210,19 @@ class SentryUser extends RepoAbstract implements UserInterface {
             else 
             {
                 $result['success'] = false;
-	    		$result['message'] = trans('users.alreadyactive');
+	    		$result['message'] = trans('Sentinel::users.alreadyactive');
             }
 
 	    }
 	    catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.exists');
+	    	$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 	    return $result;
 	}
@@ -239,7 +240,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
 
 	        $result['success'] = true;
-	    	$result['message'] = trans('users.emailinfo');
+	    	$result['message'] = trans('Sentinel::users.emailinfo');
 	    	$result['mailData']['resetCode'] = $user->getResetPasswordCode();
 			$result['mailData']['userId'] = $user->getId();
 			$result['mailData']['email'] = e($data['email']);
@@ -247,7 +248,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
         catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
         return $result;
 	}
@@ -272,7 +273,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			{
 				// Email the reset code to the user
 	        	$result['success'] = true;
-		    	$result['message'] = trans('users.emailpassword');
+		    	$result['message'] = trans('Sentinel::users.emailpassword');
 		    	$result['mailData']['newPassword'] = $newPassword;
 		    	$result['mailData']['email'] = $user->getLogin();
  			}
@@ -280,13 +281,13 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			{
 				// Password reset failed
 				$result['success'] = false;
-				$result['message'] = trans('users.problem');
+				$result['message'] = trans('Sentinel::users.problem');
 			}
         }
        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
         return $result;
 	}
@@ -311,20 +312,20 @@ class SentryUser extends RepoAbstract implements UserInterface {
 				{
 					// User saved
 					$result['success'] = true;
-					$result['message'] = trans('users.passwordchg');
+					$result['message'] = trans('Sentinel::users.passwordchg');
 				}
 				else
 				{
 					// User not saved
 					$result['success'] = false;
-					$result['message'] = trans('users.passwordprob');
+					$result['message'] = trans('Sentinel::users.passwordprob');
 				}
 			} 
 			else 
 			{
 		        // Password mismatch. Abort.
 		        $result['success'] = false;
-				$result['message'] = trans('users.oldpassword');
+				$result['message'] = trans('Sentinel::users.oldpassword');
 			}                                        
 		}
 		catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
@@ -335,12 +336,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.exists');
+	    	$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -366,12 +367,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    $throttle->suspend();
 
 		    $result['success'] = true;
-			$result['message'] = trans('users.suspended', array('minutes' => $minutes));
+			$result['message'] = trans('Sentinel::users.suspended', array('minutes' => $minutes));
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -393,12 +394,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    $throttle->unsuspend();
 
 		    $result['success'] = true;
-			$result['message'] = trans('users.unsuspended');
+			$result['message'] = trans('Sentinel::users.unsuspended');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -420,12 +421,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    $throttle->ban();
 
 		    $result['success'] = true;
-			$result['message'] = trans('users.banned');
+			$result['message'] = trans('Sentinel::users.banned');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -447,12 +448,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    $throttle->unBan();
 
 		    $result['success'] = true;
-			$result['message'] = trans('users.unbanned');
+			$result['message'] = trans('Sentinel::users.unbanned');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('users.notfound');
+	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
