@@ -27,7 +27,16 @@ class SentinelServiceProvider extends ServiceProvider {
 
         $this->app->register('Cartalyst\Sentry\SentryServiceProvider');
 
-        $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
+        if (is_dir(app_path().'/views/packages/rydurham/sentinel'))
+        {
+        	// The package views have been published - use those views. 
+        	$this->app['view']->addNamespace('Sentinel', array(app_path().'/views/packages/rydurham/sentinel'));
+        }
+        else 
+        {
+        	// The package views have not been published. Use the defaults. 
+        	$this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
+        }
 
         $this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
 
