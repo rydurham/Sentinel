@@ -63,7 +63,7 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
 			{
 			    $result['success'] = false;
-			    $url = route('resendActivationForm');
+			    $url = route('Sentinel\resendActivationForm');
 			    $result['message'] = trans('Sentinel::sessions.notactive', array('url' => $url));
 			}
 

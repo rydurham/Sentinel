@@ -26,7 +26,7 @@ Home
 						<td>
 							<button class="btn btn-default" type="button" onClick="location.href='{{ action('Sentinel\UserController@edit', array($user->id)) }}'">Edit</button> 
 							@if ($user->status != 'Suspended')
-								<button class="btn btn-default" type="button" onClick="location.href='{{ route('suspendUserForm', array($user->id)) }}'">Suspend</button> 
+								<button class="btn btn-default" type="button" onClick="location.href='{{ route('Sentinel\suspendUserForm', array($user->id)) }}'">Suspend</button> 
 							@else
 								<button class="btn btn-default" type="button" onClick="location.href='{{ action('Sentinel\UserController@unsuspend', array($user->id)) }}'">Un-Suspend</button> 
 							@endif
