@@ -92,8 +92,8 @@ __Users__
 * Add More languages? 
 
 ### History
-__1.1__ Added: Config options. Moved named routes into 'Sentinel' namespace.
-__1.0__ Initial version.  A direct port of [L4withSentry](https://github.com/rydurham/L4withSentry) into package form. 
+* __1.1__ Added: Config options. Moved named routes into 'Sentinel' namespace.
+* __1.0__ Initial version.  A direct port of [L4withSentry](https://github.com/rydurham/L4withSentry) into package form. 
 
 ### Thanks
 * Many thanks to [@rossey](https://github.com/rossey) for pushing to make this happen, and for providing a great [starting point](https://github.com/wearebase/sentry-manager-laravel-package).   
