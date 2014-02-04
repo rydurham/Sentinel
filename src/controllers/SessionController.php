@@ -52,11 +52,11 @@ class SessionController extends BaseController {
             							));
 
             // Success!
-            return Redirect::to('/');
+            return Redirect::route('home');
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::to('login')
+            return Redirect::route('Sentinel\login')
                 ->withInput()
                 ->withErrors( $this->loginForm->errors() );
         }
@@ -72,7 +72,7 @@ class SessionController extends BaseController {
 	{
 		$this->session->destroy();
 		Event::fire('user.logout');
-		return Redirect::to('/');
+		return Redirect::route('home');
 	}
 
 }

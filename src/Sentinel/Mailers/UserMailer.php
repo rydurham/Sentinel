@@ -1,5 +1,7 @@
 <?php namespace Sentinel\Mailers;
 
+use Config;
+
 class UserMailer extends Mailer {
 
 	/**
@@ -24,7 +26,7 @@ class UserMailer extends Mailer {
 	 */
 	public function welcome($email, $userId, $activationCode)
 	{
-		$subject = 'Welcome to Laravel4 With Sentry';
+		$subject = Config::get('Sentinel::config.welcome');
 		$view = 'Sentinel::emails.welcome';
 		$data['userId'] = $userId;
 		$data['activationCode'] = $activationCode;
@@ -42,7 +44,7 @@ class UserMailer extends Mailer {
 	 */
 	public function forgotPassword($email, $userId, $resetCode)
 	{
-		$subject = 'Password Reset Confirmation | Laravel4 With Sentry';
+		$subject = Config::get('Sentinel::config.reset_password');
 		$view = 'Sentinel::emails.reset';
 		$data['userId'] = $userId;
 		$data['resetCode'] = $resetCode;
@@ -60,7 +62,7 @@ class UserMailer extends Mailer {
 	 */
 	public function newPassword($email, $newPassword)
 	{
-		$subject = 'New Password Information | Laravel4 With Sentry';
+		$subject = Config::get('Sentinel::config.new_password');
 		$view = 'Sentinel::emails.newpassword';
 		$data['newPassword'] = $newPassword;
 		$data['email'] = $email;

@@ -8,12 +8,7 @@ use Sentinel\Service\Form\ResendActivation\ResendActivationForm;
 use Sentinel\Service\Form\ForgotPassword\ForgotPasswordForm;
 use Sentinel\Service\Form\ChangePassword\ChangePasswordForm;
 use Sentinel\Service\Form\SuspendUser\SuspendUserForm;
-use BaseController;
-use View;
-use Input;
-use Event;
-use Redirect;
-use Session;
+use BaseController, View, Input, Event, Redirect, Session;
 
 class UserController extends BaseController {
 
@@ -208,12 +203,12 @@ class UserController extends BaseController {
 		if ($this->user->destroy($id))
 		{
 			Session::flash('success', 'User Deleted');
-            return Redirect::to('/users');
+            return Redirect::action('Sentinel\UserController@index');
         }
         else 
         {
         	Session::flash('error', 'Unable to Delete User');
-            return Redirect::to('/users');
+            return Redirect::action('Sentinel\UserController@index');
         }
 	}
 
@@ -270,7 +265,7 @@ class UserController extends BaseController {
         else 
         {
             Session::flash('error', $result['message']);
-            return Redirect::route('profile')
+            return Redirect::route('Sentinel\resendActivationForm')
                 ->withInput()
                 ->withErrors( $this->resendActivationForm->errors() );
         }
@@ -300,7 +295,7 @@ class UserController extends BaseController {
         else 
         {
             Session::flash('error', $result['message']);
-            return Redirect::route('forgotPasswordForm')
+            return Redirect::route('Sentinel\forgotPasswordForm')
                 ->withInput()
                 ->withErrors( $this->forgotPasswordForm->errors() );
         }
@@ -396,7 +391,7 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
 
         } else {
             Session::flash('error', $result['message']);
@@ -426,11 +421,11 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
         }
 	}
 
@@ -454,11 +449,11 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
         }
 	}
 
@@ -477,11 +472,11 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::to('users');
+            return Redirect::action('Sentinel\UserController@index');
         }
 	}
 

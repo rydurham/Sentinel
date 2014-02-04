@@ -163,7 +163,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    {
 		        // User activation passed
 		        $result['success'] = true;
-		        $url = route('login');
+		        $url = route('Sentinel\login');
 	    		$result['message'] = trans('Sentinel::users.activated', array('url' => $url));
 		    }
 		    else

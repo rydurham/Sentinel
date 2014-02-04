@@ -20,13 +20,13 @@ class SentinelServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
+		// Load the package
 		$this->package('rydurham/sentinel');
-		include __DIR__ . '/../routes.php';
-        include __DIR__ . '/../filters.php';
-        include __DIR__ . '/../observables.php';
 
+        // Register the Sentry Service Provider
         $this->app->register('Cartalyst\Sentry\SentryServiceProvider');
 
+        // Add the Views Namespace 
         if (is_dir(app_path().'/views/packages/rydurham/sentinel'))
         {
         	// The package views have been published - use those views. 
@@ -38,7 +38,28 @@ class SentinelServiceProvider extends ServiceProvider {
         	$this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
         }
 
+        // Add the Sentinel Namespace to $app['config']
+        if (is_dir(app_path().'/config/packages/rydurham/sentinel'))
+        {
+        	// The package config has been published
+        	$this->app['config']->addNamespace('Sentinel', array(app_path().'/config/packages/rydurham/sentinel'));
+        }
+        else
+        {
+        	// The package config has not been published.
+        	$this->app['config']->addNamespace('Sentinel', __DIR__.'/../config');
+        }
+
+        
+
+        // Add the Translator Namespace
         $this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
+
+
+        // Make the app aware of these files
+		include __DIR__ . '/../routes.php';
+        include __DIR__ . '/../filters.php';
+        include __DIR__ . '/../observables.php';
 
 	}
 

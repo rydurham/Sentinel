@@ -65,7 +65,7 @@ class GroupController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::to('/groups');
+            return Redirect::action('Sentinel\GroupController@index');
 
         } else {
             Session::flash('error', $result['message']);
@@ -113,7 +113,7 @@ class GroupController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::to('/groups');
+            return Redirect::action('Sentinel\GroupController@index');
 
         } else {
             Session::flash('error', $result['message']);
@@ -133,12 +133,12 @@ class GroupController extends BaseController {
 		if ($this->group->destroy($id))
 		{
 			Session::flash('success', 'Group Deleted');
-            return Redirect::to('/groups');
+            return Redirect::action('Sentinel\GroupController@index');
         }
         else 
         {
         	Session::flash('error', 'Unable to Delete Group');
-            return Redirect::to('/groups');
+            return Redirect::action('Sentinel\GroupController@index');
         }
 	}
 
