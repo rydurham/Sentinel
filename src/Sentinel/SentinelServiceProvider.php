@@ -42,7 +42,7 @@ class SentinelServiceProvider extends ServiceProvider {
         if (is_dir(app_path().'/config/packages/rydurham/sentinel'))
         {
         	// The package config has been published
-        	$this->app['config']->addNamespace('Sentinel', array(app_path().'/config/packages/rydurham/sentinel'));
+        	$this->app['config']->addNamespace('Sentinel', app_path().'/config/packages/rydurham/sentinel');
         }
         else
         {
