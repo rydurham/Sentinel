@@ -92,6 +92,7 @@ __Users__
 * Add More languages? 
 
 ### History
+* __1.2__ Added config option for default views, fixed filter namespacing, added Italian language files. 
 * __1.1__ Added Config options. Moved named routes into 'Sentinel' namespace.
 * __1.0__ Initial version.  A direct port of [L4withSentry](https://github.com/rydurham/L4withSentry) into package form. 
 
