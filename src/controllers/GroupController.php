@@ -26,7 +26,7 @@ class GroupController extends BaseController {
 		$this->groupForm = $groupForm;
 
 		// Establish Filters
-		$this->beforeFilter('inGroup:Admins');
+		$this->beforeFilter('Sentinel\inGroup:Admins');
 	}
 
 	/**
