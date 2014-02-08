@@ -44,11 +44,11 @@ class UserController extends BaseController {
 		$this->suspendUserForm = $suspendUserForm;
 
 		//Check CSRF token on POST
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('Sentinel\csrf', array('on' => 'post'));
 
 		// Set up Auth Filters
-		$this->beforeFilter('auth', array('only' => array('change')));
-		$this->beforeFilter('inGroup:Admins', array('only' => array('show', 'index', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
+		$this->beforeFilter('Sentinel\auth', array('only' => array('change')));
+		$this->beforeFilter('Sentinel\inGroup:Admins', array('only' => array('show', 'index', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
 		//array('except' => array('create', 'store', 'activate', 'resend', 'forgot', 'reset')));
 	}
 
