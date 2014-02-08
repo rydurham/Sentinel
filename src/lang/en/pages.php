@@ -52,9 +52,9 @@ return array(
 
 	'banned'		=> "Banned",
 
-	'actionedit'	 => "Edit",
+	'actionedit'	 	=> "Edit",
 
-	'actionsuspend'	 => "Suspend",
+	'actionsuspend'	 	=> "Suspend",
 
 	'actionunsuspend' 	=> "Un-Suspend",
 
