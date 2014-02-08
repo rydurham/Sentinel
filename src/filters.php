@@ -33,12 +33,12 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('auth', function()
+Route::filter('Sentinel\auth', function()
 {
 	if (!Sentry::check()) return Redirect::route('Sentinel\login');
 });
 
-Route::filter('inGroup', function($route, $request, $value)
+Route::filter('Sentinel\inGroup', function($route, $request, $value)
 {
 	if (!Sentry::check()) return Redirect::route('Sentinel\login');
 
@@ -99,7 +99,7 @@ Route::filter('guest', function()
 |
 */
 
-Route::filter('csrf', function()
+Route::filter('Sentinel\csrf', function()
 {
 	// var_dump($_SESSION);
  //            var_dump($_POST);
