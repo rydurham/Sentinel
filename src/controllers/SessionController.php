@@ -52,7 +52,7 @@ class SessionController extends BaseController {
             							));
 
             // Success!
-            return Redirect::route('home');
+            return Redirect::intended('home');
 
         } else {
             Session::flash('error', $result['message']);
