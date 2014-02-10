@@ -33,14 +33,15 @@ App::after(function($request, $response)
 |
 */
 
+
 Route::filter('Sentinel\auth', function()
 {
-	if (!Sentry::check()) return Redirect::guest('Sentinel\login');
+	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
 });
 
 Route::filter('Sentinel\inGroup', function($route, $request, $value)
 {
-	if (!Sentry::check()) return Redirect::guest('Sentinel\login');
+	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
 
 	// we need to determine if a non admin user 
 	// is trying to access their own account.
@@ -61,13 +62,13 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 	{
 		Session::flash('error', trans('Sentinel::users.notfound'));
-		return Redirect::guest('Sentinel\login');
+		return Redirect::guest(Config::get('Sentinel::config.routes.login'));
 	}
 	 
 	catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
 	{
 		Session::flash('error', trans('Sentinel::groups.notfound'));
-		return Redirect::guest('Sentinel\login');
+		return Redirect::guest(Config::get('Sentinel::config.routes.login'));
 	}
 });
 // thanks to http://laravelsnippets.com/snippets/sentry-route-filters
