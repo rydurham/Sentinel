@@ -3,11 +3,7 @@
 use Sentinel\Repo\Session\SessionInterface;
 use Sentinel\Service\Form\Login\LoginForm;
 use BaseController;
-use View;
-use Input;
-use Event;
-use Redirect;
-use Session;
+use View, Input, Event, Redirect, Session, URL;
 
 class SessionController extends BaseController {
 
@@ -52,7 +48,7 @@ class SessionController extends BaseController {
             							));
 
             // Success!
-            return Redirect::intended('home');
+            return Redirect::intended(route('home'));
 
         } else {
             Session::flash('error', $result['message']);
