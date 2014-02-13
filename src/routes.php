@@ -28,7 +28,7 @@ Route::get( $logout , array('as' => 'Sentinel\logout', 'uses' => 'Sentinel\Sessi
 Route::resource( $sessions , 'Sentinel\SessionController', array('only' => array('create', 'store', 'destroy')));
 
 // User Routes
-Route::get( $register , array('as' => 'Sentinel\register', 'uses' => 'Sentinel\UserController@create'));
+Route::get( $register , array('as' => 'Sentinel\register', 'uses' => 'Sentinel\UserController@register'));
 Route::get( $users . '/{id}/activate/{code}', 'Sentinel\UserController@activate');
 Route::get( $resend , array('as' => 'Sentinel\resendActivationForm', function()
 {

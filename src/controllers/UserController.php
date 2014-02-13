@@ -8,7 +8,7 @@ use Sentinel\Service\Form\ResendActivation\ResendActivationForm;
 use Sentinel\Service\Form\ForgotPassword\ForgotPasswordForm;
 use Sentinel\Service\Form\ChangePassword\ChangePasswordForm;
 use Sentinel\Service\Form\SuspendUser\SuspendUserForm;
-use BaseController, View, Input, Event, Redirect, Session;
+use BaseController, View, Input, Event, Redirect, Session, Config;
 
 class UserController extends BaseController {
 
@@ -48,7 +48,7 @@ class UserController extends BaseController {
 
 		// Set up Auth Filters
 		$this->beforeFilter('Sentinel\auth', array('only' => array('change')));
-		$this->beforeFilter('Sentinel\inGroup:Admins', array('only' => array('show', 'index', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
+		$this->beforeFilter('Sentinel\inGroup:Admins', array('only' => array('show', 'index', 'create', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
 		//array('except' => array('create', 'store', 'activate', 'resend', 'forgot', 'reset')));
 	}
 
@@ -66,6 +66,24 @@ class UserController extends BaseController {
 	}
 
 	/**
+     * Show the form for creating a new user.
+     *
+     * @return Response
+     */
+    public function register()
+    {
+        $registration = Config::get('Sentinel::config.registration');
+
+        if (!$registration)
+        {   
+            Session::flash('error', trans('Sentinel::users.inactive_reg'));
+            return Redirect::route('home');
+        }
+
+        return View::make('Sentinel::users.create');
+    }
+
+    /**
 	 * Show the form for creating a new user.
 	 *
 	 * @return Response

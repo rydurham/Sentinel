@@ -63,5 +63,18 @@ return array(
 	*/
 
 	'layout' => 'Sentinel::layouts.default',
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Registration
+	|--------------------------------------------------------------------------
+	|
+	| By default, registration is enabled.  To turn off registration, change this 
+	| value to false. 
+	| 
+	*/
+
+	'registration' => true,
 	
 );
