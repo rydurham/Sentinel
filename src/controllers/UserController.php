@@ -100,7 +100,7 @@ class UserController extends BaseController {
 	 */
 	public function store()
 	{
-		// Form Processing
+        // Form Processing
         $result = $this->registerForm->save( Input::all() );
 
         if( $result['success'] )
@@ -117,7 +117,7 @@ class UserController extends BaseController {
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@create')
+            return Redirect::route('Sentinel\register')
                 ->withInput()
                 ->withErrors( $this->registerForm->errors() );
         }
