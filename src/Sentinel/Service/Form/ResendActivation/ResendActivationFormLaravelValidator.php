@@ -13,12 +13,4 @@ class ResendActivationFormLaravelValidator extends AbstractLaravelValidator {
 		'email' => 'required|min:4|max:32|email',
 	);
 
-	/**
-	 * Custom Validation Messages
-	 *
-	 * @var Array 
-	 */
-	protected $messages = array(
-		//'email.required' => 'An email address is required.'
-	);
 }
