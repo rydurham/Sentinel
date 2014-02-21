@@ -13,13 +13,4 @@ class SuspendUserFormLaravelValidator extends AbstractLaravelValidator {
 		'minutes' => 'required|numeric',
 	);
 
-	/**
-	 * Custom Validation Messages
-	 *
-	 * @var Array 
-	 */
-	protected $messages = array(
-		'minutes.numeric' => 'Minutes must be a number',
-		'minutes.required' => 'You must specify suspension length in minutes'
-	);
 }

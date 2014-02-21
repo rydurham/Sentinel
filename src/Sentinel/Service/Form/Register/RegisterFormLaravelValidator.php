@@ -15,12 +15,4 @@ class RegisterFormLaravelValidator extends AbstractLaravelValidator {
 		'password_confirmation' => 'required'
 	);
 
-	/**
-	 * Custom Validation Messages
-	 *
-	 * @var Array 
-	 */
-	protected $messages = array(
-		//'email.required' => 'An email address is required.'
-	);
 }
