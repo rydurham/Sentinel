@@ -92,6 +92,8 @@ __Users__
 * Add More languages? 
 
 ### History
+* __1.3.1__ Moved Custom Validation messages into Language file. 
+* __1.3__ Added configuration option to turn Registration on or off. 
 * __1.2.1__ Added Redirect::guest()
 * __1.2__ Added config option for default views, fixed filter namespacing, added Italian language files. 
 * __1.1__ Added Config options. Moved named routes into 'Sentinel' namespace.
