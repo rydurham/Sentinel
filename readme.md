@@ -69,10 +69,10 @@ Once installed, Sentinel adds a series of [routes](src/routes.php) for User inte
 * ```yoursite.tld/users``` - For user management.  Only available to admins
 * ```yoursite.tld/groups``` - For group management. Only available to admins.
 
-Sentinel also provides these [filters](src/routes.php) which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your app's routes & methods. 
+Sentinel also provides these [filters](src/filters.php) which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your app's routes & methods. 
 
-* ```auth``` - Require users to be successfully logged in
-* ```inGroup:Admins``` - Block access to all but members of the Admin group. If you create your own groups, you can use it as such: ```inGroup:YourGroup```. 
+* ```Sentinel\auth``` - Require users to be successfully logged in
+* ```Sentinel\inGroup:Admins``` - Block access to all but members of the Admin group. If you create your own groups, you can use it as such: ```inGroup:YourGroup```. 
 
 ### Database Seeds
 The seeds in this repo will create two groups and two user accounts.
