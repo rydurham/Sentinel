@@ -85,6 +85,12 @@ __Users__
 * user@user.com  *Password: sentryuser*
 * admin@admin.com *Password: sentryadmin*
 
+### Documentation & Questions
+The [Wiki](https://github.com/rydurham/Sentinel/wiki) has some basic API information and a list of the default routes provided by Sentinel.  
+
+Any questions about this package can be [posted here](http://www.ryandurham.com/projects/sentinel/).
+
+
 ### To Do
 * Set up testing with Travis
 * Increase test coverage - currently the tests are very limited.
