@@ -105,7 +105,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.register', array(
+            Event::fire('sentinel.user.registered', array(
             	'email' => $result['mailData']['email'], 
             	'userId' => $result['mailData']['userId'], 
                 'activationCode' => $result['mailData']['activationCode']
