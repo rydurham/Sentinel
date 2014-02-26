@@ -224,7 +224,7 @@ class UserController extends BaseController {
 
 		if ($this->user->destroy($id))
 		{
-			Event::fire('sentinel.user.destroy', array(
+			Event::fire('sentinel.user.destroyed', array(
                 'userId' => $id, 
             ));
 
