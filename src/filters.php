@@ -56,7 +56,7 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 		if ($userId != Session::get('userId') && (! $user->inGroup($group))  )
 		{
 			Session::flash('error', trans('Sentinel::users.noaccess'));
-			return Redirect::back();
+			return Redirect::route('home');
 		}
 	}
 	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
