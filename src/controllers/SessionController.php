@@ -42,7 +42,7 @@ class SessionController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('user.login', array(
+            Event::fire('sentinel.user.login', array(
             							'userId' => $result['sessionData']['userId'],
             							'email' => $result['sessionData']['email']
             							));
