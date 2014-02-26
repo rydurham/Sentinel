@@ -67,7 +67,7 @@ class SessionController extends BaseController {
 	public function destroy()
 	{
 		$this->session->destroy();
-		Event::fire('user.logout');
+		Event::fire('sentinel.user.logout');
 		return Redirect::route('home');
 	}
 
