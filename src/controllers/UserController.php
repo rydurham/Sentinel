@@ -105,7 +105,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('user.signup', array(
+            Event::fire('sentinel.user.register', array(
             	'email' => $result['mailData']['email'], 
             	'userId' => $result['mailData']['userId'], 
                 'activationCode' => $result['mailData']['activationCode']
@@ -190,6 +190,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.update', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@show', array($id));
@@ -220,7 +224,11 @@ class UserController extends BaseController {
 
 		if ($this->user->destroy($id))
 		{
-			Session::flash('success', 'User Deleted');
+			Event::fire('sentinel.user.destroy', array(
+                'userId' => $id, 
+            ));
+
+            Session::flash('success', 'User Deleted');
             return Redirect::action('Sentinel\UserController@index');
         }
         else 
@@ -249,6 +257,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.activate', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -270,7 +282,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('user.resend', array(
+            Event::fire('sentinel.user.resend', array(
 				'email' => $result['mailData']['email'], 
 				'userId' => $result['mailData']['userId'], 
 				'activationCode' => $result['mailData']['activationCode']
@@ -300,7 +312,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('user.forgot', array(
+            Event::fire('sentinel.user.forgot', array(
 				'email' => $result['mailData']['email'],
 				'userId' => $result['mailData']['userId'],
 				'resetCode' => $result['mailData']['resetCode']
@@ -338,7 +350,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('user.newpassword', array(
+            Event::fire('sentinel.user.newpassword', array(
 				'email' => $result['mailData']['email'],
 				'newPassword' => $result['mailData']['newPassword']
 			));
@@ -375,6 +387,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.passwordchange', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -407,6 +423,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.suspended', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
@@ -437,6 +457,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.unsuspended', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
@@ -465,6 +489,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.banned', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
@@ -488,6 +516,10 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.user.unbanned', array(
+                'userId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
