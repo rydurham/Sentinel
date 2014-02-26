@@ -60,9 +60,11 @@ class GroupController extends BaseController {
 	{
 		// Form Processing
         $result = $this->groupForm->save( Input::all() );
-
+        
         if( $result['success'] )
         {
+            Event::fire('sentinel.group.created');
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\GroupController@index');
@@ -111,6 +113,10 @@ class GroupController extends BaseController {
 
         if( $result['success'] )
         {
+            Event::fire('sentinel.group.updated', array(
+                'groupId' => $id, 
+            ));
+
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\GroupController@index');
@@ -132,6 +138,10 @@ class GroupController extends BaseController {
 	{
 		if ($this->group->destroy($id))
 		{
+			Event::fire('sentinel.group.destroyed', array(
+                'groupId' => $id, 
+            ));
+
 			Session::flash('success', 'Group Deleted');
             return Redirect::action('Sentinel\GroupController@index');
         }
