@@ -190,7 +190,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.update', array(
+            Event::fire('sentinel.user.updated', array(
                 'userId' => $id, 
             ));
 
@@ -257,7 +257,7 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.activate', array(
+            Event::fire('sentinel.user.activated', array(
                 'userId' => $id, 
             ));
 
