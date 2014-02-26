@@ -72,23 +72,16 @@ Once installed, Sentinel adds a series of [routes](src/routes.php) for User inte
 Sentinel also provides these [filters](src/filters.php) which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your app's routes & methods. 
 
 * ```Sentinel\auth``` - Require users to be successfully logged in
-* ```Sentinel\inGroup:Admins``` - Block access to all but members of the Admin group. If you create your own groups, you can use it as such: ```inGroup:YourGroup```. 
-
-### Database Seeds
-The seeds in this repo will create two groups and two user accounts.
-
-__Groups__
-* Users
-* Admins
-
-__Users__
-* user@user.com  *Password: sentryuser*
-* admin@admin.com *Password: sentryadmin*
+* ```Sentinel\inGroup:Admins``` - Block access to all but members of the Admin group. If you create your own groups, you can use it as such: ```Sentinel\inGroup:[YourGroup]```. 
 
 ### Documentation & Questions
-The [Wiki](https://github.com/rydurham/Sentinel/wiki) has some basic API information and a list of the default routes provided by Sentinel.  
+Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
+* Events & Listeners
+* Seed & Migration Details
+* Default Routes
+* Basic API Info  
 
-Any questions about this package can be [posted here](http://www.ryandurham.com/projects/sentinel/).
+Any questions about this package should be posted [on the package website](http://www.ryandurham.com/projects/sentinel/).
 
 
 ### To Do
@@ -98,6 +91,7 @@ Any questions about this package can be [posted here](http://www.ryandurham.com/
 * Add More languages? 
 
 ### History
+* __1.4__  Added Event triggers to allow users to set up custom functionality. 
 * __1.3.1__ Moved Custom Validation messages into Language file. 
 * __1.3__ Added configuration option to turn Registration on or off. 
 * __1.2.1__ Added Redirect::guest()
