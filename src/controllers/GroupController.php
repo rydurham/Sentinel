@@ -123,7 +123,7 @@ class GroupController extends BaseController {
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\GroupController@create')
+            return Redirect::action('Sentinel\GroupController@edit', $id)
                 ->withInput()
                 ->withErrors( $this->groupForm->errors() );
         }
