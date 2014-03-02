@@ -11,10 +11,10 @@ class UserMailer extends Mailer {
 	 */
 	public function subscribe($events)
 	{
-		$events->listen('user.registered', 	'Sentinel\Mailers\UserMailer@welcome', 10);
-		$events->listen('user.resend', 		'Sentinel\Mailers\UserMailer@welcome', 10);
-		$events->listen('user.forgot',      'Sentinel\Mailers\UserMailer@forgotPassword', 10);
-		$events->listen('user.newpassword', 'Sentinel\Mailers\UserMailer@newPassword', 10);
+		$events->listen('sentinel.user.registered', 	'Sentinel\Mailers\UserMailer@welcome', 10);
+		$events->listen('sentinel.user.resend', 		'Sentinel\Mailers\UserMailer@welcome', 10);
+		$events->listen('sentinel.user.forgot',      'Sentinel\Mailers\UserMailer@forgotPassword', 10);
+		$events->listen('sentinel.user.newpassword', 'Sentinel\Mailers\UserMailer@newPassword', 10);
 	}
 
 	/**
