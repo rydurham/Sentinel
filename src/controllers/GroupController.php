@@ -37,7 +37,7 @@ class GroupController extends BaseController {
 	public function index()
 	{
 		$groups = $this->group->all();
-		return View::make('Sentinel::groups.index')->with('groups', $groups);
+		return View::make(Config::get('Sentinel::views.groups.index'))->with('groups', $groups);
 	}
 
 	/**
@@ -48,7 +48,7 @@ class GroupController extends BaseController {
 	public function create()
 	{
 		//Form for creating a new Group
-		return View::make('Sentinel::groups.create');
+		return View::make(Config::get('Sentinel::views.groups.create'));
 	}
 
 	/**
@@ -87,7 +87,7 @@ class GroupController extends BaseController {
 		//Show a group and its permissions. 
 		$group = $this->group->byId($id);
 
-		return View::make('Sentinel::groups.show')->with('group', $group);
+		return View::make(Config::get('Sentinel::views.groups.show'))->with('group', $group);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class GroupController extends BaseController {
 	public function edit($id)
 	{
 		$group = $this->group->byId($id);
-		return View::make('Sentinel::groups.edit')->with('group', $group);
+		return View::make(Config::get('Sentinel::views.groups.edit'))->with('group', $group);
 	}
 
 	/**

@@ -62,7 +62,7 @@ class UserController extends BaseController {
 	{
         $users = $this->user->all();
       
-        return View::make('Sentinel::users.index')->with('users', $users);
+        return View::make(Config::get('Sentinel::views.users.index'))->with('users', $users);
 	}
 
 	/**
@@ -76,11 +76,11 @@ class UserController extends BaseController {
 
         if (!$registration)
         {   
-            Session::flash('error', trans('Sentinel::users.inactive_reg'));
+            Session::flash('error', trans('Sentinel::views.users.inactive_reg'));
             return Redirect::route('home');
         }
 
-        return View::make('Sentinel::users.create');
+        return View::make(Config::get('Sentinel::views.users.create'));
     }
 
     /**
@@ -90,7 +90,7 @@ class UserController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('Sentinel::users.create');
+        return View::make(Config::get('Sentinel::views.users.create'));
 	}
 
 	/**
@@ -140,7 +140,7 @@ class UserController extends BaseController {
             // @codeCoverageIgnoreEnd
         }
 
-        return View::make('Sentinel::users.show')->with('user', $user);
+        return View::make(Config::get('Sentinel::views.users.show'))->with('user', $user);
 	}
 
 	/**
@@ -167,7 +167,7 @@ class UserController extends BaseController {
         }
         $allGroups = $this->group->all();
 
-        return View::make('Sentinel::users.edit')->with('user', $user)->with('userGroups', $userGroups)->with('allGroups', $allGroups);
+        return View::make(Config::get('Sentinel::views.users.edit'))->with('user', $user)->with('userGroups', $userGroups)->with('allGroups', $allGroups);
 	}
 
 	/**
