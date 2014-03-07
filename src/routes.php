@@ -32,19 +32,19 @@ Route::get( $register , array('as' => 'Sentinel\register', 'uses' => 'Sentinel\U
 Route::get( $users . '/{id}/activate/{code}', 'Sentinel\UserController@activate');
 Route::get( $resend , array('as' => 'Sentinel\resendActivationForm', function()
 {
-	return View::make('Sentinel::users.resend');
+	return View::make(Config::get('Sentinel::views.users.resend'));
 }));
 Route::post( $resend , 'Sentinel\UserController@resend');
 Route::get( $forgot , array('as' => 'Sentinel\forgotPasswordForm', function()
 {
-	return View::make('Sentinel::users.forgot');
+	return View::make(Config::get('Sentinel::views.users.forgot'));
 }));
 Route::post( $forgot , 'Sentinel\UserController@forgot');
 Route::post( $users . '/{id}/change', 'Sentinel\UserController@change');
 Route::get( $users . '/{id}/reset/{code}', 'Sentinel\UserController@reset');
 Route::get( $users . '/{id}/suspend', array('as' => 'Sentinel\suspendUserForm', function($id)
 {
-	return View::make('Sentinel::users.suspend')->with('id', $id);
+	return View::make(Config::get('Sentinel::views.users.suspend'))->with('id', $id);
 }));
 Route::post( $users . '/{id}/suspend', 'Sentinel\UserController@suspend');
 Route::get( $users . '/{id}/unsuspend', 'Sentinel\UserController@unsuspend');

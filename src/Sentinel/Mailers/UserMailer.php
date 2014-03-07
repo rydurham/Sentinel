@@ -27,7 +27,7 @@ class UserMailer extends Mailer {
 	public function welcome($email, $userId, $activationCode)
 	{
 		$subject = Config::get('Sentinel::config.welcome');
-		$view = 'Sentinel::emails.welcome';
+		$view = Config::get('Sentinel::views.emails.welcome');
 		$data['userId'] = $userId;
 		$data['activationCode'] = $activationCode;
 		$data['email'] = $email;
@@ -45,7 +45,7 @@ class UserMailer extends Mailer {
 	public function forgotPassword($email, $userId, $resetCode)
 	{
 		$subject = Config::get('Sentinel::config.reset_password');
-		$view = 'Sentinel::emails.reset';
+		$view = Config::get('Sentinel::views.emails.reset_password');
 		$data['userId'] = $userId;
 		$data['resetCode'] = $resetCode;
 		$data['email'] = $email;
@@ -63,7 +63,7 @@ class UserMailer extends Mailer {
 	public function newPassword($email, $newPassword)
 	{
 		$subject = Config::get('Sentinel::config.new_password');
-		$view = 'Sentinel::emails.newpassword';
+		$view = Config::get('Sentinel::views.emails.new_password');
 		$data['newPassword'] = $newPassword;
 		$data['email'] = $email;
 

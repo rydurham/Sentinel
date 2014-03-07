@@ -27,7 +27,7 @@ class SessionController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('Sentinel::sessions.login');
+		return View::make(Config::get('Sentinel::views.sessions.login'));
 	}
 
 	/**

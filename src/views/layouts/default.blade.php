@@ -71,7 +71,7 @@
 		<!-- Container -->
 		<div class="container">
 			<!-- Notifications -->
-			@include('Sentinel::layouts/notifications')
+			@include(Config::get('Sentinel::layouts/notifications'))
 			<!-- ./ notifications -->
 
 			<!-- Content -->
