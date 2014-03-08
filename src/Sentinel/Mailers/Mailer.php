@@ -1,15 +1,15 @@
 <?php namespace Sentinel\Mailers;
 
-use Mail;
+use Mail, Queue;
 
 abstract class Mailer {
 
 	public function sendTo($email, $subject, $view, $data = array())
 	{
-		Mail::queue($view, $data, function($message) use($email, $subject)
+		Queue::push(Mail::send($view, $data, function($message) use($email, $subject)
 		{
 			$message->to($email)
 					->subject($subject);
-		});
+		}));
 	}
 }
