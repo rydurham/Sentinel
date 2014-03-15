@@ -19,9 +19,6 @@ $register 	= $routesConfig['register'];
 $resend 	= $routesConfig['resend'];
 $forgot 	= $routesConfig['forgot'];
 
-// Route Patterns
-Route::pattern('id', '[0-9]+');
-
 // Session Routes
 Route::get( $login ,  array('as' => 'Sentinel\login', 'uses' => 'Sentinel\SessionController@create'));
 Route::get( $logout , array('as' => 'Sentinel\logout', 'uses' => 'Sentinel\SessionController@destroy'));
