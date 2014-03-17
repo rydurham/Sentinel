@@ -27,6 +27,7 @@ class GroupController extends BaseController {
 
 		// Establish Filters
 		$this->beforeFilter('Sentinel\inGroup:Admins');
+		$this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
 	}
 
 	/**

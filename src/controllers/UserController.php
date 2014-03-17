@@ -44,7 +44,7 @@ class UserController extends BaseController {
 		$this->suspendUserForm = $suspendUserForm;
 
 		//Check CSRF token on POST
-		$this->beforeFilter('Sentinel\csrf', array('on' => 'post'));
+		$this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
 
 		// Set up Auth Filters
 		$this->beforeFilter('Sentinel\auth', array('only' => array('change')));
