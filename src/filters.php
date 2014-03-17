@@ -39,6 +39,29 @@ Route::filter('Sentinel\auth', function()
 	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
 });
 
+Route::filter('Sentinel\hasAccess', function($route, $request, $value)
+{
+	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+
+	$userId = Route::input('users');
+
+	try
+	{
+		$user = Sentry::getUser();
+
+		if ( $userId != Session::get('userId') && (! $user->hasAccess($value)) )
+		{
+			Session::flash('error', trans('Sentinel::users.noaccess'));
+			return Redirect::route('home');
+		}
+	}
+	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+	{
+		Session::flash('error', trans('Sentinel::users.notfound'));
+		return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+	}
+});
+
 Route::filter('Sentinel\inGroup', function($route, $request, $value)
 {
 	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
