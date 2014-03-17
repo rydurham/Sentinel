@@ -24,9 +24,7 @@ return array(
 
 	'home'			=> "Home",
 
-	'users'			=> "Utenti",
-
-	'user'			=> "Utente",
+	'users'			=> "Utenti|Utente",
 
 	'groups'		=> "Gruppi",
 
