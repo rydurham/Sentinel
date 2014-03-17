@@ -91,6 +91,7 @@ Any questions about this package should be posted [on the package website](http:
 * Add More languages? 
 
 ### History
+* __1.4.1__ Bug fixes.
 * __1.4__  Added Event triggers to allow users to set up custom functionality. 
 * __1.3.1__ Moved Custom Validation messages into Language file. 
 * __1.3__ Added configuration option to turn Registration on or off. 
