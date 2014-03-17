@@ -518,6 +518,17 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	}
 
 	/**
+	 * Provide a wrapper for Sentry::getUser()
+	 *
+	 * @return user object
+	 */
+	public function getUser()
+	{
+		return $this->sentry->getUser();
+	}
+
+
+	/**
      * Generate password - helper function
      * From http://www.phpscribble.com/i4xzZu/Generate-random-passwords-of-given-length-and-strength
      *

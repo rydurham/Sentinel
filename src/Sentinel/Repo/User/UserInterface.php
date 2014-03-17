@@ -40,4 +40,11 @@ interface UserInterface {
 	 */
 	public function all();
 
+	/**
+	 * Provide a wrapper for Sentry::getUser()
+	 *
+	 * @return user object
+	 */
+	public function getUser();
+
 }
