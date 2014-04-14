@@ -35,6 +35,21 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Default Event Routes 
+	|--------------------------------------------------------------------------
+	|
+	| At certain points in the login and registration process Sentinel will 
+	| redirect the browser upon the completion of an event.  To change those 
+	| redirect locations, provide the name of a different route.
+	| 
+	*/
+
+	'post_login' 	=> 'home',
+
+	'post_logout' 	=> 'home',
+
+	/*
+	|--------------------------------------------------------------------------
 	| E-Mail Subject Lines
 	|--------------------------------------------------------------------------
 	|
@@ -76,5 +91,17 @@ return array(
 	*/
 
 	'registration' => true,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Default User Groups
+	|--------------------------------------------------------------------------
+	|
+	| When a new user is created, they will automatically be added to the 
+	| groups in this array.
+	| 
+	*/
+
+	'default_user_groups' => array('Users'),
 	
 );
