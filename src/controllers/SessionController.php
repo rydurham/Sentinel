@@ -3,7 +3,7 @@
 use Sentinel\Repo\Session\SessionInterface;
 use Sentinel\Service\Form\Login\LoginForm;
 use BaseController;
-use View, Input, Event, Redirect, Session, URL;
+use View, Input, Event, Redirect, Session, URL, Config;
 
 class SessionController extends BaseController {
 
@@ -43,12 +43,13 @@ class SessionController extends BaseController {
         if( $result['success'] )
         {
             Event::fire('sentinel.user.login', array(
-            							'userId' => $result['sessionData']['userId'],
-            							'email' => $result['sessionData']['email']
-            							));
+            	'userId' => $result['sessionData']['userId'],
+            	'email' => $result['sessionData']['email']
+            ));
 
             // Success!
-            return Redirect::intended(route('home'));
+            $redirect_route = Config::get('Sentinel::config.post_login');
+            return Redirect::intended(route($redirect_route));
 
         } else {
             Session::flash('error', $result['message']);
@@ -68,7 +69,8 @@ class SessionController extends BaseController {
 	{
 		$this->session->destroy();
 		Event::fire('sentinel.user.logout');
-		return Redirect::route('home');
+		$redirect_route = Config::get('Sentinel::config.post_logout');
+		return Redirect::route($redirect_route);
 	}
 
 }
