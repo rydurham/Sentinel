@@ -74,7 +74,23 @@ return array(
 	|
 	*/
 
-	'custom' => array(),
+	'custom' => array(
+        'oldPassword' => array(
+            'required' => 'È necessario inserire la vecchia password.',
+            'min' => 'La vecchia password deve essere di almeno 6 caratteri.',
+        ),
+        'newPassword' => array(
+            'required' => 'È necessario inserire una nuova password.',
+            'min' => 'La nuova password deve essere di almeno 6 caratteri.',
+        ),
+        'newPassword_confirmation' => array(
+            'required' => 'È necessario confermare la nuova password.',
+        ),
+        'minutes' => array(
+            'numeric' => 'Verbale deve essere un numero.',
+            'required' => 'È necessario specificare la lunghezza della sospensione in pochi minuti.',
+        ),
+    ),
 
 	/*
 	|--------------------------------------------------------------------------
