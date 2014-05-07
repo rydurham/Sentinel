@@ -20,46 +20,50 @@ class SentinelServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
+		// Find path to the package
+		$sentinelFilename = with(new \ReflectionClass('\Sentinel\SentinelServiceProvider'))->getFileName();
+		$sentinelPath = dirname($sentinelFilename);
+
 		// Load the package
 		$this->package('rydurham/sentinel');
 
-        // Register the Sentry Service Provider
-        $this->app->register('Cartalyst\Sentry\SentryServiceProvider');
+		// Register the Sentry Service Provider
+		$this->app->register('Cartalyst\Sentry\SentryServiceProvider');
+		
+		// Add the Views Namespace 
+		if (is_dir(app_path().'/views/packages/rydurham/sentinel'))
+		{
+			// The package views have been published - use those views. 
+			$this->app['view']->addNamespace('Sentinel', array(app_path().'/views/packages/rydurham/sentinel'));
+		}
+		else 
+		{
+			// The package views have not been published. Use the defaults. 
+			$this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
+		}
 
-        // Add the Views Namespace 
-        if (is_dir(app_path().'/views/packages/rydurham/sentinel'))
-        {
-        	// The package views have been published - use those views. 
-        	$this->app['view']->addNamespace('Sentinel', array(app_path().'/views/packages/rydurham/sentinel'));
-        }
-        else 
-        {
-        	// The package views have not been published. Use the defaults. 
-        	$this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
-        }
-
-        // Add the Sentinel Namespace to $app['config']
-        if (is_dir(app_path().'/config/packages/rydurham/sentinel'))
-        {
-        	// The package config has been published
-        	$this->app['config']->addNamespace('Sentinel', app_path().'/config/packages/rydurham/sentinel');
-        }
-        else
-        {
-        	// The package config has not been published.
-        	$this->app['config']->addNamespace('Sentinel', __DIR__.'/../config');
-        }
-
-        
-
-        // Add the Translator Namespace
-        $this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
+		// Add the Sentinel Namespace to $app['config']
+		if (is_dir(app_path().'/config/packages/rydurham/sentinel'))
+		{
+			// The package config has been published
+			$this->app['config']->addNamespace('Sentinel', app_path().'/config/packages/rydurham/sentinel');
+		}
+		else
+		{
+			// The package config has not been published.
+			$this->app['config']->addNamespace('Sentinel', __DIR__.'/../config');
+		}
 
 
-        // Make the app aware of these files
-		include __DIR__ . '/../routes.php';
-        include __DIR__ . '/../filters.php';
-        include __DIR__ . '/../observables.php';
+
+		// Add the Translator Namespace
+		$this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
+
+
+		// Make the app aware of these files
+		include $sentinelPath . '/../routes.php';
+		include $sentinelPath . '/../filters.php';
+		include $sentinelPath . '/../observables.php';
 
 	}
 
@@ -71,13 +75,13 @@ class SentinelServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
+		$loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
 
 		$repoProvider = new RepoServiceProvider($this->app);
-        $repoProvider->register();
+		$repoProvider->register();
 
-        $formServiceProvider = new FormServiceProvider($this->app);
-        $formServiceProvider->register();
+		$formServiceProvider = new FormServiceProvider($this->app);
+		$formServiceProvider->register();
 	}
 
 	/**
