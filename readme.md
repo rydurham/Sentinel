@@ -89,6 +89,8 @@ Any questions about this package should be posted [on the package website](http:
 * Add More languages? 
 
 ### History
+* __1.4.4__ Added BG & NB Language files. 
+* __1.4.3__ Bug fixes.  Add reflection to SentinelServiceProvider.php.
 * __1.4.2__ Added new config options: Default User groups and Post Login redirect location.
 * __1.4.1__ Bug fixes.
 * __1.4__  Added Event triggers to allow users to set up custom functionality. 
@@ -100,6 +102,7 @@ Any questions about this package should be posted [on the package website](http:
 * __1.0__ Initial version.  A direct port of [L4withSentry](https://github.com/rydurham/L4withSentry) into package form. 
 
 ### Thanks
+* This package would not be possible without the excellent Sentry package from [Cartalyst](http://cartalyst.com). They make excellent products!
 * Many thanks to [@rossey](https://github.com/rossey) for pushing to make this happen, and for providing a great [starting point](https://github.com/wearebase/sentry-manager-laravel-package).   
 * These two books helped immensely: [*Laravel: From Apprentice to Artisan*](https://leanpub.com/laravel) by Taylor Otwell, [*Implementing Laravel*](https://leanpub.com/implementinglaravel) by Chris Fidao
 * The [Laracast videos](http://laracasts.com) are awesome - check them out if you have not already. 
