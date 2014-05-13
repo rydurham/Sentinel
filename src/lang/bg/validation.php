@@ -126,31 +126,31 @@ return array(
     
         'oldPassword' => array(
     
-            'required' => 'You must enter your old password.',
+            'required' => 'Трябва да въведете старата си парола.',
     
-            'min' => 'Your old password must be at least 6 characters long.',
+            'min' => 'Вашият стар Паролата трябва да съдържа поне 6 символа.',
     
         ),
     
         'newPassword' => array(
     
-            'required' => 'You must enter a new password.',
+            'required' => 'Трябва да въведете нова парола.',
     
-            'min' => 'Your new password must be at least 6 characters long.',
+            'min' => 'Вашата нова парола трябва да е с дължина най-малко 6 символа.',
     
         ),
     
         'newPassword_confirmation' => array(
     
-            'required' => 'You must confirm your new password.',
+            'required' => 'Трябва да потвърдите вашата нова парола.',
     
         ),
     
         'minutes' => array(
     
-            'numeric' => 'Minutes must be a number',
+            'numeric' => 'Минути трябва да е число',
     
-            'required' => 'You must specify suspension length in minutes',
+            'required' => 'Трябва да укажете продължителност суспензия в минута',
     
         ),
     
