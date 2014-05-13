@@ -60,6 +60,11 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    $result['success'] = false;
 	    	$result['message'] = trans('Sentinel::users.exists');
 		}
+		catch (Cartalyst\Sentry\Users\UserAlreadyActivatedException $e)
+		{
+		    $result['success'] = false;
+            $result['message'] = trans('Sentinel::users.alreadyactive');
+		}
 
 		return $result;
 	}
