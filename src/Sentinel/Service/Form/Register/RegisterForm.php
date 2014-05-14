@@ -66,7 +66,7 @@ class RegisterForm {
 	protected function valid(array $input)
 	{
 
-		return $this->validator->with($input)->passes();
+		return $this->validator->rules(\Config::get('Sentinel::config.fieldvalidation'))->with($input)->passes();
 		
 	}
 
