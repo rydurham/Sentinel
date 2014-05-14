@@ -115,9 +115,6 @@ return array(
 	'newfields' => array(
 			'first_name' => 'First Name',
 			'last_name' => 'Last Name',
-			'email' => 'E-mail',
-			'password' => 'Password',
-			'password_confirmation' => 'Confirm Password',
 	),
 
 	/*
@@ -132,9 +129,6 @@ return array(
 	'fieldvalidation' => array(
 			'first_name' => 'required|min:4|max:254',
 			'last_name' => 'required|min:4|max:254',
-			'email' => 'required|min:4|max:254|email',
-			'password' => 'required|min:6|confirmed',
-			'password_confirmation' => 'required'
 	),
 	
 );
