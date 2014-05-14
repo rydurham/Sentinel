@@ -77,7 +77,7 @@ return array(
 	| 
 	*/
 
-	'layout' => 'layouts.master',
+	'layout' => 'Sentinel::layouts.default',
 
 
 	/*
