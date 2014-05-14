@@ -23,4 +23,11 @@ interface ValidableInterface {
 	 */
 	public function errors();
 
+	/**
+	 * Add new rules
+	 * 
+	 * @return array
+	 */
+	public function rules(array $rules);
+
 }
