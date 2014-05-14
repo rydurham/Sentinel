@@ -77,7 +77,7 @@ return array(
 	| 
 	*/
 
-	'layout' => 'Sentinel::layouts.default',
+	'layout' => 'layouts.master',
 
 
 	/*
@@ -103,5 +103,38 @@ return array(
 	*/
 
 	'default_user_groups' => array('Users'),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Additional  User fileds 
+	|--------------------------------------------------------------------------
+	|
+	| New fileds are provided here with lable
+	| 
+	*/
+	'newfields' => array(
+			'first_name' => 'First Name',
+			'last_name' => 'Last Name',
+			'email' => 'E-mail',
+			'password' => 'Password',
+			'password_confirmation' => 'Confirm Password',
+	),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Additional validation for User fileds 
+	|--------------------------------------------------------------------------
+	|
+	| when a new fileds are provided the validation for the files is
+	| given here
+	| 
+	*/
+	'fieldvalidation' => array(
+			'first_name' => 'required|min:4|max:254',
+			'last_name' => 'required|min:4|max:254',
+			'email' => 'required|min:4|max:254|email',
+			'password' => 'required|min:6|confirmed',
+			'password_confirmation' => 'required'
+	),
 	
 );
