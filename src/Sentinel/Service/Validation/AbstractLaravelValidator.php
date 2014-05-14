@@ -42,6 +42,8 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
 	public function __construct(Factory $validator)
 	{
 		$this->validator = $validator;
+		
+		$this->rules = array_merge($this->rules,\Config::get('Sentinel::config.fieldvalidation'));
 
 		// Retrieve Custom Validation Messages & Pass them to the validator.
 	    $this->messages = array_dot(trans('Sentinel::validation.custom'));
