@@ -19,18 +19,13 @@ Edit Group
         </div>
 
         {{ Form::label('Permissions') }}
-        <?php 
-            $permissions = $group->getPermissions(); 
-            if (!array_key_exists('admin', $permissions)) $permissions['admin'] = 0;
-            if (!array_key_exists('users', $permissions)) $permissions['users'] = 0;
-        ?>
-        
+
         <div class="form-group">
             <label class="checkbox-inline">
-                {{ Form::checkbox('adminPermissions', 1, $permissions['admin'] ) }} Admin
+                {{ Form::checkbox('permissions[admin]', 1, array_key_exists('admin', $permissions)) }} Admin
             </label>
             <label class="checkbox-inline">
-                {{ Form::checkbox('userPermissions', 1, $permissions['users'] ) }} Users
+                {{ Form::checkbox('permissions[users]', 1, array_key_exists('users', $permissions)) }} User
             </label>
         </div>
 

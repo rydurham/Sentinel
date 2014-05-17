@@ -22,19 +22,16 @@ class SentryGroup extends RepoAbstract implements GroupInterface {
 	 */
 	public function store($data)
 	{
-		// Logic for missing checkbox values
-		if (!array_key_exists('adminPermissions', $data)) $data['adminPermissions'] = 0;
-		if (!array_key_exists('userPermissions', $data)) $data['userPermissions'] = 0;
+		// Back suppport for previous permissions options
+		if (array_key_exists('adminPermissions', $data)) $data['permissions']['admin'] = 1;
+		if (array_key_exists('userPermissions', $data)) $data['permissions']['users'] = 1;
 
 		$result = array();
 		try {
 			    // Create the group
 			    $group = $this->sentry->createGroup(array(
 			        'name'        => e($data['name']),
-			        'permissions' => array(
-			            'admin' => e($data['adminPermissions']),
-			            'users' => e($data['userPermissions']),
-			        ),
+			        'permissions' => $data['permissions'],
 			    ));
 
 			   	$result['success'] = true;
@@ -62,21 +59,26 @@ class SentryGroup extends RepoAbstract implements GroupInterface {
 	 */
 	public function update($data)
 	{
-		// Logic for missing checkbox values
-		if (!array_key_exists('adminPermissions', $data)) $data['adminPermissions'] = 0;
-		if (!array_key_exists('userPermissions', $data)) $data['userPermissions'] = 0;
+		// Back suppport for previous permissions options
+		if (array_key_exists('adminPermissions', $data)) $data['permissions']['admin'] = 1;
+		if (array_key_exists('userPermissions', $data)) $data['permissions']['users'] = 1;
 
 		try
 		{
 			// Find the group using the group id
 		    $group = $this->sentry->findGroupById($data['id']);
 
+		    // Grab the current (pre-edit) permissions and nullify appropriately
+		    $existingPermissions = $group->getPermissions();
+		    $nulledPermissions = array_diff_key($existingPermissions, $data['permissions']);
+			foreach ($nulledPermissions as $key => $value) {
+				// Set the nulled permissions to 0
+				$data['permissions'][$key] = 0;
+			}
+
 		    // Update the group details
 		    $group->name = e($data['name']);
-		    $group->permissions = array(
-		        'admin' => e($data['adminPermissions']),
-				'users' => e($data['userPermissions']),
-		    );
+		    $group->permissions = $data['permissions'];
 
 		    // Update the group
 		    if ($group->save())

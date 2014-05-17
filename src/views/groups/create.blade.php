@@ -21,12 +21,11 @@ Create Group
         {{ Form::label('Permissions') }}
         <div class="form-group">
             <label class="checkbox-inline">
-                {{ Form::checkbox('adminPermissions', 1) }} Admin
+                {{ Form::checkbox('permissions[admin]', 1) }} Admin
             </label>
             <label class="checkbox-inline">
-                {{ Form::checkbox('userPermissions', 1) }} User
+                {{ Form::checkbox('permissions[users]', 1) }} User
             </label>
-
         </div>
 
         {{ Form::submit('Create New Group', array('class' => 'btn btn-primary')) }}

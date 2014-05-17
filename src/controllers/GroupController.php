@@ -99,7 +99,7 @@ class GroupController extends BaseController {
 	public function edit($id)
 	{
 		$group = $this->group->byId($id);
-		return View::make('Sentinel::groups.edit')->with('group', $group);
+		return View::make('Sentinel::groups.edit')->with('group', $group)->with('permissions', $group->getPermissions());
 	}
 
 	/**
