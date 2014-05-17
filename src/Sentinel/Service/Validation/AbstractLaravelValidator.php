@@ -87,5 +87,17 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
 	{
 		return $this->errors;
 	}
+
+	/**
+	 * Set data to validate rules
+	 *
+	 * @return \Sentinel\Service\Validation\AbstractLaravelValidator 
+	 */
+	public function rules(array $rules)
+	{
+		$this->rules = array_merge($this->rules,$rules);
+		
+		return $this;
+	}
 	
 }
