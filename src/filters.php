@@ -109,7 +109,7 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::route('home');
+	if (Sentry::check()) return Redirect::route('home');
 });
 
 /*

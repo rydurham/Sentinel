@@ -20,12 +20,12 @@ $resend 	= $routesConfig['resend'];
 $forgot 	= $routesConfig['forgot'];
 
 // Session Routes
-Route::get( $login ,  array('as' => 'Sentinel\login', 'uses' => 'Sentinel\SessionController@create'));
+Route::get( $login ,  array('as' => 'Sentinel\login', 'uses' => 'Sentinel\SessionController@create'))->before('guest');
 Route::get( $logout , array('as' => 'Sentinel\logout', 'uses' => 'Sentinel\SessionController@destroy'));
 Route::resource( $sessions , 'Sentinel\SessionController', array('only' => array('create', 'store', 'destroy')));
 
 // User Routes
-Route::get( $register , array('as' => 'Sentinel\register', 'uses' => 'Sentinel\UserController@register'));
+Route::get( $register , array('as' => 'Sentinel\register', 'uses' => 'Sentinel\UserController@register'))->before('guest');
 Route::get( $users . '/{id}/activate/{code}', 'Sentinel\UserController@activate')->where('id', '[0-9]+');
 Route::get( $resend , array('as' => 'Sentinel\resendActivationForm', function()
 {
