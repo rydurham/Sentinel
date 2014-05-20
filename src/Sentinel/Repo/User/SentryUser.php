@@ -251,6 +251,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		try
         {
 			$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+            $this->reset_password_attempts($user);
 
 	        $result['success'] = true;
 	    	$result['message'] = trans('Sentinel::users.emailinfo');
@@ -263,8 +264,56 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    $result['success'] = false;
 	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
+        catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
+        {
+            $result['success'] = false;
+            $url = route('Sentinel\resendActivationForm');
+            $result['message'] = trans('Sentinel::sessions.notactive', array('url' => $url));
+        }
+
+        // The following is only required if throttle is enabled
+        catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e)
+        {
+            $result['success'] = false;
+            $result['message'] = trans('Sentinel::sessions.suspended');
+        }
+        catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
+        {
+            $result['success'] = false;
+            $result['message'] = trans('Sentinel::sessions.banned');
+        }
         return $result;
 	}
+
+    private function reset_password_attempts($user)
+    {
+        $throttle = $this->throttleProvider->findByUserId($user->id);
+        $throttle->reset_attempts++;
+
+        $firstAttempt = date_create($throttle->first_reset_attempt_at);
+        $attemptWithIn = Config::get('Sentinel::config.rest_suspension_time');
+        $validAttempt = $firstAttempt->modify("+{$attemptWithIn} minutes");
+        $now             = new \Datetime;
+
+        $attemptLimit = Config::get('Sentinel::config.reset_attempt_limit');
+        
+        if ($validAttempt >= $now) {
+            $throttle->check();
+        }else {
+            $throttle->reset_attempts = 1;
+            $throttle->unsuspend();
+        } 
+
+        if ($throttle->reset_attempts >= $attemptLimit && $validAttempt >= $now)
+        {
+            $throttle->suspend();
+        } else {
+            if ($validAttempt <= $now || empty($throttle->first_reset_attempt_at)) {
+                $throttle->first_reset_attempt_at = $throttle->freshTimeStamp();
+            }
+            $throttle->save();
+        }
+    }
 
 	/**
 	 * Process the password reset request

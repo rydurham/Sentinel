@@ -40,6 +40,8 @@ class MigrationCartalystSentryInstallThrottle extends Migration {
 			$table->timestamp('last_attempt_at')->nullable();
 			$table->timestamp('suspended_at')->nullable();
 			$table->timestamp('banned_at')->nullable();
+            $table->integer('reset_attempts')->default(0);
+            $table->timestamp('first_reset_attempt_at')->nullable();
 
 			// We'll need to ensure that MySQL uses the InnoDB engine to
 			// support the indexes, other engines aren't affected.

@@ -103,5 +103,33 @@ return array(
 	*/
 
 	'default_user_groups' => array('Users'),
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Attempts Limit
+    |--------------------------------------------------------------------------
+    |
+    | When using the "eloquent" driver and extending the base Eloquent model,
+    | you have the option to globally set the login attempts.
+    |
+    | Supported: int
+    |
+    */
+
+    'reset_attempt_limit' => 3,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Suspension Time
+    |--------------------------------------------------------------------------
+    |
+    | When using the "eloquent" driver and extending the base Eloquent model,
+    | you have the option to globally set the suspension time, in minutes.
+    |
+    | Supported: int
+    |
+    */
+
+    'rest_suspension_time' => 15,
 	
 );
