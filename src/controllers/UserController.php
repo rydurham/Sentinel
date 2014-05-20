@@ -357,11 +357,11 @@ class UserController extends BaseController {
 
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::route('home');
+            return Redirect::route('Sentinel\login');
 
         } else {
             Session::flash('error', $result['message']);
-            return Redirect::route('home');
+            return Redirect::route('Sentinel\login');
         }
 	}
 
