@@ -59,7 +59,7 @@ __Optional:__ Publish Configuration
 ```
 php artisan config:publish rydurham/sentinel
 ```
-The config file will allow you to control many aspects of Sentinels operation. [Take a look](src/config/config.php) to see what options are available.
+The config file will allow you to control many aspects of Sentinels operation. [Take a look](src/config/config.php) to see what options are available.  If you want to add fields to your user table, this can be done with the config options.
 
 ### Usage: Filters and Routes
 Once installed, Sentinel adds a series of [routes](src/routes.php) for User interaction.  You will need to add links to these routes in your app's layouts.
@@ -76,6 +76,7 @@ Sentinel also provides these [filters](src/filters.php) which you can use to [pr
 
 ### Documentation & Questions
 Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
+* Config Options
 * Events & Listeners
 * Seed & Migration Details
 * Default Routes
@@ -89,6 +90,7 @@ Any questions about this package should be posted [on the package website](http:
 * Add More languages? 
 
 ### History
+* __1.4.5__ Added Custom User Fields, Admins can now create users, Created an option for automatic activation
 * __1.4.4__ Added BG & NB Language files. 
 * __1.4.3__ Bug fixes.  Add reflection to SentinelServiceProvider.php.
 * __1.4.2__ Added new config options: Default User groups and Post Login redirect location.
