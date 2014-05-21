@@ -8,7 +8,13 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'created' 		=>  "Din konto har blitt opprettet. Sjekk din e-post for bekreftelsesmail.",	
+	'created' 		=>  "Din konto har blitt opprettet. Sjekk din e-post for bekreftelsesmail.",
+
+	'createdactive' =>  "Din konto er opprettet. Du kan nå logge inn.",
+
+	'added'			=>  "Ny bruker lagt. Sjekk e-postkontoen for bekreftelse link.",
+
+	'addedactive'	=>  "Ny bruker lagt.",	
 
 	'loginreq' 		=>	"Logg inn-felt påkrevd.",
 
