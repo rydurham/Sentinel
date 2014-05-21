@@ -13,8 +13,8 @@ class UserMailer extends Mailer {
 	{
 		$events->listen('sentinel.user.registered', 	'Sentinel\Mailers\UserMailer@welcome', 10);
 		$events->listen('sentinel.user.resend', 		'Sentinel\Mailers\UserMailer@welcome', 10);
-		$events->listen('sentinel.user.forgot',      'Sentinel\Mailers\UserMailer@forgotPassword', 10);
-		$events->listen('sentinel.user.newpassword', 'Sentinel\Mailers\UserMailer@newPassword', 10);
+		$events->listen('sentinel.user.forgot',			'Sentinel\Mailers\UserMailer@forgotPassword', 10);
+		$events->listen('sentinel.user.newpassword',	'Sentinel\Mailers\UserMailer@newPassword', 10);
 	}
 
 	/**
@@ -24,7 +24,7 @@ class UserMailer extends Mailer {
 	 * @param  string $activationCode 		
 	 * @return bool
 	 */
-	public function welcome($email, $userId, $activationCode)
+	public function welcome($email, $userId, $activationCode, $activated)
 	{
 		$subject = Config::get('Sentinel::config.welcome');
 		$view = 'Sentinel::emails.welcome';
@@ -32,7 +32,15 @@ class UserMailer extends Mailer {
 		$data['activationCode'] = $activationCode;
 		$data['email'] = $email;
 
-		return $this->sendTo($email, $subject, $view, $data );
+		if ($activated)
+		{
+			return null;
+		}
+		else 
+		{
+			return $this->sendTo($email, $subject, $view, $data );
+		}
+		
 	}
 
 	/**

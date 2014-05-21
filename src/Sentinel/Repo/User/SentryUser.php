@@ -34,8 +34,18 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		$result = array();
 		try {
+			
+			// Check to see if activation has been disabled in the config. 
+			if ($this->config->has('Sentinel::config.activation'))
+			{
+				if ($this->config->get('Sentinel::config.activation') == false)
+				{
+					$data['activate'] = 1;
+				}
+			}
+
 			//Attempt to register the user. 
-			$user = $this->sentry->register(array('email' => e($data['email']), 'password' => e($data['password'])));
+			$user = $this->sentry->register(array('email' => e($data['email']), 'password' => e($data['password'])), array_key_exists('activate', $data));
 
 			// Are there additional fields specified in the config?
 		    // If so, update them here. 
@@ -66,6 +76,15 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	    	$result['mailData']['activationCode'] = $user->GetActivationCode();
 			$result['mailData']['userId'] = $user->getId();
 			$result['mailData']['email'] = e($data['email']);
+			$result['activated'] = false;
+
+			if (array_key_exists('activate', $data))
+			{
+				// This user has been automatically activated.  
+				// Alter the return data as necessary
+				$result['activated'] = true;
+				$result['message'] = trans('Sentinel::users.createdactive');				
+			}
 		}
 		catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
 		{

@@ -94,6 +94,18 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Activation
+	|--------------------------------------------------------------------------
+	|
+	| By default, new accounts must be activated via email.  Setting this to 
+	| false will allow users to login immediately after signing up. 
+	| 
+	*/
+
+	'activation' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Default User Groups
 	|--------------------------------------------------------------------------
 	|

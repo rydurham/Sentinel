@@ -10,9 +10,9 @@ Register
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        {{ Form::open(array('action' => 'Sentinel\UserController@store')) }}
+        {{ Form::open(array('action' => 'Sentinel\UserController@add')) }}
 
-            <h2>Register New Account</h2>
+            <h2>Create New User</h2>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
                 {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => 'E-mail')) }}
@@ -28,6 +28,10 @@ Register
                 {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => 'Confirm Password')) }}
                 {{ ($errors->has('password_confirmation') ?  $errors->first('password_confirmation') : '') }}
             </div>
+
+            <label class="checkbox">
+                {{ Form::checkbox('activate', 'rememberMe') }} Activate
+            </label>
             
             {{ Form::submit('Register', array('class' => 'btn btn-primary')) }}
             

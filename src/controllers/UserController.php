@@ -98,7 +98,8 @@ class UserController extends BaseController {
             Event::fire('sentinel.user.registered', array(
             	'email' => $result['mailData']['email'], 
             	'userId' => $result['mailData']['userId'], 
-                'activationCode' => $result['mailData']['activationCode']
+                'activationCode' => $result['mailData']['activationCode'],
+                'activated' => $result['activated']
             ));
 
             // Success!
@@ -128,6 +129,46 @@ class UserController extends BaseController {
             return View::make('Sentinel::users.create');
         }
         
+    }
+
+    /**
+     * Allow an admin user to create a new user account
+     *
+     * @return Response
+     */
+    public function add()
+    {
+        // Form Processing
+        $result = $this->registerForm->save( Input::all() );
+
+        if( $result['success'] )
+        {
+            Event::fire('sentinel.user.registered', array(
+                'email' => $result['mailData']['email'], 
+                'userId' => $result['mailData']['userId'], 
+                'activationCode' => $result['mailData']['activationCode'], 
+                'activated' => $result['activated']
+            ));
+
+            if ($result['activated'])
+            {
+                $result['message'] = trans('Sentinel::users.addedactive');
+            }
+            else 
+            {
+                $result['message'] = trans('Sentinel::users.added');
+            }
+
+            // Success!
+            Session::flash('success', $result['message']);
+            return Redirect::route('users.index');
+
+        } else {
+            Session::flash('error', $result['message']);
+            return Redirect::route('users.create')
+                ->withInput()
+                ->withErrors( $this->registerForm->errors() );
+        }
     }
 
 	/**
