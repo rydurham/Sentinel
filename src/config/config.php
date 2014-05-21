@@ -115,7 +115,7 @@ return array(
 	| 
 	*/
 
-	'additional_fields' => array(
+	'additional_user_fields' => array(
 		//'database_column_name' => 'validation|rules'
         'timezone' => 'required',
 	),

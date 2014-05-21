@@ -72,9 +72,9 @@ class UserForm {
 	protected function valid(array $input)
 	{
 		// Check config for additional User form fields
-		if ($this->config->has('Sentinel::config.additional_fields'))
+		if ($this->config->has('Sentinel::config.additional_user_fields'))
 		{
-			$this->validator->addRules($this->config->get('Sentinel::config.additional_fields'));
+			$this->validator->addRules($this->config->get('Sentinel::config.additional_user_fields'));
 		}
 
 		return $this->validator->with($input)->passes();
