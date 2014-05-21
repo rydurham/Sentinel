@@ -114,7 +114,7 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
             Session::flash('email', $result['mailData']['email']);
-            $redirect_route = Config::get('Sentinel::config.post_login');
+            $redirect_route = Config::get('Sentinel::config.post_register');
             return Redirect::route($redirect_route);
 
         } else {
