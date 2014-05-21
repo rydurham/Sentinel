@@ -10,6 +10,12 @@ return array(
 
 	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",	
 
+	'createdactive' =>  "Your account has been created. You can now login.",
+
+	'added'			=>  "New user added. Check the email account for the confirmation link.",
+
+	'addedactive'	=>  "New user added.",
+
 	'loginreq' 		=>	"Login field required.",
 
 	'exists'		=>	"User already exists.",
