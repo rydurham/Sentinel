@@ -48,6 +48,8 @@ return array(
 
 	'post_logout' 	=> 'home',
 
+    'post_register' => 'home',
+
 	/*
 	|--------------------------------------------------------------------------
 	| E-Mail Subject Lines
