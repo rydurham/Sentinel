@@ -48,7 +48,7 @@ class UserController extends BaseController {
 
 		// Set up Auth Filters
 		$this->beforeFilter('Sentinel\auth', array('only' => array('change')));
-		$this->beforeFilter('Sentinel\inGroup:Admins', array('only' => array('show', 'index', 'create', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
+		$this->beforeFilter('Sentinel\inGroup:Admins', array('only' => array('show', 'index', 'create', 'add', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
 		//array('except' => array('create', 'store', 'activate', 'resend', 'forgot', 'reset')));
 	}
 
@@ -83,16 +83,6 @@ class UserController extends BaseController {
         return View::make('Sentinel::users.create');
     }
 
-    /**
-	 * Show the form for creating a new user.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-        return View::make('Sentinel::users.create');
-	}
-
 	/**
 	 * Store a newly created user.
 	 *
@@ -123,6 +113,23 @@ class UserController extends BaseController {
         }
 	}
 
+    /**
+     * [create description]
+     * @return [type] [description]
+     */
+    public function create()
+    {
+        if (View::exists('Sentinel::users.new'))
+        {
+            return View::make('Sentinel::users.new');
+        }
+        else 
+        {
+            return View::make('Sentinel::users.create');
+        }
+        
+    }
+
 	/**
 	 * Display the specified resource.
 	 *
@@ -152,13 +159,6 @@ class UserController extends BaseController {
 	public function edit($id)
 	{
         $user = $this->user->byId($id);
-
-        if($user == null || !is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
 
         $currentGroups = $user->getGroups()->toArray();
         $userGroups = array();
@@ -215,12 +215,6 @@ class UserController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
 
 		if ($this->user->destroy($id))
 		{
