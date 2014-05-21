@@ -87,5 +87,16 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
 	{
 		return $this->errors;
 	}
+
+	/**
+	 * Dynamically Add rules, if necessary
+	 */
+	public function addRules($newRules)
+	{
+		if (is_array($newRules))
+		{
+			$this->rules = array_merge($this->rules, $newRules);
+		}
+	}
 	
 }

@@ -1,6 +1,7 @@
 <?php namespace Sentinel\Service\Form;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Session\Store;
 use Sentinel\Service\Form\Login\LoginForm;
 use Sentinel\Service\Form\Login\LoginFormLaravelValidator;
 use Sentinel\Service\Form\Register\RegisterForm;
@@ -61,7 +62,8 @@ class FormServiceProvider extends ServiceProvider {
         {
             return new UserForm(
                 new UserFormLaravelValidator( $app['validator'] ),
-                $app->make('Sentinel\Repo\User\UserInterface')
+                $app->make('Sentinel\Repo\User\UserInterface'),
+                $app['config']
             );
         });
 

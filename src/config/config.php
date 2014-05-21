@@ -103,5 +103,21 @@ return array(
 	*/
 
 	'default_user_groups' => array('Users'),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Custom User Fields
+	|--------------------------------------------------------------------------
+	|
+	| If you want to add additional fields to your user model you can specify 
+	| their vailidation needs here.  You must update your db tables and add
+	| the fields to your 'create' and 'edit' views before this will work.
+	| 
+	*/
+
+	'additional_fields' => array(
+		//'database_column_name' => 'validation|rules'
+        'timezone' => 'required',
+	),
 	
 );

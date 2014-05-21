@@ -2,6 +2,7 @@
 
 use Sentinel\Service\Validation\ValidableInterface;
 use Sentinel\Repo\User\UserInterface;
+use Illuminate\Config\Repository;
 
 class UserForm {
 
@@ -15,22 +16,27 @@ class UserForm {
 	/**
 	 * Validator
 	 *
-	 * @var \Cesario\Service\Form\ValidableInterface 
+	 * @var \Sentinel\Service\Form\ValidableInterface 
 	 */
 	protected $validator;
 
 	/**
+	 * Laravel Config Handler
+	 */
+	protected $config;
+
+	/**
 	 * Session Repository
 	 *
-	 * @var \Cesario\Repo\Session\SessionInterface 
+	 * @var \Sentinel\Repo\Session\SessionInterface 
 	 */
 	protected $user;
 
-	public function __construct(ValidableInterface $validator, UserInterface $user)
+	public function __construct(ValidableInterface $validator, UserInterface $user, Repository $config)
 	{
 		$this->validator = $validator;
 		$this->user = $user;
-
+		$this->config = $config;
 	}
 
 	/**
@@ -65,6 +71,11 @@ class UserForm {
 	 */
 	protected function valid(array $input)
 	{
+		// Check config for additional User form fields
+		if ($this->config->has('Sentinel::config.additional_fields'))
+		{
+			$this->validator->addRules($this->config->get('Sentinel::config.additional_fields'));
+		}
 
 		return $this->validator->with($input)->passes();
 		
