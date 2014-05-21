@@ -36,7 +36,10 @@ App::after(function($request, $response)
 
 Route::filter('Sentinel\auth', function()
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+    if (!Sentry::check()) {
+        Session::reflash();
+        return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+    }
 });
 
 Route::filter('Sentinel\hasAccess', function($route, $request, $value)
