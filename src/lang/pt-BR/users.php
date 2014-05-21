@@ -8,7 +8,13 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",
+	'created' 		=>  "Sua conta foi criada. Verifique seu e-mail para o link de confirmação.",
+
+	'createdactive' =>  "Sua conta foi criada. Agora você pode entrar.",
+
+	'added'			=>  "Novo usuário acrescentou. Verifique a conta de e-mail para o link de confirmação.",
+
+	'addedactive'	=>  "Novo usuário acrescentou.",
 
 	'loginreq' 		=>	"Campo Login é obrigatório.",
 
