@@ -27,7 +27,8 @@ class RepoServiceProvider extends ServiceProvider {
         $app->bind('Sentinel\Repo\User\UserInterface', function($app)
         {
             return new SentryUser(
-            	$app['sentry']
+            	$app['sentry'],
+                $app['config']
             );
         });
 

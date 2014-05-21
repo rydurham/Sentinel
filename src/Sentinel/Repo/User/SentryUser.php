@@ -3,18 +3,20 @@
 use Mail;
 use Cartalyst\Sentry\Sentry;
 use Sentinel\Repo\RepoAbstract;
-use Lang, Config;
+use Illuminate\Config\Repository;
 
 class SentryUser extends RepoAbstract implements UserInterface {
 	
 	protected $sentry;
+	protected $config;
 
 	/**
 	 * Construct a new SentryUser Object
 	 */
-	public function __construct(Sentry $sentry)
+	public function __construct(Sentry $sentry, Repository $config)
 	{
 		$this->sentry = $sentry;
+		$this->config = $config;
 
 		// Get the Throttle Provider
 		$this->throttleProvider = $this->sentry->getThrottleProvider();
@@ -34,6 +36,23 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		try {
 			//Attempt to register the user. 
 			$user = $this->sentry->register(array('email' => e($data['email']), 'password' => e($data['password'])));
+
+			// Are there additional fields specified in the config?
+		    // If so, update them here. 
+		    if ($this->config->has('Sentinel::config.additional_user_fields'))
+			{
+				foreach ($this->config->get('Sentinel::config.additional_user_fields') as $key => $value) 
+				{
+					if (array_key_exists($key, $data))
+					{
+						$user->$key = e($data[$key]);
+					}
+				}
+
+				$user->save();
+			}
+
+
 
 			// Add the new user to the specified default group(s).
 			$defaultUserGroups = Config::get('Sentinel::config.default_user_groups');
@@ -81,6 +100,19 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    // Update the user details
 		    $user->first_name = e($data['firstName']);
 		    $user->last_name = e($data['lastName']);
+
+		    // Are there additional fields specified in the config?
+		    // If so, update them here. 
+		    if ($this->config->has('Sentinel::config.additional_user_fields'))
+			{
+				foreach ($this->config->get('Sentinel::config.additional_user_fields') as $key => $value) 
+				{
+					if (array_key_exists($key, $data))
+					{
+						$user->$key = e($data[$key]);
+					}
+				}
+			}
 
 		    // Only Admins should be able to change group memberships. 
 		    $operator = $this->sentry->getUser();
