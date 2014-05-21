@@ -8,10 +8,6 @@
             "name": "Ryan Durham",
             "email": "rydurham@gmail.com",
             "homepage": "http://ryandurham.com"
-        },
-        {
-            "name": "We Are Base",
-            "email": "engineers@wearebase.com"
         }
     ],
     "require": {
