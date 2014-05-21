@@ -10,6 +10,12 @@ return array(
 
 	'created' 		=>  "Il tuo account è stato creato. Controlla il tuo indirizzo eMail per il link di conferma.",	
 
+	'createdactive' =>  "Il tuo account è stato creato. È ora possibile effettuare il login.",
+
+	'added'			=>  "Nuovo utente aggiunto. Controllare l'account di posta elettronica per il link di conferma.",
+
+	'addedactive'	=>  "Nuovo utente aggiunto.",
+
 	'loginreq' 		=>	"Il campo di login è obbligatorio.",
 
 	'exists'		=>	"L'utente esiste già.",
