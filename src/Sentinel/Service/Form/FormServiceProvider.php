@@ -44,7 +44,8 @@ class FormServiceProvider extends ServiceProvider {
         {
             return new RegisterForm(
                 new RegisterFormLaravelValidator( $app['validator'] ),
-                $app->make('Sentinel\Repo\User\UserInterface')
+                $app->make('Sentinel\Repo\User\UserInterface'),
+                $app['config']
             );
         });
 
