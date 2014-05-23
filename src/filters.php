@@ -68,7 +68,7 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 
 	// we need to determine if a non admin user 
 	// is trying to access their own account.
-    $userId = Route::input('users');
+    $userId = Route::input('id');
 
 	try
 	{
