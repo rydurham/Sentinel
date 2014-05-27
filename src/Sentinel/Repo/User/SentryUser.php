@@ -257,6 +257,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
         {
 			$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
             $this->reset_password_attempts($user);
+            $user->reset_code_created_at = new \Datetime; 
 
 	        $result['success'] = true;
 	    	$result['message'] = trans('Sentinel::users.emailinfo');

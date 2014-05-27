@@ -384,11 +384,22 @@ class UserController extends BaseController {
         }
         try {
             $user = \Sentry::findUserById($id);
+
+            $now             = new \Datetime;
+            $expiration_time = Config::get('Sentinel::config.reset_link_expire');
+            $code_timestamp  = date_create($user->reset_code_created_at);
+            $code_validity = $code_timestamp->modify("+{$expiration_time} hours");
+
+            if ($now >= $code_validity){
+                Session::flash('error',trans('Sentinel::users.resetcodeexpired'));
+                return Redirect::route('home');
+            }
+
             if ($user->checkResetPasswordCode($code)) {
                 return View::make('Sentinel::users.update_password',compact('id','code'));
             } else {
-               Session::flash('error',trans('Sentinel::users.problem'));
-               return Redirect::route('home');
+                Session::flash('error',trans('Sentinel::users.passwdcodeprob'));
+                return Redirect::route('home');
             }
         } 
         catch (Exception $e) {
@@ -402,15 +413,16 @@ class UserController extends BaseController {
 		$data = Input::all();
         try {
             if ( $this->resetPasswordForm->check($data) ) {
-            $user = \Sentry::findUserById($id);
-            
-            if ($user->attemptResetPassword($code, $password)) {
-                Session::flash('success',trans('Sentinel::users.passwordchg'));
-                return Redirect::route('home');
-            } else {
-                Session::flash('error',trans('Sentinel::users.passwordprob'));
-                return View::make('Sentinel::users.update_password',compact('id','code'));
-            } 
+
+                $user = \Sentry::findUserById($id);
+
+                if ($user->attemptResetPassword($code, $password)) {
+                    Session::flash('success',trans('Sentinel::users.passwordchg'));
+                    return Redirect::route('home');
+                } else {
+                    Session::flash('error',trans('Sentinel::users.passwdcodeprob'));
+                    return View::make('Sentinel::users.update_password',compact('id','code'));
+                } 
             } else {
                 return Redirect::route('update_password', compact('id', 'code'))
                     ->withInput()

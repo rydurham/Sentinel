@@ -40,6 +40,10 @@ return array(
 
 	'passwordprob'	=>	"Your password could not be changed.",
 
+	'passwdcodeprob'=>	"Your link is invalid.",
+
+	'resetcodeexpired' => "Your link has expired.",
+
 	'oldpassword'	=>	"You did not provide the correct original password.",
 
 	'suspended'		=>	"User has been suspended for :minutes minutes.",
