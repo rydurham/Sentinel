@@ -15,6 +15,8 @@ use Sentinel\Service\Form\ForgotPassword\ForgotPasswordForm;
 use Sentinel\Service\Form\ForgotPassword\ForgotPasswordFormLaravelValidator;
 use Sentinel\Service\Form\ChangePassword\ChangePasswordForm;
 use Sentinel\Service\Form\ChangePassword\ChangePasswordFormLaravelValidator;
+use Sentinel\Service\Form\ResetPassword\ResetPasswordForm;
+use Sentinel\Service\Form\ResetPassword\ResetPasswordFormLaravelValidator;
 use Sentinel\Service\Form\SuspendUser\SuspendUserForm;
 use Sentinel\Service\Form\SuspendUser\SuspendUserFormLaravelValidator;
 
@@ -90,6 +92,12 @@ class FormServiceProvider extends ServiceProvider {
                 new ChangePasswordFormLaravelValidator( $app['validator'] ),
                 $app->make('Sentinel\Repo\User\UserInterface')
             );
+        });
+
+        // Bind the Reset Password Form
+        $app->bind('Sentinel\Service\Form\ResetPassword\ResetPasswordForm', function($app)
+        {
+            return new ResetPasswordForm(new ResetPasswordFormLaravelValidator( $app['validator'] ));
         });
 
         // Bind the Suspend User Form

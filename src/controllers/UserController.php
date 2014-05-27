@@ -7,6 +7,7 @@ use Sentinel\Service\Form\User\UserForm;
 use Sentinel\Service\Form\ResendActivation\ResendActivationForm;
 use Sentinel\Service\Form\ForgotPassword\ForgotPasswordForm;
 use Sentinel\Service\Form\ChangePassword\ChangePasswordForm;
+use Sentinel\Service\Form\ResetPassword\ResetPasswordForm;
 use Sentinel\Service\Form\SuspendUser\SuspendUserForm;
 use BaseController, View, Input, Event, Redirect, Session, Config;
 
@@ -19,6 +20,7 @@ class UserController extends BaseController {
 	protected $resendActivationForm;
 	protected $forgotPasswordForm;
 	protected $changePasswordForm;
+	protected $resetPasswordForm;
 	protected $suspendUserForm;
 
 	/**
@@ -32,6 +34,7 @@ class UserController extends BaseController {
 		ResendActivationForm $resendActivationForm,
 		ForgotPasswordForm $forgotPasswordForm,
 		ChangePasswordForm $changePasswordForm,
+		ResetPasswordForm $resetPasswordForm,
 		SuspendUserForm $suspendUserForm)
 	{
 		$this->user = $user;
@@ -41,6 +44,7 @@ class UserController extends BaseController {
 		$this->resendActivationForm = $resendActivationForm;
 		$this->forgotPasswordForm = $forgotPasswordForm;
 		$this->changePasswordForm = $changePasswordForm;
+		$this->resetPasswordForm = $resetPasswordForm;
 		$this->suspendUserForm = $suspendUserForm;
 
 		//Check CSRF token on POST
@@ -366,6 +370,57 @@ class UserController extends BaseController {
             return Redirect::route('Sentinel\login');
         }
 	}
+
+	/**
+	 * Process a password reset request link
+	 * @param  [type] $id   [description]
+	 * @param  [type] $code [description]
+     */
+	public function update_password($id, $code)
+    {
+        if(!is_numeric($id))
+        {
+            return \App::abort(404);
+        }
+        try {
+            $user = \Sentry::findUserById($id);
+            if ($user->checkResetPasswordCode($code)) {
+                return View::make('Sentinel::users.update_password',compact('id','code'));
+            } else {
+               Session::flash('error',trans('Sentinel::users.problem'));
+               return Redirect::route('home');
+            }
+        } 
+        catch (Exception $e) {
+           Session::flash('error',trans('Sentinel::users.notfound'));
+           return Redirect::route('home');
+        }
+    }
+    public function change_password($id, $code)
+    {
+        $password = Input::get('newPassword');
+		$data = Input::all();
+        try {
+            if ( $this->resetPasswordForm->check($data) ) {
+            $user = \Sentry::findUserById($id);
+            
+            if ($user->attemptResetPassword($code, $password)) {
+                Session::flash('success',trans('Sentinel::users.passwordchg'));
+                return Redirect::route('home');
+            } else {
+                Session::flash('error',trans('Sentinel::users.passwordprob'));
+                return View::make('Sentinel::users.update_password',compact('id','code'));
+            } 
+            } else {
+                return Redirect::route('update_password', compact('id', 'code'))
+                    ->withInput()
+                    ->witherrors( $this->resetPasswordForm->errors() );
+            }
+        } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            Session::flash('error',trans('Sentinel::users.notfound'));
+            return Redirect::route('home');
+        }
+    }
 
 	/**
 	 * Process a password change request

@@ -34,6 +34,4 @@ Register
         {{ Form::close() }}
     </div>
 </div>
-
-
 @stop

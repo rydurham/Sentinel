@@ -38,7 +38,9 @@ Route::get( $forgot , array('as' => 'Sentinel\forgotPasswordForm', function()
 }));
 Route::post( $forgot , 'Sentinel\UserController@forgot');
 Route::post( $users . '/{id}/change', 'Sentinel\UserController@change')->where('id', '[0-9]+');
+Route::post( $users . '/{id}/change_password/{code}', 'Sentinel\UserController@change_password')->where('id', '[0-9]+');
 Route::get( $users . '/{id}/reset/{code}', 'Sentinel\UserController@reset')->where('id', '[0-9]+');
+Route::get( $users . '/{id}/update_password/{code}', array( 'as' => 'update_password', 'uses'=> 'Sentinel\UserController@update_password'))->where('id', '[0-9]+');
 Route::get( $users . '/{id}/suspend', array('as' => 'Sentinel\suspendUserForm', function($id)
 {
 	return View::make('Sentinel::users.suspend')->with('id', $id);
