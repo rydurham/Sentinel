@@ -90,6 +90,7 @@ Any questions about this package should be posted [on the package website](http:
 * Add More languages? 
 
 ### History
+* __1.4.7__ Bug Fix
 * __1.4.6__ Added Custom User Field check to RegisterForm Handler, Fixed 'inGroup' filter bug
 * __1.4.5__ Added Custom User Fields and custom permissions, Admins can now create users, Created an option for automatic activation,
 * __1.4.4__ Added BG & NB Language files. 
