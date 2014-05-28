@@ -4,6 +4,7 @@ use Mail;
 use Cartalyst\Sentry\Sentry;
 use Sentinel\Repo\RepoAbstract;
 use Lang, Config;
+use Cartalyst\Sentry\Users\UserNotActivatedException;
 
 class SentryUser extends RepoAbstract implements UserInterface {
 	
@@ -280,6 +281,9 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		try
         {
 			$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+            if ( ! $user->isActivated()) {
+                throw new UserNotActivatedException("Cannot reset password  user is not activated.");
+            }
             $this->reset_password_attempts($user);
             $user->reset_code_created_at = new \Datetime; 
 

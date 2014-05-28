@@ -287,11 +287,6 @@ class UserController extends BaseController {
 		// Form Processing
         $result = $this->resendActivationForm->resend( Input::all() );
 
-        #(var_dump(Input::get('email')));
-        #$user = \Sentry::findUserByLogin(Input::get('email'));
-        #var_dump($user);
-        #die;
-
         if( $result['success'] )
         {
             Event::fire('sentinel.user.resend', array(
