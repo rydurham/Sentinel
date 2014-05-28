@@ -218,12 +218,30 @@ class SentryUser extends RepoAbstract implements UserInterface {
 
             if (!$user->isActivated())
             {
-                //success!
-            	$result['success'] = true;
-	    		$result['message'] = trans('Sentinel::users.emailconfirm');
-	    		$result['mailData']['activationCode'] = $user->GetActivationCode();
-                $result['mailData']['userId'] = $user->getId();
-                $result['mailData']['email'] = e($data['email']);
+                $now = new \Datetime;
+                $throttle = $this->throttleProvider->findByUserId($user->getId());
+                $code_limit  = Config::get('Sentinel::config.resend_activation_code_limit');
+                $suspension_time = Config::get('Sentinel::config.resend_activation_code_suspension_time');
+                $last_resend = date_create($throttle->send_code_at);
+                $last_resend = $last_resend->modify("+{$suspension_time} minutes");
+
+                // timelapse limit reached, reset counter
+                if ($now >= $last_resend){
+                    $throttle->send_code_attempts = 0;
+                }
+
+                if ($code_limit <= $throttle->send_code_attempts){
+                    $result['success'] = false;
+                    $result['message'] = trans('Sentinel::users.resendcodelimit',array('minutes' => $suspension_time));
+                } else {
+                    //success!
+                    $result['success'] = true;
+                    $result['message'] = trans('Sentinel::users.emailconfirm');
+                    $result['mailData']['activationCode'] = $user->GetActivationCode();
+                    $result['mailData']['userId'] = $user->getId();
+                    $result['mailData']['email'] = e($data['email']);
+                    $this->send_code_attempt($throttle);
+                }
             }
             else 
             {
@@ -245,6 +263,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	    return $result;
 	}
 
+    protected function send_code_attempt($throttle)
+    {
+        $throttle->send_code_attempts++;
+        $throttle->send_code_at = $throttle->freshTimeStamp();
+        $throttle->save();
+    }
 	/**
 	 * Handle a password reset rewuest
 	 * @param  Array $data 
@@ -297,7 +321,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
         $throttle->reset_attempts++;
 
         $firstAttempt = date_create($throttle->first_reset_attempt_at);
-        $attemptWithIn = Config::get('Sentinel::config.rest_suspension_time');
+        $attemptWithIn = Config::get('Sentinel::config.reset_suspension_time');
         $validAttempt = $firstAttempt->modify("+{$attemptWithIn} minutes");
         $now             = new \Datetime;
 

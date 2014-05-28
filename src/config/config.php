@@ -132,6 +132,10 @@ return array(
     |
     */
 
-    'rest_suspension_time' => 15,
+    'reset_suspension_time' => 15,
+
+    'resend_activation_code_limit' => 5, #Times
+
+    'resend_activation_code_suspension_time' => 15, #Minutes
 	
 );

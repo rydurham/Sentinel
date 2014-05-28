@@ -22,7 +22,8 @@ return array(
 
 	'notupdated'	=>	"Unable to update profile",
 
-	'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+	#'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+	'activated'		=>	"Activation complete.",
 
 	'notactivated'	=>	"Activation could not be completed.",
 
@@ -43,6 +44,8 @@ return array(
 	'passwdcodeprob'=>	"Your link is invalid.",
 
 	'resetcodeexpired' => "Your link has expired.",
+
+    'resendcodelimit' => "Resend code limit exceeded please try after :minutes minutes.",
 
 	'oldpassword'	=>	"You did not provide the correct original password.",
 
