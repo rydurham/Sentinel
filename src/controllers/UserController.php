@@ -419,6 +419,8 @@ class UserController extends BaseController {
 
                 if ($user->attemptResetPassword($code, $password)) {
                     Session::flash('success',trans('Sentinel::users.passwordchg'));
+                    //do login
+                    \Sentry::login($user, false);
                     return Redirect::route('home');
                 } else {
                     Session::flash('error',trans('Sentinel::users.passwdcodeprob'));
