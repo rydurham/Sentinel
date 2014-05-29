@@ -219,30 +219,30 @@ class SentryUser extends RepoAbstract implements UserInterface {
 
             if (!$user->isActivated())
             {
-                $now = new \Datetime;
-                $throttle = $this->throttleProvider->findByUserId($user->getId());
-                $code_limit  = Config::get('Sentinel::config.resend_activation_code_limit');
-                $suspension_time = Config::get('Sentinel::config.resend_activation_code_suspension_time');
-                $last_resend = date_create($throttle->send_code_at);
-                $last_resend = $last_resend->modify("+{$suspension_time} minutes");
-
-                // timelapse limit reached, reset counter
-                if ($now >= $last_resend){
-                    $throttle->send_code_attempts = 0;
-                }
-
-                if ($code_limit <= $throttle->send_code_attempts){
-                    $result['success'] = false;
-                    $result['message'] = trans('Sentinel::users.resendcodelimit',array('minutes' => $suspension_time));
-                } else {
+#                $now = new \Datetime;
+#                $throttle = $this->throttleProvider->findByUserId($user->getId());
+#                $code_limit  = Config::get('Sentinel::config.resend_activation_code_limit');
+#                $suspension_time = Config::get('Sentinel::config.resend_activation_code_suspension_time');
+#                $last_resend = date_create($throttle->send_code_at);
+#                $last_resend = $last_resend->modify("+{$suspension_time} minutes");
+#
+#                // timelapse limit reached, reset counter
+#                if ($now >= $last_resend){
+#                    $throttle->send_code_attempts = 0;
+#                }
+#
+#                if ($code_limit <= $throttle->send_code_attempts){
+#                    $result['success'] = false;
+#                    $result['message'] = trans('Sentinel::users.resendcodelimit',array('minutes' => $suspension_time));
+#                } else {
+#                    $this->send_code_attempt($throttle);
+#                }
                     //success!
-                    $result['success'] = true;
-                    $result['message'] = trans('Sentinel::users.emailconfirm');
-                    $result['mailData']['activationCode'] = $user->GetActivationCode();
-                    $result['mailData']['userId'] = $user->getId();
-                    $result['mailData']['email'] = e($data['email']);
-                    $this->send_code_attempt($throttle);
-                }
+                $result['success'] = true;
+                $result['message'] = trans('Sentinel::users.emailconfirm');
+                $result['mailData']['activationCode'] = $user->GetActivationCode();
+                $result['mailData']['userId'] = $user->getId();
+                $result['mailData']['email'] = e($data['email']);
             }
             else 
             {
