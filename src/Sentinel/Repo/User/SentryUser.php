@@ -462,6 +462,10 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		    // Suspend the user
 		    $throttle->suspend();
 
+            Event::fire('sentinel.user.suspended', array(
+                'userId' => $id, 
+            ));
+
 		    $result['success'] = true;
 			$result['message'] = trans('Sentinel::users.suspended', array('minutes' => $minutes));
 		}

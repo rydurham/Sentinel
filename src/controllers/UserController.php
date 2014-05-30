@@ -495,9 +495,9 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.suspended', array(
-                'userId' => $id, 
-            ));
+#            Event::fire('sentinel.user.suspended', array(
+#                'userId' => $id, 
+#            ));
 
             // Success!
             Session::flash('success', $result['message']);
