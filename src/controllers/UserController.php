@@ -320,8 +320,8 @@ class UserController extends BaseController {
         if( $result['success'] )
         {
             Event::fire('sentinel.user.forgot', array(
-				'email' => $result['mailData']['email'],
 				'userId' => $result['mailData']['userId'],
+				'email' => $result['mailData']['email'],
 				'resetCode' => $result['mailData']['resetCode']
 			));
 
@@ -418,6 +418,12 @@ class UserController extends BaseController {
                 $user = \Sentry::findUserById($id);
 
                 if ($user->attemptResetPassword($code, $password)) {
+
+                    Event::fire('sentinel.user.newpassword', array(
+                        'email' => $user->email,
+                        'newPassword' => $password
+                    ));
+
                     Session::flash('success',trans('Sentinel::users.passwordchg'));
                     //do login
                     \Sentry::login($user, false);
