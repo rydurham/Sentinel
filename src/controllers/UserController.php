@@ -320,8 +320,8 @@ class UserController extends BaseController {
         if( $result['success'] )
         {
             Event::fire('sentinel.user.forgot', array(
-				'userId' => $result['mailData']['userId'],
 				'email' => $result['mailData']['email'],
+				'userId' => $result['mailData']['userId'],
 				'resetCode' => $result['mailData']['resetCode']
 			));
 
