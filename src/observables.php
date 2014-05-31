@@ -1,10 +1,10 @@
 <?php
 
 // User Login event
-Event::listen('sentinel.user.login', function($userId, $email)
+Event::listen('sentinel.user.login', function($user)
 {
-    Session::put('userId', $userId);
-    Session::put('email', $email);
+    Session::put('userId', $user->id);
+    Session::put('email', $user->email);
 }, 10);
 
 // User logout event

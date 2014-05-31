@@ -48,8 +48,7 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			    $user = $this->sentry->authenticate($credentials, e($data['rememberMe']));
 
 			    $result['success'] = true;
-			    $result['sessionData']['userId'] = $user->id;
-			    $result['sessionData']['email'] = $user->email;
+			    $result['user'] = $user;
 			}
 			catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 			{
