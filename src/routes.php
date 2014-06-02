@@ -41,7 +41,7 @@ Route::post( $users . '/{id}/change', 'Sentinel\UserController@change')->where('
 Route::get( $users . '/{id}/reset/{code}', 'Sentinel\UserController@reset')->where('id', '[0-9]+');
 Route::get( $users . '/{id}/suspend', array('as' => 'Sentinel\suspendUserForm', function($id)
 {
-	return View::make('Sentinel::users.suspend')->with('id', $id);
+	return View::make('Sentinel::users.suspend')->with('user_id', $id);
 }))->where('id', '[0-9]+');
 Route::post( $users . '/{id}/suspend', 'Sentinel\UserController@suspend')->where('id', '[0-9]+');
 Route::get( $users . '/{id}/unsuspend', 'Sentinel\UserController@unsuspend')->where('id', '[0-9]+');

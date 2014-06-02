@@ -64,6 +64,7 @@ class SentinelServiceProvider extends ServiceProvider {
 		include $sentinelPath . '/../routes.php';
 		include $sentinelPath . '/../filters.php';
 		include $sentinelPath . '/../observables.php';
+		include $sentinelPath . '/../composers.php';
 
 	}
 
