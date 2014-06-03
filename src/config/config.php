@@ -136,12 +136,12 @@ return array(
 	| Allow Usernames
 	|--------------------------------------------------------------------------
 	|
-	| By default, Sentry (and Sentinel) only lets a user log in using their
-	| email address.  By 'allow_usernames' to true, a user can enter either 
-	| their username or their email address in the login field.
+	| By default, Sentry (and Sentinel) will only let a user log in using their
+	| email address.  By setting 'allow_usernames' to true, a user can enter either 
+	| their username or their email address as a login credential.
 	| 
 	*/
 
-	'allow_usernames' => false,
+	'allow_usernames' => true,
 	
 );
