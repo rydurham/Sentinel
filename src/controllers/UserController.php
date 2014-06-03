@@ -408,6 +408,9 @@ class UserController extends BaseController {
            return Redirect::route('home');
         }
     }
+    /*
+	 * Process a password reset request link force change
+     */
     public function change_password($id, $code)
     {
         $password = Input::get('newPassword');

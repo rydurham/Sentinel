@@ -10,8 +10,8 @@ class ChangePasswordFormLaravelValidator extends AbstractLaravelValidator {
 	 * @var Array 
 	 */
 	protected $rules = array(
-		'oldPassword' => 'required|min:6',
-        'newPassword' => 'required|min:6|confirmed',
+		'oldPassword' => 'required|between:8,30',
+        'newPassword' => 'required|between:8,30|confirmed',
         'newPassword_confirmation' => 'required'
 	);
 
