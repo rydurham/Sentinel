@@ -408,13 +408,7 @@ class UserController extends BaseController {
 	 */
 	public function change($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
+        
 		$data = Input::all();
 		$data['id'] = $id;
 

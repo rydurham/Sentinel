@@ -2,6 +2,7 @@
 
 use Cartalyst\Sentry\Sentry;
 use Sentinel\Repo\RepoAbstract;
+use Config;
 
 class SentrySession extends RepoAbstract implements SessionInterface {
 
@@ -33,22 +34,46 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			    // Check for 'rememberMe' in POST data
 			    if (!array_key_exists('rememberMe', $data)) $data['rememberMe'] = 0;
 
-			    //Check for suspension or banned status
-				$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
-				$throttle = $this->throttleProvider->findByUserId($user->id);
-			    $throttle->check();
+			    // Get the user provider
+			    $userProvider = $this->sentry->getUserProvider();
 
 			    // Set login credentials
-			    $credentials = array(
-			        'email'    => e($data['email']),
-			        'password' => e($data['password'])
-			    );
+			    $credentials['password'] = e($data['password']);
+			    
+			    if (Config::has('Sentinel::config.allow_usernames') && Config::get('Sentinel::config.allow_usernames') )
+			    {
+
+			    	if ($this->validEmail( e( $data['email']) ) )
+				    {
+				    	$credentials['email'] = e( $data['email']);
+				    }
+				    else 
+				    {
+				    	// Tell sentry to check usernames
+				    	$userProvider->getEmptyUser()->setLoginAttributeName('username');
+
+				    	// Set the username credential
+				    	$credentials['username'] = e( $data['email'] );
+				    }
+			    }
+			    else 
+			    {
+			    	$credentials['email'] = e( $data['email'] );
+			    }
+
+			    //Check for suspension or banned status
+				$user = $userProvider->findByCredentials($credentials);
+				$throttle = $this->throttleProvider->findByUserId($user->id);
+			    $throttle->check();
 
 			    // Try to authenticate the user
 			    $user = $this->sentry->authenticate($credentials, e($data['rememberMe']));
 
 			    $result['success'] = true;
 			    $result['user'] = $user;
+
+			    // Might be unnecessary, but just in case: 
+			    $userProvider->getEmptyUser()->setLoginAttributeName('email');
 			}
 			catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 			{
@@ -92,6 +117,20 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 	public function destroy()
 	{
 		$this->sentry->logout();
+	}
+
+	/**
+	 * Validate an email address
+	 * http://stackoverflow.com/questions/12026842/how-to-validate-an-email-address-in-php
+	 */
+	private function validEmail($email)
+	{
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+		{
+		    return false;
+		}
+
+		return true;
 	}
 
 

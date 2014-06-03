@@ -130,5 +130,18 @@ return array(
 	'additional_user_fields' => array(
 		//'field_name' => 'validation|rules'
 	),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Allow Usernames
+	|--------------------------------------------------------------------------
+	|
+	| By default, Sentry (and Sentinel) only lets a user log in using their
+	| email address.  By 'allow_usernames' to true, a user can enter either 
+	| their username or their email address in the login field.
+	| 
+	*/
+
+	'allow_usernames' => true,
 	
 );
