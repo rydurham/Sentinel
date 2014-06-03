@@ -142,6 +142,6 @@ return array(
 	| 
 	*/
 
-	'allow_usernames' => true,
+	'allow_usernames' => false,
 	
 );
