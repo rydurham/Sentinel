@@ -24,13 +24,13 @@ class UserMailer extends Mailer {
 	 * @param  string $activationCode 		
 	 * @return bool
 	 */
-	public function welcome($email, $userId, $activationCode, $activated)
+	public function welcome($user, $activated)
 	{
 		$subject = Config::get('Sentinel::config.welcome');
 		$view = 'Sentinel::emails.welcome';
-		$data['userId'] = $userId;
-		$data['activationCode'] = $activationCode;
-		$data['email'] = $email;
+		$data['userId'] = $user->id;
+		$data['activationCode'] = $user->GetActivationCode();
+		$data['email'] = $user->email;
 
 		if ($activated)
 		{
@@ -38,7 +38,7 @@ class UserMailer extends Mailer {
 		}
 		else 
 		{
-			return $this->sendTo($email, $subject, $view, $data );
+			return $this->sendTo( $user->email, $subject, $view, $data );
 		}
 		
 	}

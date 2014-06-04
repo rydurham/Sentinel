@@ -26,7 +26,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Store a newly created user in storage.
 	 *
 	 * @return Response
 	 */
@@ -71,11 +71,9 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			}
 
 			//success!
-	    	$result['success'] = true;
-	    	$result['message'] = trans('Sentinel::users.created');
-	    	$result['mailData']['activationCode'] = $user->GetActivationCode();
-			$result['mailData']['userId'] = $user->getId();
-			$result['mailData']['email'] = e($data['email']);
+	    	$result['success']   = true;
+	    	$result['message']   = trans('Sentinel::users.created');
+	    	$result['user']	     = $user;
 			$result['activated'] = false;
 
 			if (array_key_exists('activate', $data))
@@ -260,9 +258,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
                 //success!
             	$result['success'] = true;
 	    		$result['message'] = trans('Sentinel::users.emailconfirm');
-	    		$result['mailData']['activationCode'] = $user->GetActivationCode();
-                $result['mailData']['userId'] = $user->getId();
-                $result['mailData']['email'] = e($data['email']);
+	    		$result['user']    = $user;
             }
             else 
             {
