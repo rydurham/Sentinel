@@ -316,7 +316,7 @@ class UserController extends BaseController {
         if( $result['success'] )
         {
             Event::fire('sentinel.user.resend', array(
-				'email'     => $result['user'],
+				'user'     => $result['user'],
                 'activated' => $result['user']->activated,
 			));
 
