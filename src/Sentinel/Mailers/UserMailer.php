@@ -14,7 +14,7 @@ class UserMailer extends Mailer {
 		$events->listen('sentinel.user.registered', 	'Sentinel\Mailers\UserMailer@welcome', 10);
 		$events->listen('sentinel.user.resend', 		'Sentinel\Mailers\UserMailer@welcome', 10);
 		$events->listen('sentinel.user.forgot',      'Sentinel\Mailers\UserMailer@forgotPassword', 10);
-		$events->listen('sentinel.user.newpassword', 'Sentinel\Mailers\UserMailer@newPassword', 10);
+		#$events->listen('sentinel.user.newpassword', 'Sentinel\Mailers\UserMailer@newPassword', 10);
 	}
 
 	/**
