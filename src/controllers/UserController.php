@@ -269,7 +269,12 @@ class UserController extends BaseController {
 
             // Success!
             Session::flash('success', $result['message']);
-            \Sentry::login(\Sentry::findUserById($id), false);
+            $user = \Sentry::findUserById($id);
+            \Sentry::login($user, false);
+            Event::fire('sentinel.user.login', array(
+            	'userId' => $user->id,
+            	'email' => $user->email
+            ));
             return Redirect::route('home');
 
         } else {
@@ -430,6 +435,10 @@ class UserController extends BaseController {
                     Session::flash('success',trans('Sentinel::users.passwordchg'));
                     //do login
                     \Sentry::login($user, false);
+                    Event::fire('sentinel.user.login', array(
+                        'userId' => $$user->id,
+                        'email' => $user->email
+                    ));
                     return Redirect::route('home');
                 } else {
                     Session::flash('error',trans('Sentinel::users.passwdcodeprob'));
