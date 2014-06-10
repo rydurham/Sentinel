@@ -531,6 +531,26 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	}
 
 	/**
+	 * Return a specific user from a given email address
+	 * 
+	 * @param  integer $id
+	 * @return User
+	 */
+	public function byEmail($email)
+	{
+		try
+		{
+		    $user = $this->sentry->findUserByLogin($email);
+		}
+		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		{
+		    return false;
+		}
+		return $user;
+	}
+
+
+	/**
 	 * Return all the registered users
 	 *
 	 * @return stdObject Collection of users
