@@ -46,7 +46,7 @@ class UserForm {
      */
     public function update(array $input)
     {
-        if( ! $this->valid($input) )
+        if( ! $this->validForUpdate($input) )
         {
             return false;
         }
@@ -78,6 +78,23 @@ class UserForm {
 		}
 
 		return $this->validator->with($input)->passes();
+		
+	}
+
+	/**
+	 * Test if form validator passes
+	 *
+	 * @return boolean 
+	 */
+	protected function validForUpdate(array $input)
+	{
+		// Check config for additional User form fields
+		if ($this->config->has('Sentinel::config.additional_user_fields'))
+		{
+			$this->validator->addRules($this->config->get('Sentinel::config.additional_user_fields'));
+		}
+
+		return $this->validator->with($input)->updateUnique('username', 'username', $input['id'])->passes();
 		
 	}
 

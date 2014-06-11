@@ -98,5 +98,21 @@ abstract class AbstractLaravelValidator	implements ValidableInterface {
 			$this->rules = array_merge($this->rules, $newRules);
 		}
 	}
+
+	/**
+	 * Modify Rules on the fly
+	 *
+	 * @param string $rule 
+	 * @param string $column DB Column to check against
+	 * @param string $modification 
+	 * 
+	 * @return \Cesario\Service\Validation\AbstractLaravelValidator 
+	 */
+	public function updateUnique($rule, $column, $ignore)
+	{
+		$this->rules[$rule] .= ',' . $column . ',' . $ignore;
+
+		return $this; 
+	}
 	
 }

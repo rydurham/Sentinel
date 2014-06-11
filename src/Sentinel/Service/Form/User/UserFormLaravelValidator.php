@@ -12,6 +12,7 @@ class UserFormLaravelValidator extends AbstractLaravelValidator {
 	protected $rules = array(
 		'firstName' => 'alpha',
         'lastName' => 'alpha',
+        'username' => 'unique:users,username'
 	);
 
 }

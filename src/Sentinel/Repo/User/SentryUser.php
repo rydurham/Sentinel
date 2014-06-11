@@ -45,7 +45,17 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			}
 
 			//Attempt to register the user. 
-			$user = $this->sentry->register(array('email' => e($data['email']), 'password' => e($data['password'])), array_key_exists('activate', $data));
+			$credentials = array('email' => e($data['email']), 'password' => e($data['password']));
+			if ($this->config->has('Sentinel::config.allow_usernames')  && $this->config->get('Sentinel::config.allow_usernames') == true)
+			{
+				if (array_key_exists('username', $data))
+				{
+					$credentials['username'] = e($data['username']);
+				}
+				
+			}
+
+			$user = $this->sentry->register($credentials, array_key_exists('activate', $data));
 
 			// Are there additional fields specified in the config?
 		    // If so, update them here. 
