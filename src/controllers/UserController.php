@@ -95,11 +95,6 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.registered', array(
-            	'user'      => $result['user'],
-                'activated' => $result['activated']
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -141,13 +136,6 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.registered', array(
-                'email' => $result['mailData']['email'], 
-                'userId' => $result['mailData']['userId'], 
-                'activationCode' => $result['mailData']['activationCode'], 
-                'activated' => $result['activated']
-            ));
-
             if ($result['activated'])
             {
                 $result['message'] = trans('Sentinel::users.addedactive');
@@ -217,22 +205,11 @@ class UserController extends BaseController {
 	 */
 	public function update($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
 		// Form Processing
         $result = $this->userForm->update( Input::all() );
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.updated', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@show', array($id));
@@ -257,11 +234,7 @@ class UserController extends BaseController {
 
 		if ($this->user->destroy($id))
 		{
-			Event::fire('sentinel.user.destroyed', array(
-                'userId' => $id, 
-            ));
-
-            Session::flash('success', 'User Deleted');
+			Session::flash('success', 'User Deleted');
             return Redirect::action('Sentinel\UserController@index');
         }
         else 
@@ -279,21 +252,10 @@ class UserController extends BaseController {
 	 */
 	public function activate($id, $code)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
 		$result = $this->user->activate($id, $code);
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.activated', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -315,11 +277,6 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.resend', array(
-				'user'     => $result['user'],
-                'activated' => $result['user']->activated,
-			));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -344,12 +301,6 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.forgot', array(
-				'email' => $result['mailData']['email'],
-				'userId' => $result['mailData']['userId'],
-				'resetCode' => $result['mailData']['resetCode']
-			));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -371,22 +322,10 @@ class UserController extends BaseController {
 	 */
 	public function reset($id, $code)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
 		$result = $this->user->resetPassword($id, $code);
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.newpassword', array(
-				'email' => $result['mailData']['email'],
-				'newPassword' => $result['mailData']['newPassword']
-			));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -413,10 +352,6 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.passwordchange', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
@@ -437,22 +372,11 @@ class UserController extends BaseController {
 	 */
 	public function suspend($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
-		// Form Processing
+ 		// Form Processing
         $result = $this->suspendUserForm->suspend( Input::all() );
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.suspended', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
@@ -472,21 +396,10 @@ class UserController extends BaseController {
 	 */
 	public function unsuspend($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
 		$result = $this->user->unSuspend($id);
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.unsuspended', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
@@ -504,21 +417,10 @@ class UserController extends BaseController {
 	 */
 	public function ban($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-
 		$result = $this->user->ban($id);
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.banned', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');
@@ -531,21 +433,10 @@ class UserController extends BaseController {
 
 	public function unban($id)
 	{
-        if(!is_numeric($id))
-        {
-            // @codeCoverageIgnoreStart
-            return \App::abort(404);
-            // @codeCoverageIgnoreEnd
-        }
-        
-		$result = $this->user->unBan($id);
+    	$result = $this->user->unBan($id);
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.unbanned', array(
-                'userId' => $id, 
-            ));
-
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::action('Sentinel\UserController@index');

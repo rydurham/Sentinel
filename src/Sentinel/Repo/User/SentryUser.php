@@ -4,19 +4,22 @@ use Mail;
 use Cartalyst\Sentry\Sentry;
 use Sentinel\Repo\RepoAbstract;
 use Illuminate\Config\Repository;
+use Illuminate\Events\Dispatcher;
 
 class SentryUser extends RepoAbstract implements UserInterface {
 	
 	protected $sentry;
 	protected $config;
+	protected $dispatcher;
 
 	/**
 	 * Construct a new SentryUser Object
 	 */
-	public function __construct(Sentry $sentry, Repository $config)
+	public function __construct(Sentry $sentry, Repository $config, Dispatcher $dispatcher )
 	{
-		$this->sentry = $sentry;
-		$this->config = $config;
+		$this->sentry     = $sentry;
+		$this->config     = $config;
+		$this->dispatcher = $dispatcher;
 
 		// Get the Throttle Provider
 		$this->throttleProvider = $this->sentry->getThrottleProvider();
@@ -58,8 +61,8 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			$user = $this->sentry->register($credentials, array_key_exists('activate', $data));
 
 			// Are there additional fields specified in the config?
-		    // If so, update them here. 
-		    if ($this->config->has('Sentinel::config.additional_user_fields'))
+			// If so, update them here. 
+			if ($this->config->has('Sentinel::config.additional_user_fields'))
 			{
 				foreach ($this->config->get('Sentinel::config.additional_user_fields') as $key => $value) 
 				{
@@ -81,10 +84,14 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			}
 
 			//success!
-	    	$result['success']   = true;
-	    	$result['message']   = trans('Sentinel::users.created');
-	    	$result['user']	     = $user;
-			$result['activated'] = false;
+			$result['success']   = true;
+			$result['message']   = trans('Sentinel::users.created');
+			$result['activated'] = array_key_exists('activate', $data);
+
+			$this->dispatcher->fire('sentinel.user.registered', array(
+				'user'      => $user,
+				'activated' => array_key_exists('activate', $data)
+			));
 
 			if (array_key_exists('activate', $data))
 			{
@@ -96,13 +103,13 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		}
 		catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.loginreq');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.loginreq');
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.exists');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.exists');
 		}
 
 		return $result;
@@ -119,16 +126,16 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try
 		{
-		    // Find the user using the user id
-		    $user = $this->sentry->findUserById($data['id']);
+			// Find the user using the user id
+			$user = $this->sentry->findUserById($data['id']);
 
-		    // Update the user details
-		    $user->first_name = e($data['firstName']);
-		    $user->last_name = e($data['lastName']);
+			// Update the user details
+			$user->first_name = e($data['firstName']);
+			$user->last_name = e($data['lastName']);
 
-		    // Are there additional fields specified in the config?
-		    // If so, update them here. 
-		    if ($this->config->has('Sentinel::config.additional_user_fields'))
+			// Are there additional fields specified in the config?
+			// If so, update them here. 
+			if ($this->config->has('Sentinel::config.additional_user_fields'))
 			{
 				foreach ($this->config->get('Sentinel::config.additional_user_fields') as $key => $value) 
 				{
@@ -139,48 +146,52 @@ class SentryUser extends RepoAbstract implements UserInterface {
 				}
 			}
 
-		    // Only Admins should be able to change group memberships. 
-		    $operator = $this->sentry->getUser();
-		    if ($operator->hasAccess('admin'))
-		    {
-			    // Update group memberships
-			    $allGroups = $this->sentry->getGroupProvider()->findAll();
-			    foreach ($allGroups as $group)
-			    {
-			    	if (isset($data['groups'][$group->id])) 
-	                {
-	                    //The user should be added to this group
-	                    $user->addGroup($group);
-	                } else {
-	                    // The user should be removed from this group
-	                    $user->removeGroup($group);
-	                }
-			    }
+			// Only Admins should be able to change group memberships. 
+			$operator = $this->sentry->getUser();
+			if ($operator->hasAccess('admin'))
+			{
+				// Update group memberships
+				$allGroups = $this->sentry->getGroupProvider()->findAll();
+				foreach ($allGroups as $group)
+				{
+					if (isset($data['groups'][$group->id])) 
+					{
+						//The user should be added to this group
+						$user->addGroup($group);
+					} else {
+						// The user should be removed from this group
+						$user->removeGroup($group);
+					}
+				}
 			}
 
-		    // Update the user
-		    if ($user->save())
-		    {
-		        // User information was updated
-		        $result['success'] = true;
-	    		$result['message'] = trans('Sentinel::users.updated');
-		    }
-		    else
-		    {
-		        // User information was not updated
-		        $result['success'] = false;
-	    		$result['message'] = trans('Sentinel::users.notupdated');
-		    }
+			// Update the user
+			if ($user->save())
+			{
+				// User information was updated
+				$this->dispatcher->fire('sentinel.user.updated', array(
+					'user' => $user, 
+				));
+
+				$result['success'] = true;
+				$result['message'] = trans('Sentinel::users.updated');
+			}
+			else
+			{
+				// User information was not updated
+				$result['success'] = false;
+				$result['message'] = trans('Sentinel::users.notupdated');
+			}
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.exists');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 
 		return $result;
@@ -196,15 +207,20 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		try
 		{
-		    // Find the user using the user id
-		    $user = $this->sentry->findUserById($id);
+			// Find the user using the user id
+			$user = $this->sentry->findUserById($id);
 
-		    // Delete the user
-		    $user->delete();
+			// Delete the user
+			$user->delete();
+
+			//Fire the sentinel.user.destroyed event
+			$this->dispatcher->fire('sentinel.user.destroyed', array(
+				'userId' => $id, 
+			));
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    return false;
+			return false;
 		}
 		return true;
 	}
@@ -220,33 +236,37 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try
 		{
-		    // Find the user using the user id
-		    $user = $this->sentry->findUserById($id);
+			// Find the user using the user id
+			$user = $this->sentry->findUserById($id);
 
-		    // Attempt to activate the user
-		    if ($user->attemptActivation($code))
-		    {
-		        // User activation passed
-		        $result['success'] = true;
-		        $url = route('Sentinel\login');
-	    		$result['message'] = trans('Sentinel::users.activated', array('url' => $url));
-		    }
-		    else
-		    {
-		        // User activation failed
-		        $result['success'] = false;
-	    		$result['message'] = trans('Sentinel::users.notactivated');
-		    }
+			// Attempt to activate the user
+			if ($user->attemptActivation($code))
+			{
+				// User activation passed
+				$this->dispatcher->fire('sentinel.user.activated', array(
+					'userId' => $id, 
+				));
+
+				$result['success'] = true;
+				$url = route('Sentinel\login');
+				$result['message'] = trans('Sentinel::users.activated', array('url' => $url));
+			}
+			else
+			{
+				// User activation failed
+				$result['success'] = false;
+				$result['message'] = trans('Sentinel::users.notactivated');
+			}
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.exists');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -260,34 +280,39 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		$result = array();
 		try {
-            //Attempt to find the user. 
-            $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+			//Attempt to find the user. 
+			$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
 
-            if (!$user->isActivated())
-            {
-                //success!
-            	$result['success'] = true;
-	    		$result['message'] = trans('Sentinel::users.emailconfirm');
-	    		$result['user']    = $user;
-            }
-            else 
-            {
-                $result['success'] = false;
-	    		$result['message'] = trans('Sentinel::users.alreadyactive');
-            }
+			if (!$user->isActivated())
+			{
+				// The user is not currently activated, so resend the welcome message
+				$this->dispatcher->fire('sentinel.user.resend', array(
+					'user'     => $user,
+					'activated' => $user->activated,
+				));
 
-	    }
-	    catch (\Cartalyst\Sentry\Users\UserExistsException $e)
+				$result['success'] = true;
+				$result['message'] = trans('Sentinel::users.emailconfirm');
+				$result['user']    = $user;
+			}
+			else 
+			{
+				$result['success'] = false;
+				$result['message'] = trans('Sentinel::users.alreadyactive');
+			}
+
+		}
+		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.exists');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
-	    return $result;
+		return $result;
 	}
 
 	/**
@@ -299,21 +324,24 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		$result = array();
 		try
-        {
+		{
 			$user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
 
-	        $result['success'] = true;
-	    	$result['message'] = trans('Sentinel::users.emailinfo');
-	    	$result['mailData']['resetCode'] = $user->getResetPasswordCode();
-			$result['mailData']['userId'] = $user->getId();
-			$result['mailData']['email'] = e($data['email']);
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$this->dispatcher->fire('sentinel.user.forgot', array(
+				'email' => $user->email,
+				'userId' => $user->id,
+				'resetCode' => $user->getResetPasswordCode()
+			));
+
+			$result['success'] = true;
+			$result['message'] = trans('Sentinel::users.emailinfo');
 		}
-        return $result;
+		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		{
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
+		}
+		return $result;
 	}
 
 	/**
@@ -326,33 +354,36 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		$result = array();
 		try
-        {
-	        // Find the user
-	        $user = $this->sentry->getUserProvider()->findById($id);
-	        $newPassword = $this->_generatePassword(8,8);
+		{
+			// Find the user
+			$user = $this->sentry->getUserProvider()->findById($id);
+			$newPassword = $this->_generatePassword(8,8);
 
 			// Attempt to reset the user password
 			if ($user->attemptResetPassword($code, $newPassword))
 			{
 				// Email the reset code to the user
-	        	$result['success'] = true;
-		    	$result['message'] = trans('Sentinel::users.emailpassword');
-		    	$result['mailData']['newPassword'] = $newPassword;
-		    	$result['mailData']['email'] = $user->getLogin();
- 			}
+				$this->dispatcher->fire('sentinel.user.newpassword', array(
+					'email' => $user->email,
+					'newPassword' => $newPassword
+				));
+
+				$result['success'] = true;
+				$result['message'] = trans('Sentinel::users.emailpassword');
+			}
 			else
 			{
 				// Password reset failed
 				$result['success'] = false;
 				$result['message'] = trans('Sentinel::users.problem');
 			}
-        }
-       catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
 		}
-        return $result;
+	   catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+		{
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
+		}
+		return $result;
 	}
 
 	/**
@@ -374,6 +405,10 @@ class SentryUser extends RepoAbstract implements UserInterface {
 				if ($user->save())
 				{
 					// User saved
+					$this->dispatcher->fire('sentinel.user.passwordchange', array(
+						'userId' => $user->id, 
+					));
+
 					$result['success'] = true;
 					$result['message'] = trans('Sentinel::users.passwordchg');
 				}
@@ -386,8 +421,8 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			} 
 			else 
 			{
-		        // Password mismatch. Abort.
-		        $result['success'] = false;
+				// Password mismatch. Abort.
+				$result['success'] = false;
 				$result['message'] = trans('Sentinel::users.oldpassword');
 			}                                        
 		}
@@ -398,13 +433,13 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		}
 		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.exists');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.exists');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -420,22 +455,26 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try
 		{
-		    // Find the user using the user id
-		    $throttle = $this->sentry->findThrottlerByUserId($id);
+			// Find the user using the user id
+			$throttle = $this->sentry->findThrottlerByUserId($id);
 
-		    //Set suspension time
-            $throttle->setSuspensionTime($minutes);
+			//Set suspension time
+			$throttle->setSuspensionTime($minutes);
 
-		    // Suspend the user
-		    $throttle->suspend();
+			// Suspend the user
+			$throttle->suspend();
 
-		    $result['success'] = true;
+			$this->dispatcher->fire('sentinel.user.suspended', array(
+				'userId' => $id, 
+			));
+
+			$result['success'] = true;
 			$result['message'] = trans('Sentinel::users.suspended', array('minutes' => $minutes));
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -450,19 +489,23 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try
 		{
-		    // Find the user using the user id
-		    $throttle = $this->sentry->findThrottlerByUserId($id);
+			// Find the user using the user id
+			$throttle = $this->sentry->findThrottlerByUserId($id);
 
-		    // Unsuspend the user
-		    $throttle->unsuspend();
+			// Unsuspend the user
+			$throttle->unsuspend();
 
-		    $result['success'] = true;
+			$this->dispatcher->fire('sentinel.user.unsuspended', array(
+				'userId' => $id, 
+			));
+
+			$result['success'] = true;
 			$result['message'] = trans('Sentinel::users.unsuspended');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -477,19 +520,23 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try
 		{
-		    // Find the user using the user id
-		    $throttle = $this->sentry->findThrottlerByUserId($id);
+			// Find the user using the user id
+			$throttle = $this->sentry->findThrottlerByUserId($id);
 
-		    // Ban the user
-		    $throttle->ban();
+			// Ban the user
+			$throttle->ban();
 
-		    $result['success'] = true;
+			$this->dispatcher->fire('sentinel.user.banned', array(
+				'userId' => $id, 
+			));
+
+			$result['success'] = true;
 			$result['message'] = trans('Sentinel::users.banned');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -504,19 +551,23 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try
 		{
-		    // Find the user using the user id
-		    $throttle = $this->sentry->findThrottlerByUserId($id);
+			// Find the user using the user id
+			$throttle = $this->sentry->findThrottlerByUserId($id);
 
-		    // Unban the user
-		    $throttle->unBan();
+			// Unban the user
+			$throttle->unBan();
 
-		    $result['success'] = true;
+			$this->dispatcher->fire('sentinel.user.unbanned', array(
+				'userId' => $id, 
+			));
+
+			$result['success'] = true;
 			$result['message'] = trans('Sentinel::users.unbanned');
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+			$result['success'] = false;
+			$result['message'] = trans('Sentinel::users.notfound');
 		}
 		return $result;
 	}
@@ -531,11 +582,11 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		try
 		{
-		    $user = $this->sentry->findUserById($id);
+			$user = $this->sentry->findUserById($id);
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    return false;
+			return false;
 		}
 		return $user;
 	}
@@ -550,11 +601,11 @@ class SentryUser extends RepoAbstract implements UserInterface {
 	{
 		try
 		{
-		    $user = $this->sentry->findUserByLogin($email);
+			$user = $this->sentry->findUserByLogin($email);
 		}
 		catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
-		    return false;
+			return false;
 		}
 		return $user;
 	}
@@ -571,30 +622,72 @@ class SentryUser extends RepoAbstract implements UserInterface {
 
 		foreach ($users as $user) {
 			if ($user->isActivated()) 
-    		{
-    			$user->status = "Active";
-    		} 
-    		else 
-    		{
-    			$user->status = "Not Active";
-    		}
+			{
+				$user->status = "Active";
+			} 
+			else 
+			{
+				$user->status = "Not Active";
+			}
 
-    		//Pull Suspension & Ban info for this user
-    		$throttle = $this->throttleProvider->findByUserId($user->id);
+			//Pull Suspension & Ban info for this user
+			$throttle = $this->throttleProvider->findByUserId($user->id);
 
-    		//Check for suspension
-    		if($throttle->isSuspended())
-		    {
-		        // User is Suspended
-		        $user->status = "Suspended";
-		    }
+			//Check for suspension
+			if($throttle->isSuspended())
+			{
+				// User is Suspended
+				$user->status = "Suspended";
+			}
 
-    		//Check for ban
-		    if($throttle->isBanned())
-		    {
-		        // User is Banned
-		        $user->status = "Banned";
-		    }
+			//Check for ban
+			if($throttle->isBanned())
+			{
+				// User is Banned
+				$user->status = "Banned";
+			}
+		}
+
+		return $users;
+	}
+
+	/**
+	 * Select users based on an arbitrary where() condition
+	 * @param  string $field   Name of Field to be queried against
+	 * @param  string $operand Where comparison operand
+	 * @param  any $value      Value to be compared against
+	 * @return Illuminate\Database\Eloquent\Collection   User Set
+	 */
+	public function where($field, $operand, $value)
+	{
+		$users = $this->sentry->getUserProvider()->createModel()->where($field, $operand, $value)->get();
+
+		foreach ($users as $user) {
+			if ($user->isActivated()) 
+			{
+				$user->status = "Active";
+			} 
+			else 
+			{
+				$user->status = "Not Active";
+			}
+
+			//Pull Suspension & Ban info for this user
+			$throttle = $this->throttleProvider->findByUserId($user->id);
+
+			//Check for suspension
+			if($throttle->isSuspended())
+			{
+				// User is Suspended
+				$user->status = "Suspended";
+			}
+
+			//Check for ban
+			if($throttle->isBanned())
+			{
+				// User is Banned
+				$user->status = "Banned";
+			}
 		}
 
 		return $users;
@@ -612,37 +705,37 @@ class SentryUser extends RepoAbstract implements UserInterface {
 
 
 	/**
-     * Generate password - helper function
-     * From http://www.phpscribble.com/i4xzZu/Generate-random-passwords-of-given-length-and-strength
-     *
-     */
-    private function _generatePassword($length=9, $strength=4) {
-        $vowels = 'aeiouy';
-        $consonants = 'bcdfghjklmnpqrstvwxz';
-        if ($strength & 1) {
-               $consonants .= 'BCDFGHJKLMNPQRSTVWXZ';
-        }
-        if ($strength & 2) {
-               $vowels .= "AEIOUY";
-        }
-        if ($strength & 4) {
-               $consonants .= '23456789';
-        }
-        if ($strength & 8) {
-               $consonants .= '@#$%';
-        }
+	 * Generate password - helper function
+	 * From http://www.phpscribble.com/i4xzZu/Generate-random-passwords-of-given-length-and-strength
+	 *
+	 */
+	private function _generatePassword($length=9, $strength=4) {
+		$vowels = 'aeiouy';
+		$consonants = 'bcdfghjklmnpqrstvwxz';
+		if ($strength & 1) {
+			   $consonants .= 'BCDFGHJKLMNPQRSTVWXZ';
+		}
+		if ($strength & 2) {
+			   $vowels .= "AEIOUY";
+		}
+		if ($strength & 4) {
+			   $consonants .= '23456789';
+		}
+		if ($strength & 8) {
+			   $consonants .= '@#$%';
+		}
 
-        $password = '';
-        $alt = time() % 2;
-        for ($i = 0; $i < $length; $i++) {
-            if ($alt == 1) {
-                $password .= $consonants[(rand() % strlen($consonants))];
-                $alt = 0;
-            } else {
-                $password .= $vowels[(rand() % strlen($vowels))];
-                $alt = 1;
-            }
-        }
-        return $password;
-    }
+		$password = '';
+		$alt = time() % 2;
+		for ($i = 0; $i < $length; $i++) {
+			if ($alt == 1) {
+				$password .= $consonants[(rand() % strlen($consonants))];
+				$alt = 0;
+			} else {
+				$password .= $vowels[(rand() % strlen($vowels))];
+				$alt = 1;
+			}
+		}
+		return $password;
+	}
 }

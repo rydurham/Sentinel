@@ -1,6 +1,7 @@
 <?php namespace Sentinel\Repo;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Events\Dispatcher;
 use Sentinel\Repo\Session\SentrySession;
 use Sentinel\Repo\User\SentryUser;
 use Sentinel\Repo\Group\SentryGroup;
@@ -28,7 +29,8 @@ class RepoServiceProvider extends ServiceProvider {
         {
             return new SentryUser(
             	$app['sentry'],
-                $app['config']
+                $app['config'],
+                $app['events']
             );
         });
 
