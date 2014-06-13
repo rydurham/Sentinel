@@ -15,7 +15,7 @@ Register
             <h2>Register New Account</h2>
 
             <div class="form-group {{ ($errors->has('username')) ? 'has-error' : '' }}">
-                {{ Form::text('username', null, array('class' => 'form-control', 'placeholder' => 'E-mail')) }}
+                {{ Form::text('username', null, array('class' => 'form-control', 'placeholder' => 'Username')) }}
                 {{ ($errors->has('username') ? $errors->first('username') : '') }}
             </div>
 
