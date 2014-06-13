@@ -87,6 +87,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 			$result['success']   = true;
 			$result['message']   = trans('Sentinel::users.created');
 			$result['activated'] = array_key_exists('activate', $data);
+			$result['user']      = $user;
 
 			$this->dispatcher->fire('sentinel.user.registered', array(
 				'user'      => $user,
