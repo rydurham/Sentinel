@@ -48,7 +48,7 @@ Route::get( $users . '/{id}/unsuspend', 'Sentinel\UserController@unsuspend')->wh
 Route::get( $users . '/{id}/ban', 'Sentinel\UserController@ban')->where('id', '[0-9]+');
 Route::get( $users . '/{id}/unban', 'Sentinel\UserController@unban')->where('id', '[0-9]+');
 Route::get( $users, array('as' => 'users.index', 'uses' => 'Sentinel\UserController@index'));
-Route::get( $users . '/create', 'Sentinel\UserController@create');
+Route::get( $users . '/create', array('as' => 'users.create', 'uses' => 'Sentinel\UserController@create'));
 Route::post( $users . '/add', array('as' => 'users.add', 'uses' => 'Sentinel\UserController@add'));
 Route::post( $users, array('as' => 'users.store', 'uses' => 'Sentinel\UserController@store'));
 Route::get( $users . '/{id}', array('as' => 'users.show', 'uses' => 'Sentinel\UserController@show') )->where('id', '[0-9]+');
