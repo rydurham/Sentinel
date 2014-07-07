@@ -26,6 +26,12 @@ class SentryGroup extends RepoAbstract implements GroupInterface {
 		if (array_key_exists('adminPermissions', $data)) $data['permissions']['admin'] = 1;
 		if (array_key_exists('userPermissions', $data)) $data['permissions']['users'] = 1;
 
+		// Does the permissions array exist in the $data array?
+		if ( ! array_key_exists('permissions', $data))
+		{
+			$data['permissions'] = array();
+		}
+
 		$result = array();
 		try {
 			    // Create the group
@@ -62,6 +68,12 @@ class SentryGroup extends RepoAbstract implements GroupInterface {
 		// Back suppport for previous permissions options
 		if (array_key_exists('adminPermissions', $data)) $data['permissions']['admin'] = 1;
 		if (array_key_exists('userPermissions', $data)) $data['permissions']['users'] = 1;
+
+		// Does the permissions array exist in the $data array?
+		if ( ! array_key_exists('permissions', $data))
+		{
+			$data['permissions'] = array();
+		}
 
 		try
 		{
