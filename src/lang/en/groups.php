@@ -12,7 +12,7 @@ return array(
 
 	'loginreq' 		=> "Login field required.",
 
-	'userexists' 	=> "User already exists.",
+	'userexists' 	=> "The email address you entered is already in use.",
 
 	'updated' 		=> "Group has been updated.",
 

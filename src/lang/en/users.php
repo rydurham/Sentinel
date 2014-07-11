@@ -31,7 +31,7 @@ return array(
 
 	'emailconfirm'	=>	"Check your email for the confirmation link.",
 
-	'emailinfo'		=>	"Check your email for instructions.",
+	'emailinfo'		=>	"Please check your email for instructions.",
 
 	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
 
@@ -41,9 +41,9 @@ return array(
 
 	'passwordprob'	=>	"Your password could not be changed.",
 
-	'passwdcodeprob'=>	"Your link is invalid.",
+	'passwdcodeprob'=>	"Sorry. Your link is invalid.",
 
-	'resetcodeexpired' => "Your link has expired.",
+	'resetcodeexpired' => "Sorry. Your link has expired.",
 
     'resendcodelimit' => "Resend code limit exceeded please try after :minutes minutes.",
 

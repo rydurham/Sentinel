@@ -10,7 +10,7 @@ return array(
 
 	"invalid"   => "Invalid username or password.",
 
-	"notactive" =>  "You have not yet activated this account. <a href=':url' class='alert-link'>Resend Activation Email?</a>",
+	"notactive" =>  "Please verify this email address first to proceed. Click <a href=':url' class='alert-link'>HERE</a> to resend the activation email.",
 
 	"suspended" => "Your account has been temporarily suspended.",
 
