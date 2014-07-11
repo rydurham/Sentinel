@@ -8,7 +8,7 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	"invalid"   => "Invalid username or password.",
+	"invalid"   => "Please enter a valid username and/or password.",
 
 	"notactive" =>  "Please verify this email address first to proceed. Click <a href=':url' class='alert-link'>HERE</a> to resend the activation email.",
 
