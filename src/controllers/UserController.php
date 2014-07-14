@@ -436,7 +436,7 @@ class UserController extends BaseController {
                     //do login
                     \Sentry::login($user, false);
                     Event::fire('sentinel.user.login', array(
-                        'userId' => $$user->id,
+                        'userId' => $user->id,
                         'email' => $user->email
                     ));
                     return Redirect::route('home');
