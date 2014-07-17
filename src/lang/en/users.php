@@ -12,7 +12,8 @@ return array(
 
 	'loginreq' 		=>	"Login field required.",
 
-	'exists'		=>	"User already exists.",
+	#'exists'		=>	"User already exists.",
+	'exists'		=>  "The email address you entered is already in use.",	
 
 	'notfound'		=>	"User not found",
 
