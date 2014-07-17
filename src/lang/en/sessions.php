@@ -14,7 +14,8 @@ return array(
 
 	"notactive" 	=>  "Please verify this email address first to proceed. Click <a href=':url' class='alert-link'>HERE</a> to resend the activation email.",
 
-	"suspended"		=> "Your account has been temporarily suspended.",
+	//"suspended"	=> "Your account has been temporarily suspended.",
+	"suspended"		=> "Sorry, for your account's security, you may request for password reset after 24 hours.",
 
 	"banned" 		=> "You have been banned.",
 
