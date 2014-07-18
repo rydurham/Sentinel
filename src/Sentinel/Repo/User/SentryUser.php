@@ -298,7 +298,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
         catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 		{
 		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::users.notfound');
+	    	$result['message'] = trans('egSg.emailNotFound');
 		}
         catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
         {

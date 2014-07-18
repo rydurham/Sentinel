@@ -8,8 +8,9 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	"invalid"   	=> "Please enter a valid username and/or password.",
-	
+	//"invalid"   	=> "Please enter a valid username and/or password.",
+	"invalid"		=> "Please enter a valid email address and/or password. Note that the password is case-sensitive",
+
 	"notverified"	=> "Please verify this email address first to proceed. Resent confirmation email.",
 
 	"notactive" 	=>  "Please verify this email address first to proceed. Click <a href=':url' class='alert-link'>HERE</a> to resend the activation email.",
