@@ -284,7 +284,9 @@ class SentryUser extends RepoAbstract implements UserInterface {
             if ( ! $user->isActivated()) {
                 throw new UserNotActivatedException("Cannot reset password  user is not activated.");
             }
-            $this->reset_password_attempts($user);
+            // Disable reset password attempts
+            // as per current discussion with globe to allow user to reset password when suspend through login attempts
+            //$this->reset_password_attempts($user);
             $user->reset_code_created_at = new \Datetime; 
 
 	        $result['success'] = true;
