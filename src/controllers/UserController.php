@@ -52,7 +52,7 @@ class UserController extends BaseController {
 
 		// Set up Auth Filters
 		$this->beforeFilter('Sentinel\auth', array('only' => array('change')));
-		$this->beforeFilter('Sentinel\inGroup:Admins', array('only' => array('show', 'index', 'create', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
+		$this->beforeFilter('Sentinel\inGroup:Admin', array('only' => array('show', 'index', 'create', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
 		//array('except' => array('create', 'store', 'activate', 'resend', 'forgot', 'reset')));
 	}
 
