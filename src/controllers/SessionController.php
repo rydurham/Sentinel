@@ -68,7 +68,8 @@ class SessionController extends BaseController {
 	public function destroy()
     {
         //allow warning messages when on logging out
-        $warning = Session::get('warning');
+        $warning = Input::get('warning');
+        if(!$warning) $warning = Session::get('warning');
         $this->session->destroy();
         Event::fire('sentinel.user.logout');
         $redirect_route = Config::get('Sentinel::config.post_logout');
