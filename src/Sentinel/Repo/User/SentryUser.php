@@ -507,6 +507,11 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		}
 		return $result;
 	}
+	public function clearLoginAttempts($id)
+    {
+        $throttle = $this->sentry->findThrottlerByUserId($id);
+        $throttle->clearLoginAttempts();
+    }
 
 	/**
 	 * Ban a user

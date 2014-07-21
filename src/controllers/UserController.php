@@ -434,7 +434,7 @@ class UserController extends BaseController {
 
                     //NOTE: new logic is to unsupend when user change password
                     $this->user->unSuspend($id);
-                    $throttle->clearLoginAttempts();
+                    $this->user->clearLoginAttempts($id);
 
                     Session::flash('success',trans('Sentinel::users.passwordchg'));
                     //do login
