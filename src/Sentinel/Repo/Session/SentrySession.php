@@ -46,6 +46,7 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 
 			    // Try to authenticate the user
 			    $user = $this->sentry->authenticate($credentials, e($data['rememberMe']));
+                $throttle->clearLoginAttempts();
 
 			    $result['success'] = true;
 			    $result['sessionData']['userId'] = $user->id;

@@ -332,11 +332,15 @@ class SentryUser extends RepoAbstract implements UserInterface {
         $attemptLimit = Config::get('Sentinel::config.reset_attempt_limit');
         
         if ($validAttempt >= $now) {
-            $throttle->check();
+            # Allow to reset  
+        #   $throttle->check();
         }else {
             $throttle->reset_attempts = 1;
             $throttle->unsuspend();
         } 
+
+        if ($throttle->reset_attempts >= $attemptLimit && $validAttempt >= $now)
+            throw new \Cartalyst\Sentry\Throttling\UserSuspendedException;
 
         if ($throttle->reset_attempts >= $attemptLimit && $validAttempt >= $now)
         {

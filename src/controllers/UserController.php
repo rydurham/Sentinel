@@ -432,6 +432,10 @@ class UserController extends BaseController {
                         'newPassword' => $password
                     ));
 
+                    //NOTE: new logic is to unsupend when user change password
+                    $this->user->unSuspend($id);
+                    $throttle->clearLoginAttempts();
+
                     Session::flash('success',trans('Sentinel::users.passwordchg'));
                     //do login
                     \Sentry::login($user, false);
