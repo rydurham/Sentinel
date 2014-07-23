@@ -18,6 +18,8 @@ return array(
 	//"suspended"	=> "Your account has been temporarily suspended.",
 	"suspended"		=> "Sorry, for your account's security, you may request for password reset after 24 hours.",
 
+    'loginsuspended'=> "Your account has been temporarily suspended. Click <a href='/forgot'>HERE</a> to reset your password.",
+
 	"banned" 		=> "You have been banned.",
 
 );

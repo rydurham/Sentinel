@@ -73,7 +73,7 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			{
 			    $time = $throttle->getSuspensionTime();
 			    $result['success'] = false;
-			    $result['message'] = trans('Sentinel::sessions.suspended');
+			    $result['message'] = trans('Sentinel::sessions.loginsuspended');
 			}
 			catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
 			{
