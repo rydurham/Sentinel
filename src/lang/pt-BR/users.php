@@ -22,7 +22,7 @@ return array(
 
 	'notfound'		=>	"Usuário não encontrado",
 
-	'noaccess'		=>	"You are not allowed to do that.",
+	'noaccess'		=>	"Você não tem permissão.",
 
 	'updated'		=>	"Perfil Atualizado",
 
