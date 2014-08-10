@@ -24,6 +24,8 @@ return array(
 	"alpha_dash"       => "Il campo :attribute può contenere solo lettere, numeri e trattini.",
 	
 	"alpha_num"        => "Il campo :attribute può contenere solo lettere e numeri.",
+
+	"alpha_spaces"     => "Il :attribute può contenere solo lettere e spazi.",
 	
 	"before"           => "Il campo :attribute deve contenere una data antecedente :date.",
 	

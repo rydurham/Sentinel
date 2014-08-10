@@ -24,6 +24,8 @@ return array(
     "alpha_dash"       => "O campo :attribute deverá conter apenas letras, números e traços.",
     
     "alpha_num"        => "O campo :attribute deverá conter apenas letras e números .",
+
+    "alpha_spaces"     => "O campo :attribute só pode conter letras e espaços.",
     
     "array"            => "O campo :attribute precisa ser um conjunto.",
     

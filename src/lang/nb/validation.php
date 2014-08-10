@@ -24,6 +24,8 @@ return array(
 	"alpha_dash"       => ":attribute kan bare inneholde bokstaver, tall og bindestreker.",
 	
 	"alpha_num"        => ":attribute kan bare inneholde bokstaver og tall.",
+
+	"alpha_spaces"     => ":attribute kan bare inneholde bokstaver og mellomrom.",
 	
 	"before"           => ":attribute må være en dato før :date.",
 	
