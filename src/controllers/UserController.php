@@ -135,8 +135,12 @@ class UserController extends BaseController {
      */
     public function add()
     {
+        // Collect Data
+        $data = Input::all();
+        $data['groups'] = Config::get('Sentinel::config.default_user_groups');
+
         // Form Processing
-        $result = $this->registerForm->save( Input::all() );
+        $result = $this->registerForm->save( $data );
 
         if( $result['success'] )
         {
