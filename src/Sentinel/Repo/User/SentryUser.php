@@ -75,10 +75,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 				$user->save();
 			}
 
-			// Add the new user to the specified default group(s).
-			$defaultUserGroups = $this->config->get('Sentinel::config.default_user_groups');
-
-			foreach ($defaultUserGroups as $groupName) {
+			foreach ($data['groups'] as $groupName) {
 				$group = $this->sentry->getGroupProvider()->findByName($groupName);
 				$user->addGroup($group);
 			}
