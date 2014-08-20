@@ -15,21 +15,45 @@ return array(
 
 	'routes' => array(
 
-		'users' 	=> 'users',
+		'users' 	=> array(
+            'route' => 'users',
+            'enabled' => true,
+        ),
 		
-		'groups'	=> 'groups',
+		'groups'	=> array(
+            'route' => 'groups',
+            'enabled' => true,
+        ),
 		
-		'sessions'	=> 'sessions',
+		'sessions'	=> array(
+            'route' => 'sessions',
+            'enabled' => true,
+        ),
 
-		'login'		=> 'login',
+		'login'		=> array(
+            'route' => 'login',
+            'enabled' => true,
+        ),
 
-		'logout'	=> 'logout',
+		'logout'	=> array(
+            'route' => 'login',
+            'enabled' => true,
+        ),
 
-		'register'	=> 'register',
+		'register'	=> array(
+            'route' => 'register',
+            'enabled' => true,
+        ),
 
-		'resend'	=> 'resend',
+		'resend'	=> array(
+            'route' => 'resend',
+            'enabled' => true,
+        ),
 
-		'forgot'	=> 'forgot',
+		'forgot'	=> array(
+            'route' => 'forgot',
+            'enabled' => true,
+        ),
 
 		),
 
