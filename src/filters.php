@@ -36,12 +36,12 @@ App::after(function($request, $response)
 
 Route::filter('Sentinel\auth', function()
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
 });
 
 Route::filter('Sentinel\hasAccess', function($route, $request, $value)
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
 
 	$userId = Route::input('users');
 
@@ -58,13 +58,13 @@ Route::filter('Sentinel\hasAccess', function($route, $request, $value)
 	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 	{
 		Session::flash('error', trans('Sentinel::users.notfound'));
-		return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+		return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
 	}
 });
 
 Route::filter('Sentinel\inGroup', function($route, $request, $value)
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
 
 	// we need to determine if a non admin user 
 	// is trying to access their own account.
@@ -85,13 +85,13 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
 	{
 		Session::flash('error', trans('Sentinel::users.notfound'));
-		return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+		return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
 	}
 	 
 	catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
 	{
 		Session::flash('error', trans('Sentinel::groups.notfound'));
-		return Redirect::guest(Config::get('Sentinel::config.routes.login'));
+		return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
 	}
 });
 // thanks to http://laravelsnippets.com/snippets/sentry-route-filters
