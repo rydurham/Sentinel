@@ -30,12 +30,12 @@ Route::get( $users . '/{id}/activate/{code}', 'Sentinel\UserController@activate'
 Route::get( $resend , array('as' => 'Sentinel\resendActivationForm', function()
 {
 	return View::make('Sentinel::users.resend');
-}));
+}))->before('guest');
 Route::post( $resend , 'Sentinel\UserController@resend');
 Route::get( $forgot , array('as' => 'Sentinel\forgotPasswordForm', function()
 {
 	return View::make('Sentinel::users.forgot');
-}));
+}))->before('guest');
 Route::post( $forgot , 'Sentinel\UserController@forgot');
 Route::post( $users . '/{id}/change', 'Sentinel\UserController@change')->where('id', '[0-9]+');
 Route::post( $users . '/{id}/change_password/{code}', 'Sentinel\UserController@change_password')->where('id', '[0-9]+');
