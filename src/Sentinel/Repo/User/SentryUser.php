@@ -714,7 +714,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
      * From http://www.phpscribble.com/i4xzZu/Generate-random-passwords-of-given-length-and-strength
      *
      */
-    private function _generatePassword($length=9, $strength=4) {
+    protected function _generatePassword($length=9, $strength=4) {
         $vowels = 'aeiouy';
         $consonants = 'bcdfghjklmnpqrstvwxz';
         if ($strength & 1) {
