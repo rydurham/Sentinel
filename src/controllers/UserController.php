@@ -166,6 +166,13 @@ class UserController extends BaseController {
             // @codeCoverageIgnoreEnd
         }
 
+        $u = \User::find($id);
+        if (method_exists($u,'isTPA') && $u->isTPA()) {
+            Session::flash('error', trans('Sentinel::users.noaccess'));
+            return Redirect::route('home');
+        }
+
+
         $currentGroups = $user->getGroups()->toArray();
         $userGroups = array();
         foreach ($currentGroups as $group) {
