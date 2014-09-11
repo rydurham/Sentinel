@@ -137,6 +137,12 @@ class SentryUser extends RepoAbstract implements UserInterface {
                 $user->email = $data['email'];
             }
 
+            // Update username address? 
+            if (array_key_exists('username', $data))
+            {
+                $user->username = $data['username'];
+            }
+
             // Are there additional fields specified in the config?
             // If so, update them here. 
             if ($this->config->has('Sentinel::config.additional_user_fields'))
