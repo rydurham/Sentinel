@@ -9,7 +9,7 @@ return array(
     |
     | Sentinel provides default routes for each of its components, but you can
     | alter those route paths here.  Note that this only changes the URL path,
-    | not the names of the routes. 
+    | not the names of the routes.
     |
     */
 
@@ -19,12 +19,12 @@ return array(
             'route' => 'users',
             'enabled' => true,
         ),
-        
+
         'groups'    => array(
             'route' => 'groups',
             'enabled' => true,
         ),
-        
+
         'sessions'  => array(
             'route' => 'sessions',
             'enabled' => true,
@@ -59,18 +59,20 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Default Event Routes 
+    | Default Event Routes
     |--------------------------------------------------------------------------
     |
-    | At certain points in the login and registration process Sentinel will 
-    | redirect the browser upon the completion of an event.  To change those 
+    | At certain points in the login and registration process Sentinel will
+    | redirect the browser upon the completion of an event.  To change those
     | redirect locations, provide the name of a different route.
-    | 
+    |
     */
 
     'post_login'    => 'home',
 
     'post_logout'   => 'home',
+
+    'post_confirmation_sent' => false //Add a view here to make your own 'verification sent!' page.
 
     /*
     |--------------------------------------------------------------------------
@@ -95,10 +97,10 @@ return array(
     | Layout
     |--------------------------------------------------------------------------
     |
-    | By default, the views provided by the package will extend their own 
+    | By default, the views provided by the package will extend their own
     | default view (views/layouts/default.blade.php), even after they have been
-    | published.  This option allows you to extend a custom view instead. 
-    | 
+    | published.  This option allows you to extend a custom view instead.
+    |
     */
 
     'layout' => 'Sentinel::layouts.default',
@@ -109,9 +111,9 @@ return array(
     | Registration
     |--------------------------------------------------------------------------
     |
-    | By default, registration is enabled.  To turn off registration, change this 
-    | value to false. 
-    | 
+    | By default, registration is enabled.  To turn off registration, change this
+    | value to false.
+    |
     */
 
     'registration' => true,
@@ -121,9 +123,9 @@ return array(
     | Activation
     |--------------------------------------------------------------------------
     |
-    | By default, new accounts must be activated via email.  Setting this to 
-    | false will allow users to login immediately after signing up. 
-    | 
+    | By default, new accounts must be activated via email.  Setting this to
+    | false will allow users to login immediately after signing up.
+    |
     */
 
     'activation' => true,
@@ -133,9 +135,9 @@ return array(
     | Default User Groups
     |--------------------------------------------------------------------------
     |
-    | When a new user is created, they will automatically be added to the 
+    | When a new user is created, they will automatically be added to the
     | groups in this array.
-    | 
+    |
     */
 
     'default_user_groups' => array('Users'),
@@ -145,10 +147,10 @@ return array(
     | Custom User Fields
     |--------------------------------------------------------------------------
     |
-    | If you want to add additional fields to your user model you can specify 
+    | If you want to add additional fields to your user model you can specify
     | their validation needs here.  You must update your db tables and add
     | the fields to your 'create' and 'edit' views before this will work.
-    | 
+    |
     */
 
     'additional_user_fields' => array(
@@ -161,11 +163,11 @@ return array(
     |--------------------------------------------------------------------------
     |
     | By default, Sentry (and Sentinel) will only let a user log in using their
-    | email address.  By setting 'allow_usernames' to true, a user can enter either 
+    | email address.  By setting 'allow_usernames' to true, a user can enter either
     | their username or their email address as a login credential.
-    | 
+    |
     */
 
     'allow_usernames' => true,
-    
+
 );
