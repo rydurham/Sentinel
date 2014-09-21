@@ -72,7 +72,7 @@ return array(
 
     'post_logout'   => 'home',
 
-    'post_confirmation_sent' => false //Add a view here to make your own 'verification sent!' page.
+    'confirmation_sent_page' => 'home' //Edit this to show your own 'confirmation sent!' page if you like.
 
     /*
     |--------------------------------------------------------------------------
