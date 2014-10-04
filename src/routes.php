@@ -10,6 +10,9 @@
 // Pull routing values from config
 $routesConfig = Config::get('Sentinel::config.routes');
 
+$groupName = 'groups';
+$sessionName = 'sessions';
+
 if (is_array($routesConfig['users'])) {
     $users             = $routesConfig['users']['route'];
     $usersRouteEnabled = $routesConfig['users']['enabled'];
@@ -85,7 +88,18 @@ if ($logoutRouteEnabled) {
 }
 
 if ($sessionsRouteEnabled) {
-    Route::resource($sessions, 'Sentinel\SessionController', array('only' => array('create', 'store', 'destroy')));
+    Route::resource($sessions, 'Sentinel\SessionController', array(
+        'only' => array(
+            'create', 
+            'store', 
+            'destroy'
+        ),
+		'names' => array(
+			'create'  => $sessionName . '.create',
+			'store'   => $sessionName . '.store',
+			'destroy' => $sessionName . '.destroy'
+		)
+    ));
 }
 
 // User Routes
@@ -130,7 +144,20 @@ if ($usersRouteEnabled) {
 
 // Group Routes
 if ($groupsRouteEnabled) {
-    Route::resource($groups, 'Sentinel\GroupController');
+    
+    
+    
+    Route::resource($groups, 'Sentinel\GroupController', array(
+		'names' => array(
+			'index'   => $groupName . '.index',
+			'create'  => $groupName . '.create',
+			'store'   => $groupName . '.store',
+			'show'    => $groupName . '.show',
+			'edit'    => $groupName . '.edit',
+			'update'  => $groupName . '.update',
+			'destroy' => $groupName . '.destroy'
+		)
+	));
 
 }
 
