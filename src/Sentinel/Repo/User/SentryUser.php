@@ -128,8 +128,8 @@ class SentryUser extends RepoAbstract implements UserInterface {
             $user = $this->sentry->findUserById($data['id']);
 
             // Update the user details
-            $user->first_name = e($data['firstName']);
-            $user->last_name = e($data['lastName']);
+            $user->first_name = e($data['first_name']);
+            $user->last_name = e($data['last_name']);
 
             // Update Email address? 
             if (array_key_exists('email', $data))
