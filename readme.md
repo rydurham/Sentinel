@@ -5,15 +5,11 @@ This pacakge provides an implementation of  [Sentry 2](https://github.com/cartal
 This package is based on my [L4withSentry](https://github.com/rydurham/L4withSentry) demo repo. 
 
 ### Instructions
-Add this package to your composer.json file: 
+This package can be installed using Composer:
 
+```shell
+$ composer require rydurham/sentinel
 ```
-"require": {
-    "laravel/framework": "4.1.*",
-    "rydurham/sentinel": "1.*"
-},
-```
-Run Composer Update
 
 Make sure you have configured your app's Database and Mail settings. 
 
