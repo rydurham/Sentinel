@@ -144,9 +144,6 @@ if ($usersRouteEnabled) {
 
 // Group Routes
 if ($groupsRouteEnabled) {
-    
-    
-    
     Route::resource($groups, 'Sentinel\GroupController', array(
 		'names' => array(
 			'index'   => $groupName . '.index',
@@ -158,6 +155,5 @@ if ($groupsRouteEnabled) {
 			'destroy' => $groupName . '.destroy'
 		)
 	));
-
 }
 
