@@ -96,21 +96,6 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 });
 // thanks to http://laravelsnippets.com/snippets/sentry-route-filters
 
-/*
-|--------------------------------------------------------------------------
-| Guest Filter
-|--------------------------------------------------------------------------
-|
-| The "guest" filter is the counterpart of the authentication filters as
-| it simply checks that the current user is not logged in. A redirect
-| response will be issued if they are, which you may freely change.
-|
-*/
-
-Route::filter('guest', function()
-{
-	if (Auth::check()) return Redirect::route('home');
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -125,32 +110,8 @@ Route::filter('guest', function()
 
 Route::filter('Sentinel\csrf', function()
 {
-	// var_dump($_SESSION);
- //            var_dump($_POST);
- //            die();
-
-	// TODO: Rewrite this tree of conditionals
-	if (Session::token() !== Input::get('_token') || Session::token()===null || Input::get('_token')===null)
-	{
-		// Session token and form tokens do not match or one is empty
-		if(App::environment() === 'testing')
-		{
-			// We only want to allow CSRF override if we're running tests
-			if(Input::get('IgnoreCSRFTokenError')===true) 
-			{
-				// Allow CSRF override in testing environment
-				return;
-			} else {
-				// Handle CSRF normally
-				throw new Illuminate\Session\TokenMismatchException;
-			}	
-		} else {
-			// @codeCoverageIgnoreStart
-			
-			// Handle CSRF normally
-			throw new Illuminate\Session\TokenMismatchException;
-			
-			// @codeCoverageIgnoreEnd
-		}
-	}
+    if (Session::token() !== Input::get('_token'))
+    {
+        throw new Illuminate\Session\TokenMismatchException;
+    }
 });
