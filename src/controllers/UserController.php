@@ -25,9 +25,9 @@ class UserController extends BaseController {
 	 * Instantiate a new UserController
 	 */
 	public function __construct(
-		UserInterface $user, 
-		GroupInterface $group, 
-		RegisterForm $registerForm, 
+		UserInterface $user,
+		GroupInterface $group,
+		RegisterForm $registerForm,
 		UserForm $userForm,
 		ResendActivationForm $resendActivationForm,
 		ForgotPasswordForm $forgotPasswordForm,
@@ -61,7 +61,7 @@ class UserController extends BaseController {
 	public function index()
 	{
         $users = $this->user->all();
-      
+
         return View::make('Sentinel::users.index')->with('users', $users);
 	}
 
@@ -75,7 +75,7 @@ class UserController extends BaseController {
         $registration = Config::get('Sentinel::config.registration');
 
         if (!$registration)
-        {   
+        {
             Session::flash('error', trans('Sentinel::users.inactive_reg'));
             return Redirect::route('home');
         }
@@ -101,7 +101,7 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::route('home');
+            return Redirect::route(isset(Config::get('Sentinel::config.post_confirmation_sent')) ? Config::get('Sentinel::config.post_confirmation_sent') : 'home');
 
         } else {
             Session::flash('error', $result['message']);
@@ -121,11 +121,11 @@ class UserController extends BaseController {
         {
             return View::make('Sentinel::users.new');
         }
-        else 
+        else
         {
             return View::make('Sentinel::users.create');
         }
-        
+
     }
 
     /**
@@ -148,7 +148,7 @@ class UserController extends BaseController {
             {
                 $result['message'] = trans('Sentinel::users.addedactive');
             }
-            else 
+            else
             {
                 $result['message'] = trans('Sentinel::users.added');
             }
@@ -245,7 +245,7 @@ class UserController extends BaseController {
 			Session::flash('success', 'User Deleted');
             return Redirect::action('Sentinel\UserController@index');
         }
-        else 
+        else
         {
         	Session::flash('error', 'Unable to Delete User');
             return Redirect::action('Sentinel\UserController@index');
@@ -254,8 +254,8 @@ class UserController extends BaseController {
 
 	/**
 	 * Activate a new user
-	 * @param  int $id   
-	 * @param  string $code 
+	 * @param  int $id
+	 * @param  string $code
 	 * @return Response
 	 */
 	public function activate($id, $code)
@@ -287,9 +287,9 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::route('home');
-        } 
-        else 
+            return Redirect::route(Config::get('Sentinel::config.confirmation_sent_page'));
+        }
+        else
         {
             Session::flash('error', $result['message']);
             return Redirect::route('Sentinel\resendActivationForm')
@@ -312,8 +312,8 @@ class UserController extends BaseController {
             // Success!
             Session::flash('success', $result['message']);
             return Redirect::route('home');
-        } 
-        else 
+        }
+        else
         {
             Session::flash('error', $result['message']);
             return Redirect::route('Sentinel\forgotPasswordForm')
@@ -346,12 +346,12 @@ class UserController extends BaseController {
 
 	/**
 	 * Process a password change request
-	 * @param  int $id 
-	 * @return redirect     
+	 * @param  int $id
+	 * @return redirect
 	 */
 	public function change($id)
 	{
-        
+
 		$data = Input::all();
 		$data['id'] = $id;
 
@@ -364,7 +364,7 @@ class UserController extends BaseController {
             Session::flash('success', $result['message']);
             return Redirect::back();
         } 
-        else 
+        else
         {
             Session::flash('error', $result['message']);
             return Redirect::action('Sentinel\UserController@edit', array($id))
@@ -375,8 +375,8 @@ class UserController extends BaseController {
 
 	/**
 	 * Process a suspend user request
-	 * @param  int $id 
-	 * @return Redirect     
+	 * @param  int $id
+	 * @return Redirect
 	 */
 	public function suspend($id)
 	{
@@ -399,8 +399,8 @@ class UserController extends BaseController {
 
 	/**
 	 * Unsuspend user
-	 * @param  int $id 
-	 * @return Redirect     
+	 * @param  int $id
+	 * @return Redirect
 	 */
 	public function unsuspend($id)
 	{
@@ -420,8 +420,8 @@ class UserController extends BaseController {
 
 	/**
 	 * Ban a user
-	 * @param  int $id 
-	 * @return Redirect     
+	 * @param  int $id
+	 * @return Redirect
 	 */
 	public function ban($id)
 	{
@@ -458,4 +458,4 @@ class UserController extends BaseController {
 
 }
 
-	
+
