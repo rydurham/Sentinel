@@ -72,7 +72,7 @@ return array(
 
     'post_logout'   => 'home',
 
-    'confirmation_sent_page' => 'home' //Edit this to show your own 'confirmation sent!' page if you like.
+    'confirmation_sent_page' => 'home', //Edit this to show your own 'confirmation sent!' page if you like.
 
     /*
     |--------------------------------------------------------------------------
