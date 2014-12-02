@@ -477,7 +477,7 @@ class UserController extends BaseController {
 		Session::flash('error', trans('Sentinel::users.noaccess'));
 		return Redirect::route(Config::get('Sentinel::config.post_login'));
 	}
-	return intval($id) == $user->id;
+	return true;
 	}
 
 }
