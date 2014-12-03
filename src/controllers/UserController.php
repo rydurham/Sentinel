@@ -48,7 +48,7 @@ class UserController extends BaseController {
 
 		// Set up Auth Filters
 		$this->beforeFilter('Sentinel\auth', array('only' => array('change')));
-		$this->beforeFilter('Sentinel\hasAccess:admin', array('only' => array('show', 'index', 'create', 'add', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban', 'edit', 'update')));
+		$this->beforeFilter('Sentinel\hasAccess:admin', array('only' => array('show', 'index', 'create', 'add', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban')));
 		//array('except' => array('create', 'store', 'activate', 'resend', 'forgot', 'reset')));
 	}
 
@@ -193,6 +193,11 @@ class UserController extends BaseController {
 	 */
 	public function edit($id)
 	{
+        $isOwner = $this->profileOwner($id);
+        if($isOwner !== true){
+            return $isOwner;
+        }
+
         $user = $this->user->byId($id);
 
         $currentGroups = $user->getGroups()->toArray();
@@ -213,6 +218,11 @@ class UserController extends BaseController {
 	 */
 	public function update($id)
 	{
+        $isOwner = $this->profileOwner($id);
+        if($isOwner !== true){
+            return $isOwner;
+        }
+
 		// Form Processing
         $result = $this->userForm->update( Input::all() );
 
@@ -455,6 +465,20 @@ class UserController extends BaseController {
         }
 	}
 
+	/**
+	* Check if the current user can update a profile
+	* @param $id
+	* @return bool|\Illuminate\Http\RedirectResponse
+	*/
+	protected function profileOwner($id)
+	{
+	$user = \Sentry::getUser();
+	if ($id != Session::get('userId') && (!$user->hasAccess('admin'))) {
+		Session::flash('error', trans('Sentinel::users.noaccess'));
+		return Redirect::route(Config::get('Sentinel::config.post_login'));
+	}
+	return true;
+	}
 
 }
 
