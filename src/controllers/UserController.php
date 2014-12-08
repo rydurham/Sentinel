@@ -297,7 +297,7 @@ class UserController extends BaseController {
         {
             // Success!
             Session::flash('success', $result['message']);
-            return Redirect::route(Config::get('Sentinel::config.confirmation_sent_page'));
+            return Redirect::route(Config::get('Sentinel::config.post_confirmation_sent'));
         }
         else
         {
