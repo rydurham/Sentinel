@@ -80,7 +80,7 @@ class GroupForm {
 	protected function valid(array $input)
 	{
 
-		return $this->validator->with($input)->passes();
+		return $this->validator->with($input)->updateUnique('name', $input['id'], 'id')->passes();
 		
 	}
 
