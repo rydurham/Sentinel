@@ -38,7 +38,11 @@ class SentryUser extends RepoAbstract implements UserInterface {
         $result = array();
         try {
             
-            // Check to see if activation has been disabled in the config. 
+            // Check for firstName or lastName values for backwards compatibility
+            $data['first_name'] = (isset($data['firstName']) ? $data['firstName'] : $data['first_name']);
+            $data['last_name']  = (isset($data['lastName']) ? $data['lastName'] : $data['last_name']);
+
+            // Check to see if activation has been disabled in the config.
             if ($this->config->has('Sentinel::config.activation'))
             {
                 if ($this->config->get('Sentinel::config.activation') == false)
@@ -126,6 +130,10 @@ class SentryUser extends RepoAbstract implements UserInterface {
         {
             // Find the user using the user id
             $user = $this->sentry->findUserById($data['id']);
+
+            // Check for firstName or lastName values for backwards compatibility
+            $data['first_name'] = (isset($data['firstName']) ? $data['firstName'] : $data['first_name']);
+            $data['last_name']  = (isset($data['lastName']) ? $data['lastName'] : $data['last_name']);
 
             // Update the user details
             $user->first_name = e($data['first_name']);
