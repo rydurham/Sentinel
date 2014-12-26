@@ -6,8 +6,8 @@
     "authors": [
         {
             "name": "Ryan Durham",
-            "email": "rydurham@gmail.com",
-            "homepage": "http://ryandurham.com"
+            "email": "ryan@stagerightlabs.com",
+            "homepage": "http://stagerightlabs.com"
         }
     ],
     "require": {
@@ -25,5 +25,9 @@
             "Sentinel": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "require-dev": {
+        "codeception/codeception": "~2.0",
+        "codeception/mockery-module": "0.2.*"
+    }
 }

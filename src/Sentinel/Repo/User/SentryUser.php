@@ -37,7 +37,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
     {
         $result = array();
         try {
-            
+
             // Check for firstName or lastName values for backwards compatibility
             if (isset($data['firstName']) || isset($data['first_name']))
             {
