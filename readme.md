@@ -85,3 +85,5 @@ Tests are powered by Codeception.  Currently they must be run within a Laravel a
 * Pull in the require-dev dependencies via composer. 
 * Navigate to the Sentinel folder
 * Run ```vendor/bin/codecept run```
+
+I would reccommend turning on "Mail Pretend" in your testing mail config file.
