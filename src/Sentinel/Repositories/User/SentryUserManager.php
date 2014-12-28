@@ -1,12 +1,14 @@
-<?php namespace Sentinel\Repo\User;
+<?php namespace Sentinel\Repositories\User;
 
+use Illuminate\Auth\UserInterface;
 use Mail;
 use Cartalyst\Sentry\Sentry;
-use Sentinel\Repo\RepoAbstract;
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Auth\UserProviderInterface;
+use Sentinel\Repositories\User\SentinelUserManagerInterface;
 
-class SentryUser extends RepoAbstract implements UserInterface {
+class SentryUserManager implements SentinelUserManagerInterface, UserProviderInterface {
     
     protected $sentry;
     protected $config;
@@ -606,42 +608,55 @@ class SentryUser extends RepoAbstract implements UserInterface {
     }
 
     /**
-     * Return a specific user from the given id
-     * 
-     * @param  integer $id
-     * @return User
+     * Retrieve a user by their unique identifier.
+     *
+     * @param  mixed $identifier
+     *
+     * @return \Illuminate\Auth\UserInterface|null
      */
-    public function byId($id)
+    public function retrieveById($identifier)
     {
-        try
-        {
-            $user = $this->sentry->findUserById($id);
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            return false;
-        }
-        return $user;
+        // TODO: Implement retrieveById() method.
     }
 
     /**
-     * Return a specific user from a given email address
-     * 
-     * @param  integer $id
-     * @return User
+     * Retrieve a user by by their unique identifier and "remember me" token.
+     *
+     * @param  mixed  $identifier
+     * @param  string $token
+     *
+     * @return \Illuminate\Auth\UserInterface|null
      */
-    public function byEmail($email)
+    public function retrieveByToken($identifier, $token)
     {
-        try
-        {
-            $user = $this->sentry->findUserByLogin($email);
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            return false;
-        }
-        return $user;
+        // TODO: Implement retrieveByToken() method.
     }
+
+    /**
+     * Update the "remember me" token for the given user in storage.
+     *
+     * @param  \Illuminate\Auth\UserInterface $user
+     * @param  string                         $token
+     *
+     * @return void
+     */
+    public function updateRememberToken(UserInterface $user, $token)
+    {
+        // TODO: Implement updateRememberToken() method.
+    }
+
+    /**
+     * Retrieve a user by the given credentials.
+     *
+     * @param  array $credentials
+     *
+     * @return \Illuminate\Auth\UserInterface|null
+     */
+    public function retrieveByCredentials(array $credentials)
+    {
+        // TODO: Implement retrieveByCredentials() method.
+    }
+
 
 
     /**
@@ -685,90 +700,24 @@ class SentryUser extends RepoAbstract implements UserInterface {
     }
 
     /**
-     * Select users based on an arbitrary where() condition
-     * @param  string $field   Name of Field to be queried against
-     * @param  string $operand Where comparison operand
-     * @param  any $value      Value to be compared against
-     * @return Illuminate\Database\Eloquent\Collection   User Set
-     */
-    public function where($field, $operand, $value)
-    {
-        $users = $this->sentry->getUserProvider()->createModel()->where($field, $operand, $value)->get();
-
-        foreach ($users as $user) {
-            if ($user->isActivated()) 
-            {
-                $user->status = "Active";
-            } 
-            else 
-            {
-                $user->status = "Not Active";
-            }
-
-            //Pull Suspension & Ban info for this user
-            $throttle = $this->throttleProvider->findByUserId($user->id);
-
-            //Check for suspension
-            if($throttle->isSuspended())
-            {
-                // User is Suspended
-                $user->status = "Suspended";
-            }
-
-            //Check for ban
-            if($throttle->isBanned())
-            {
-                // User is Banned
-                $user->status = "Banned";
-            }
-        }
-
-        return $users;
-    }
-
-    /**
      * Provide a wrapper for Sentry::getUser()
      *
      * @return user object
      */
     public function getUser()
     {
-        return $this->sentry->getUser();
+        // TODO: Implement getUser() method.
     }
-
 
     /**
-     * Generate password - helper function
-     * From http://www.phpscribble.com/i4xzZu/Generate-random-passwords-of-given-length-and-strength
+     * Validate a user against the given credentials.
      *
+     * @param  \Illuminate\Auth\UserInterface $user
+     * @param  array                          $credentials
+     *
+     * @return bool
      */
-    protected function _generatePassword($length=9, $strength=4) {
-        $vowels = 'aeiouy';
-        $consonants = 'bcdfghjklmnpqrstvwxz';
-        if ($strength & 1) {
-               $consonants .= 'BCDFGHJKLMNPQRSTVWXZ';
-        }
-        if ($strength & 2) {
-               $vowels .= "AEIOUY";
-        }
-        if ($strength & 4) {
-               $consonants .= '23456789';
-        }
-        if ($strength & 8) {
-               $consonants .= '@#$%';
-        }
-
-        $password = '';
-        $alt = time() % 2;
-        for ($i = 0; $i < $length; $i++) {
-            if ($alt == 1) {
-                $password .= $consonants[(rand() % strlen($consonants))];
-                $alt = 0;
-            } else {
-                $password .= $vowels[(rand() % strlen($vowels))];
-                $alt = 1;
-            }
-        }
-        return $password;
-    }
-}
+    public function validateCredentials(UserInterface $user, array $credentials)
+    {
+        // TODO: Implement validateCredentials() method.
+    }}

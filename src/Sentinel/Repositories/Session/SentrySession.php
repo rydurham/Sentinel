@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Repo\Session;
+<?php namespace Sentinel\Repositories\Session;
 
 use Cartalyst\Sentry\Sentry;
 use Sentinel\Repo\RepoAbstract;

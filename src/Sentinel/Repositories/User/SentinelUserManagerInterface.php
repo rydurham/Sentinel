@@ -1,6 +1,6 @@
-<?php namespace Sentinel\Repo\User;
+<?php namespace Sentinel\Repositories\User;
 
-interface UserInterface {
+interface SentinelUserManagerInterface {
 
 	/**
 	 * Store a newly created resource in storage.
@@ -26,22 +26,6 @@ interface UserInterface {
 	public function destroy($id);
 
 	/**
-	 * Return a specific user from the given id
-	 * 
-	 * @param  integer $id
-	 * @return User
-	 */
-	public function byId($id);
-
-	/**
-	 * Return a specific user from a given email address
-	 * 
-	 * @param  integer $id
-	 * @return User
-	 */
-	public function byEmail($email);
-
-	/**
 	 * Return all the registered users
 	 *
 	 * @return stdObject Collection of users
@@ -54,5 +38,6 @@ interface UserInterface {
 	 * @return user object
 	 */
 	public function getUser();
+
 
 }

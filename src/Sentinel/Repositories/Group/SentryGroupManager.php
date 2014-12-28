@@ -1,9 +1,8 @@
-<?php namespace Sentinel\Repo\Group;
+<?php namespace Sentinel\Repositories\Group;
 
 use Cartalyst\Sentry\Sentry;
-use Sentinel\Repo\RepoAbstract;
 
-class SentryGroup extends RepoAbstract implements GroupInterface {
+class SentryGroupManager implements SentinelGroupManagerInterface {
 	
 	protected $sentry;
 

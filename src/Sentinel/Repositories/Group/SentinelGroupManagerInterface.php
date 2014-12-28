@@ -1,6 +1,6 @@
-<?php namespace Sentinel\Repo\Group;
+<?php namespace Sentinel\Repositories\Group;
 
-interface GroupInterface {
+interface SentinelGroupManagerInterface {
 
 	/**
 	 * Store a newly created resource in storage.
