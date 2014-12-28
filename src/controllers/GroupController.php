@@ -48,7 +48,7 @@ class GroupController extends BaseController {
 	 */
 	public function create()
 	{
-		//Form for creating a new Group
+		//Forms for creating a new Group
 		return View::make('Sentinel::groups.create');
 	}
 
@@ -59,7 +59,7 @@ class GroupController extends BaseController {
 	 */
 	public function store()
 	{
-		// Form Processing
+		// Forms Processing
         $result = $this->groupForm->save( Input::all() );
         
         if( $result['success'] )
@@ -109,7 +109,7 @@ class GroupController extends BaseController {
 	 */
 	public function update($id)
 	{
-		// Form Processing
+		// Forms Processing
         $result = $this->groupForm->update( Input::all() );
 
         if( $result['success'] )

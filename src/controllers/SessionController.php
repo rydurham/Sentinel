@@ -37,7 +37,7 @@ class SessionController extends BaseController {
 	 */
 	public function store()
 	{
-		// Form Processing
+		// Forms Processing
         $result = $this->loginForm->save( Input::all() );
 
         if( $result['success'] )

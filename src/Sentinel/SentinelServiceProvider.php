@@ -27,7 +27,7 @@ class SentinelServiceProvider extends ServiceProvider {
 		// Load the package
 		$this->package('rydurham/sentinel');
 
-		// Register the Sentry Service Provider
+		// Register the Sentry Services Provider
 		$this->app->register('Cartalyst\Sentry\SentryServiceProvider');
 		
 		// Add the Views Namespace 

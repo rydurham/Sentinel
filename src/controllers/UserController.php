@@ -1,7 +1,7 @@
 <?php namespace Sentinel;
 
-use Sentinel\Repo\User\UserInterface;
-use Sentinel\Repo\Group\GroupInterface;
+use Sentinel\Repositories\Group\SentinelGroupManagerInterface;
+use Sentinel\Repositories\User\SentinelUserManagerInterface;
 use Sentinel\Service\Form\Register\RegisterForm;
 use Sentinel\Service\Form\User\UserForm;
 use Sentinel\Service\Form\ResendActivation\ResendActivationForm;
@@ -25,23 +25,18 @@ class UserController extends BaseController {
 	 * Instantiate a new UserController
 	 */
 	public function __construct(
-		UserInterface $user,
-		GroupInterface $group,
-		RegisterForm $registerForm,
-		UserForm $userForm,
-		ResendActivationForm $resendActivationForm,
-		ForgotPasswordForm $forgotPasswordForm,
-		ChangePasswordForm $changePasswordForm,
-		SuspendUserForm $suspendUserForm)
+		SentinelUserManagerInterface $user,
+		SentinelGroupManagerInterface $group
+    )
 	{
 		$this->user = $user;
 		$this->group = $group;
-		$this->registerForm = $registerForm;
-		$this->userForm = $userForm;
-		$this->resendActivationForm = $resendActivationForm;
-		$this->forgotPasswordForm = $forgotPasswordForm;
-		$this->changePasswordForm = $changePasswordForm;
-		$this->suspendUserForm = $suspendUserForm;
+//		$this->registerForm = $registerForm;
+//		$this->userForm = $userForm;
+//		$this->resendActivationForm = $resendActivationForm;
+//		$this->forgotPasswordForm = $forgotPasswordForm;
+//		$this->changePasswordForm = $changePasswordForm;
+//		$this->suspendUserForm = $suspendUserForm;
 
 		//Check CSRF token on POST
 		$this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
@@ -92,7 +87,7 @@ class UserController extends BaseController {
         $data = Input::all();
         $data['groups'] = Config::get('Sentinel::config.default_user_groups');
 
-        // Form Processing
+        // Forms Processing
         $result = $this->registerForm->save( $data );
 
         if( $result['success'] )
@@ -137,7 +132,7 @@ class UserController extends BaseController {
         $data = Input::all();
         $data['groups'] = Config::get('Sentinel::config.default_user_groups');
 
-        // Form Processing
+        // Forms Processing
         $result = $this->registerForm->save( $data );
 
         if( $result['success'] )
@@ -219,7 +214,7 @@ class UserController extends BaseController {
             return $isOwner;
         }
 
-		// Form Processing
+		// Forms Processing
         $result = $this->userForm->update( Input::all() );
 
         if( $result['success'] )
@@ -286,7 +281,7 @@ class UserController extends BaseController {
 	 */
 	public function resend()
 	{
-		// Form Processing
+		// Forms Processing
         $result = $this->resendActivationForm->resend( Input::all() );
 
         if( $result['success'] )
@@ -310,7 +305,7 @@ class UserController extends BaseController {
 	 */
 	public function forgot()
 	{
-		// Form Processing
+		// Forms Processing
         $result = $this->forgotPasswordForm->forgot( Input::all() );
 
         if( $result['success'] )
@@ -361,7 +356,7 @@ class UserController extends BaseController {
 		$data = Input::all();
 		$data['id'] = $id;
 
-		// Form Processing
+		// Forms Processing
         $result = $this->changePasswordForm->change( $data );
 
         if( $result['success'] )
@@ -386,7 +381,7 @@ class UserController extends BaseController {
 	 */
 	public function suspend($id)
 	{
- 		// Form Processing
+ 		// Forms Processing
         $result = $this->suspendUserForm->suspend( Input::all() );
 
         if( $result['success'] )
