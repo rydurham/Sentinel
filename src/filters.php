@@ -11,15 +11,15 @@
 |
 */
 
-App::before(function($request)
+App::before(function ($request)
 {
-	//
+    //
 });
 
 
-App::after(function($request, $response)
+App::after(function ($request, $response)
 {
-	//
+    //
 });
 
 /*
@@ -34,65 +34,73 @@ App::after(function($request, $response)
 */
 
 
-Route::filter('Sentinel\auth', function()
+Route::filter('Sentinel\auth', function ()
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    if ( ! Sentry::check())
+    {
+        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    }
 });
 
-Route::filter('Sentinel\hasAccess', function($route, $request, $value)
+Route::filter('Sentinel\hasAccess', function ($route, $request, $value)
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    if ( ! Sentry::check())
+    {
+        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    }
+    
+    try
+    {
+        $user = Sentry::getUser();
 
-	$userId = Route::input('users');
+        if ( ! $user->hasAccess($value))
+        {
+            Session::flash('error', trans('Sentinel::users.noaccess'));
 
-	try
-	{
-		$user = Sentry::getUser();
+            return Redirect::route('home');
+        }
+    } catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        Session::flash('error', trans('Sentinel::users.notfound'));
 
-		if ( $userId != Session::get('userId') && (! $user->hasAccess($value)) )
-		{
-			Session::flash('error', trans('Sentinel::users.noaccess'));
-			return Redirect::route('home');
-		}
-	}
-	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-	{
-		Session::flash('error', trans('Sentinel::users.notfound'));
-		return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
-	}
+        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    }
 });
 
-Route::filter('Sentinel\inGroup', function($route, $request, $value)
+Route::filter('Sentinel\inGroup', function ($route, $request, $value)
 {
-	if (!Sentry::check()) return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    if ( ! Sentry::check())
+    {
+        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    }
 
-	// we need to determine if a non admin user 
-	// is trying to access their own account.
+    // we need to determine if a non admin user
+    // is trying to access their own account.
     $userId = Route::input('id');
 
-	try
-	{
-		$user = Sentry::getUser();
-		 
-		$group = Sentry::findGroupByName($value);
-		 
-		if ($userId != Session::get('userId') && (! $user->inGroup($group))  )
-		{
-			Session::flash('error', trans('Sentinel::users.noaccess'));
-			return Redirect::route('home');
-		}
-	}
-	catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-	{
-		Session::flash('error', trans('Sentinel::users.notfound'));
-		return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
-	}
-	 
-	catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-	{
-		Session::flash('error', trans('Sentinel::groups.notfound'));
-		return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
-	}
+    try
+    {
+        $user = Sentry::getUser();
+
+        $group = Sentry::findGroupByName($value);
+
+        if ($userId != Session::get('userId') && ( ! $user->inGroup($group)))
+        {
+            Session::flash('error', trans('Sentinel::users.noaccess'));
+
+            return Redirect::route('home');
+        }
+    } catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        Session::flash('error', trans('Sentinel::users.notfound'));
+
+        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+    {
+        Session::flash('error', trans('Sentinel::groups.notfound'));
+
+        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+    }
 });
 // thanks to http://laravelsnippets.com/snippets/sentry-route-filters
 
@@ -108,7 +116,7 @@ Route::filter('Sentinel\inGroup', function($route, $request, $value)
 |
 */
 
-Route::filter('Sentinel\csrf', function()
+Route::filter('Sentinel\csrf', function ()
 {
     if (Session::token() !== Input::get('_token'))
     {
