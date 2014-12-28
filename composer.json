@@ -21,8 +21,8 @@
             "src/seeds",
             "src/controllers"
         ],
-        "psr-0": {
-            "Sentinel": "src/"
+        "psr-4": {
+            "Sentinel\\": "src/Sentinel"
         }
     },
     "minimum-stability": "stable",
