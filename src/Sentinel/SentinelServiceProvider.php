@@ -1,7 +1,7 @@
 <?php namespace Sentinel;
 
-use Sentinel\Repo\RepoServiceProvider;
-use Sentinel\Service\Form\FormServiceProvider;
+use Sentinel\Providers\RepositoryServiceProvider;
+use Sentinel\Providers\FormServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class SentinelServiceProvider extends ServiceProvider {
@@ -79,7 +79,7 @@ class SentinelServiceProvider extends ServiceProvider {
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 		$loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
 
-		$repoProvider = new RepoServiceProvider($this->app);
+		$repoProvider = new RepositoryServiceProvider($this->app);
 		$repoProvider->register();
 
 		$formServiceProvider = new FormServiceProvider($this->app);
