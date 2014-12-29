@@ -1,5 +1,6 @@
 <?php namespace Sentinel;
 
+use Sentinel\Providers\EventServiceProvider;
 use Sentinel\Providers\RepositoryServiceProvider;
 use Sentinel\Providers\ValidationServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -53,7 +54,7 @@ class SentinelServiceProvider extends ServiceProvider {
 			// The package config has not been published.
 			$this->app['config']->addNamespace('Sentinel', __DIR__.'/../config');
 		}
-        
+
 		// Add the Translator Namespace
 		$this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
 
@@ -63,6 +64,9 @@ class SentinelServiceProvider extends ServiceProvider {
         include $sentinelPath . '/../routes.php';
 		include $sentinelPath . '/../validators.php';
 
+        // Boot the Event Service Provider
+        $events = new EventServiceProvider($this->app);
+        $events->boot();
 	}
 
 	/**
@@ -83,6 +87,7 @@ class SentinelServiceProvider extends ServiceProvider {
         // Register Validation Handling
 		$validation = new ValidationServiceProvider($this->app);
 		$validation->register();
+
 	}
 
 	/**
