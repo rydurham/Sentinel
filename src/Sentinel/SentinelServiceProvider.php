@@ -53,18 +53,14 @@ class SentinelServiceProvider extends ServiceProvider {
 			// The package config has not been published.
 			$this->app['config']->addNamespace('Sentinel', __DIR__.'/../config');
 		}
-
-
-
+        
 		// Add the Translator Namespace
 		$this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
 
-
 		// Make the app aware of these files
-		include $sentinelPath . '/../routes.php';
-		include $sentinelPath . '/../filters.php';
-		include $sentinelPath . '/../observables.php';
-		include $sentinelPath . '/../composers.php';
+        include $sentinelPath . '/../composers.php';
+        include $sentinelPath . '/../filters.php';
+        include $sentinelPath . '/../routes.php';
 		include $sentinelPath . '/../validators.php';
 
 	}
