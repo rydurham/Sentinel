@@ -1,9 +1,9 @@
 <?php namespace Sentinel;
 
-use Sentinel\Repo\Session\SessionInterface;
-use Sentinel\Service\Form\Login\LoginForm;
+use Sentinel\Repositories\Session\SentinelSessionManagerInterface;
+use Sentinel\Services\Forms\LoginForm;
 use BaseController;
-use View, Input, Event, Redirect, Session, URL, Config;
+use View, Input, Event, Redirect, Session, Config;
 
 class SessionController extends BaseController {
 
@@ -16,7 +16,7 @@ class SessionController extends BaseController {
 	/**
 	 * Constructor
 	 */
-	public function __construct(SessionInterface $session, LoginForm $loginForm)
+	public function __construct(SentinelSessionManagerInterface $session, LoginForm $loginForm)
 	{
 		$this->session = $session;
 		$this->loginForm = $loginForm;
@@ -27,7 +27,9 @@ class SessionController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('Sentinel::sessions.login');
+        //dd(Form::open(array('action' => 'Sentinel\SessionController@store')));
+
+        return View::make('Sentinel::sessions.login');
 	}
 
 	/**
@@ -68,7 +70,7 @@ class SessionController extends BaseController {
 	{
 		$this->session->destroy();
 		Event::fire('sentinel.user.logout');
-		$redirect_route = Config::get('Sentinel::config.post_logout');
+		$redirect_route = Config::get('Sentinel::routing.post_logout', 'home');
 		return Redirect::route($redirect_route);
 	}
 
