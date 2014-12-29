@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider {
         $dispatcher = $this->app->make('events');
 
         // Set up event listeners
-        $dispatcher->subscribe('Phylos\Handlers\UserEventHandler');
+        $dispatcher->subscribe('Sentinel\Handlers\UserEventHandler');
 
         // Set up mailer listener
         $dispatcher->subscribe('Sentinel\Mailers\UserMailer');

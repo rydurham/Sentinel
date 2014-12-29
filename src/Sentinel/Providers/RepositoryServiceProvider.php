@@ -18,7 +18,8 @@ class RepositoryServiceProvider extends ServiceProvider {
         $app->bind('Sentinel\Repositories\Session\SentinelSessionManagerInterface', function($app)
         {
             return new SentrySessionManager(
-            	$app['sentry']
+            	$app['sentry'],
+                $app->make('events')
             );
         });
 
