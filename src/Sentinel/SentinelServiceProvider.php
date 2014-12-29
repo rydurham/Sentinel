@@ -1,7 +1,7 @@
 <?php namespace Sentinel;
 
 use Sentinel\Providers\RepositoryServiceProvider;
-use Sentinel\Providers\FormServiceProvider;
+use Sentinel\Providers\ValidationServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class SentinelServiceProvider extends ServiceProvider {
@@ -76,14 +76,17 @@ class SentinelServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+		// Load the Sentry Facade Alias
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
 		$loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
 
-		$repoProvider = new RepositoryServiceProvider($this->app);
-		$repoProvider->register();
+		// Register the Repositories
+        $repositories = new RepositoryServiceProvider($this->app);
+		$repositories->register();
 
-		$formServiceProvider = new FormServiceProvider($this->app);
-		$formServiceProvider->register();
+        // Register Validation Handling
+		$validation = new ValidationServiceProvider($this->app);
+		$validation->register();
 	}
 
 	/**
