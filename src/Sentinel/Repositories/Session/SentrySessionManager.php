@@ -1,14 +1,12 @@
 <?php namespace Sentinel\Repositories\Session;
 
 use Cartalyst\Sentry\Sentry;
-use Sentinel\Repo\RepoAbstract;
-use Config;
+use Sentinel\Repositories\Session\SentinelSessionManagerInterface;
 
-class SentrySession extends RepoAbstract implements SessionInterface {
+class SentrySessionManager implements SentinelSessionManagerInterface {
 
 	protected $sentry;
 	protected $throttleProvider;
-
 
 	public function __construct(Sentry $sentry)
 	{

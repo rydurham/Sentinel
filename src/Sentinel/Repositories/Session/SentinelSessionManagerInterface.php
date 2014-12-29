@@ -1,6 +1,6 @@
-<?php namespace Sentinel\Repo\Session;
+<?php namespace Sentinel\Repositories\Session;
 
-interface SessionInterface {
+interface SentinelSessionManagerInterface {
 
 	/**
 	 * Store a newly created resource in storage.
