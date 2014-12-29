@@ -1,0 +1,13 @@
+<?php namespace Sentinel\Services\Responders;
+
+ 
+class SuccessResponse extends BaseResponse {
+
+    public function __construct($message, array $payload = null)
+    {
+        parent::__construct($message, $payload);
+
+        $this->success = true;
+    }
+
+}
