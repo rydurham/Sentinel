@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::config.layout'))
+@extends(Config::get('Sentinel::sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')

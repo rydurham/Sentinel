@@ -8,7 +8,7 @@
 */
 
 // Pull routing values from config
-$routesConfig = Config::get('Sentinel::config.routes');
+$routesConfig = Config::get('Sentinel::routing.routes');
 
 $groupName = 'groups';
 $sessionName = 'sessions';
@@ -103,6 +103,7 @@ if ($sessionsRouteEnabled) {
 }
 
 // User Routes
+
 if ($registerRouteEnabled) {
     Route::get($register, array('as' => 'Sentinel\register', 'uses' => 'Sentinel\UserController@register'));
 }
@@ -121,7 +122,9 @@ if ($forgotRouteEnabled) {
     }));
     Route::post($forgot, 'Sentinel\UserController@forgot');
 }
+
 if ($usersRouteEnabled) {
+
     Route::post($users . '/{id}/change', 'Sentinel\UserController@change')->where('id', '[0-9]+');
     Route::get($users . '/{id}/reset/{code}', 'Sentinel\UserController@reset')->where('id', '[0-9]+');
     Route::get($users . '/{id}/suspend', array('as' => 'Sentinel\suspendUserForm', function ($id) {
@@ -139,7 +142,6 @@ if ($usersRouteEnabled) {
     Route::get($users . '/{id}/edit', array('as' => 'users.edit', 'uses' => 'Sentinel\UserController@edit'))->where('id', '[0-9]+');
     Route::put($users . '/{id}', array('as' => 'users.update', 'uses' => 'Sentinel\UserController@update'))->where('id', '[0-9]+');
     Route::delete($users . '/{id}', array('as' => 'users.destroy', 'uses' => 'Sentinel\UserController@destroy'))->where('id', '[0-9]+');
-
 }
 
 // Group Routes

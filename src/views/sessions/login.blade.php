@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::config.layout'))
+@extends(Config::get('Sentinel::sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -9,6 +9,7 @@ Log In
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
+
         {{ Form::open(array('action' => 'Sentinel\SessionController@store')) }}
 
             <h2 class="form-signin-heading">Sign In</h2>
