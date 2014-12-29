@@ -24,7 +24,7 @@ return array(
     |
     */
 
-    'activation_required' => true,
+    'require_activation' => true,
 
     /*
     |--------------------------------------------------------------------------
