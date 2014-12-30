@@ -2,7 +2,7 @@
 /**
  * Modified from the Original Sentry Service Provider. This version pulls
  * config data from the Sentinel "Sentry" config file, rather than the
- * default Sentry config file.
+ * default Sentry config file. It also adds default exception handling.
  *
  * NOTICE OF LICENSE
  *
@@ -29,10 +29,22 @@ use Cartalyst\Sentry\Hashing\WhirlpoolHasher;
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Sessions\IlluminateSession;
 use Cartalyst\Sentry\Throttling\Eloquent\Provider as ThrottleProvider;
+use Cartalyst\Sentry\Throttling\UserBannedException;
+use Cartalyst\Sentry\Throttling\UserSuspendedException;
 use Cartalyst\Sentry\Users\Eloquent\Provider as UserProvider;
+use Cartalyst\Sentry\Users\UserNotActivatedException;
+use Cartalyst\Sentry\Users\UserNotFoundException;
 use Illuminate\Support\ServiceProvider;
+use Sentinel\Services\Responders\FailureResponse;
 
 class SentryServiceProvider extends ServiceProvider {
+
+    public function __construct($app)
+    {
+        parent::__construct($app);
+        $this->redirect = $this->app->make('redirect');
+        $this->session  = $this->app->make('session');
+    }
 
     /**
      * Boot the service provider.
@@ -58,6 +70,7 @@ class SentryServiceProvider extends ServiceProvider {
         $this->registerSession();
         $this->registerCookie();
         $this->registerSentry();
+        $this->registerExceptions();
     }
 
     /**
@@ -296,6 +309,55 @@ class SentryServiceProvider extends ServiceProvider {
                 $app['request']->getClientIp()
             );
         });
+    }
+
+    /**
+     * Register Sentry Exception listeners
+     */
+    private function registerExceptions()
+    {
+        $this->app->error(function(UserNotFoundException $e)
+        {
+            // Sometimes a user is found, however hashed credentials do
+            // not match. Therefore a user technically doesn't exist
+            // by those credentials. Check the error message returned
+            // for more information.
+            $this->session->flash('error', trans('Sentinel::sessions.invalid'));
+            return $this->redirect->back()->withInput();
+
+        });
+
+        $this->app->error(function(UserNotActivatedException $e)
+        {
+            // This user's account has not yet been activated
+            $url     = route('Sentinel\resendActivationForm');
+            $message = trans('Sentinel::sessions.notactive', array('url' => $url));
+
+            $this->session->flash('error', $message);
+            return $this->redirect->back()->withInput();
+
+        });
+
+        $this->app->error(function(UserSuspendedException $e)
+        {
+            // This user's account has been temporarily suspended
+            $this->session->flash('error', trans('Sentinel::sessions.suspended'));
+            return $this->redirect->back()->withInput();
+
+        });
+
+        $this->app->error(function(UserBannedException $e)
+        {
+            // This user has been banned.
+            $this->session->flash('error', trans('Sentinel::sessions.banned'));
+            return $this->redirect->back()->withInput();
+
+        });
+
+//        $this->app->error(function( $e)
+//        {
+//
+//        });
     }
 
 }

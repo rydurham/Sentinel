@@ -1,11 +1,13 @@
 <?php namespace Sentinel\Repositories\Session;
 
+use Sentinel\Services\Responders\BaseResponse;
+
 interface SentinelSessionManagerInterface {
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @return Response
+	 * @return BaseResponse
 	 */
 	public function store($data);
 
@@ -13,7 +15,7 @@ interface SentinelSessionManagerInterface {
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return BaseResponse
 	 */
 	public function destroy();
 
