@@ -2,7 +2,7 @@
 
 use Sentinel\Services\Validation\FormValidator;
 
-class CreateGroupForm extends FormValidator {
+class GroupCreateForm extends FormValidator {
 
     protected $rules = [
         'name' => 'required|min:4|unique:groups',

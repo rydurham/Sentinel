@@ -2,7 +2,7 @@
 
 use Sentinel\Services\Validation\FormValidator;
 
-class CreateUserForm extends FormValidator {
+class UserCreateForm extends FormValidator {
 
     protected $rules = [
         'first_name' => 'alpha_spaces',
