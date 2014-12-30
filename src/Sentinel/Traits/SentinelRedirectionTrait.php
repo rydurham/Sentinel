@@ -10,9 +10,20 @@ trait SentinelRedirectionTrait {
      *
      * @param              $key
      * @param BaseResponse $response
+     *
+     * @return Response
      */
     public function answerFromResponse($key, BaseResponse $response)
     {
+        if ($response->isSuccessful())
+        {
+            $message = ['success' => $response->getMessage()];
+        }
+        else
+        {
+            $message = ['error' => $response->getMessage()];
+        }
+        return $this->answerWith($key, $message, $response->getPayload());
 
     }
 
@@ -26,13 +37,10 @@ trait SentinelRedirectionTrait {
     {
         // Determine where the developer wants us to go.
         $direction = Config::get('Sentinel::routing.' . $key);
-        $url       = $this->urlLocator($direction);
+        $url       = $this->generateUrl($direction);
 
         // Should this be a JSON response?
-        if (! $url)
-        {
-            return Response::json($payload);
-        }
+        if (! $url) { return Response::json($payload); }
 
         // Do we need to flash any data?
         if ($message)
@@ -46,7 +54,14 @@ trait SentinelRedirectionTrait {
 
     }
 
-    public function urlLocator(array $direction)
+    /**
+     * Generate URL from an array found in the config file
+     *
+     * @param array $direction
+     *
+     * @return string|null
+     */
+    public function generateUrl(array $direction)
     {
         $key      = key($direction);
         $location = current($direction);
@@ -58,6 +73,8 @@ trait SentinelRedirectionTrait {
 
         return call_user_func($key, $location);
     }
+
+
 
 
 

@@ -1,17 +1,24 @@
 <?php namespace Sentinel;
 
+use BaseController;
+use Illuminate\Http\Response;
 use Sentinel\Repositories\Session\SentinelSessionManagerInterface;
 use Sentinel\Services\Forms\LoginForm;
-use BaseController;
+use Sentinel\Traits\SentinelRedirectionTrait;
 use View, Input, Event, Redirect, Session, Config;
 
 class SessionController extends BaseController {
 
 	/**
-	 * Member Vars
+	 * Members
 	 */
 	protected $session;
 	protected $loginForm;
+
+    /**
+     * Traits
+     */
+    use SentinelRedirectionTrait;
 
 	/**
 	 * Constructor
@@ -27,8 +34,6 @@ class SessionController extends BaseController {
 	 */
 	public function create()
 	{
-        //dd(Form::open(array('action' => 'Sentinel\SessionController@store')));
-
         return View::make('Sentinel::sessions.login');
 	}
 
@@ -39,24 +44,27 @@ class SessionController extends BaseController {
 	 */
 	public function store()
 	{
-		// Forms Processing
-        $result = $this->loginForm->save( Input::all() );
+		// Gather the input
+        $data = Input::all();
 
-        if( $result['success'] )
+        // Validate the data
+        $this->loginForm->validate($data);
+
+        // Attempt the login
+        $result = $this->session->store($data);
+
+        // Did it work?
+        if($result->isSuccessful())
         {
-            Event::fire('sentinel.user.login', array(
-            	'user' => $result['user']
-            ));
-
-            // Success!
-            $redirect_route = Config::get('Sentinel::config.post_login');
-            return Redirect::intended(route($redirect_route));
+            // Login was successful.  Determine where we should go now.
+            $redirect_route = Config::get('Sentinel::routing.session.store');
+            return Redirect::intended($this->generateUrl($redirect_route));
 
         } else {
-            Session::flash('error', $result['message']);
-            return Redirect::route('Sentinel\login')
-                ->withInput()
-                ->withErrors( $this->loginForm->errors() );
+            // There was a problem - unrelated to Form validation.
+            Session::flash('error', $result->getMessage());
+            return Redirect::action('Sentinel\SessionController@create')
+                ->withInput();
         }
 	}
 
@@ -69,9 +77,8 @@ class SessionController extends BaseController {
 	public function destroy()
 	{
 		$this->session->destroy();
-		Event::fire('sentinel.user.logout');
-		$redirect_route = Config::get('Sentinel::routing.post_logout', 'home');
-		return Redirect::route($redirect_route);
+
+		return $this->answerWith('session.destroy');
 	}
 
 }
