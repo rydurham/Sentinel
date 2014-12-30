@@ -59,7 +59,6 @@ class SentinelServiceProvider extends ServiceProvider {
 		$this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
 
 		// Make the app aware of these files
-        include $sentinelPath . '/../composers.php';
         include $sentinelPath . '/../filters.php';
         include $sentinelPath . '/../routes.php';
 		include $sentinelPath . '/../validators.php';
