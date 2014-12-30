@@ -60,8 +60,13 @@ class SentinelServiceProvider extends ServiceProvider {
 
 		// Make the app aware of these files
         include $sentinelPath . '/../filters.php';
-        include $sentinelPath . '/../routes.php';
 		include $sentinelPath . '/../validators.php';
+
+        // Should we load the default routes?
+        if ($this->app['config']['Sentinel::routing.routes_enabled'])
+        {
+            include $sentinelPath . '/../routes.php';
+        }
 
         // Boot the Event Service Provider
         $events = new EventServiceProvider($this->app);
