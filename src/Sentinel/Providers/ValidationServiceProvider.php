@@ -34,7 +34,6 @@ class ValidationServiceProvider extends ServiceProvider {
         // Register the FormValidationFailedException handler
         $this->app->error(function( FormValidationFailedException $exception)
         {
-            //dd($exception->getErrors());
             $this->redirect = $this->app->make('redirect');
             return $this->redirect->back()->withInput()->withErrors($exception->getErrors());
         });
