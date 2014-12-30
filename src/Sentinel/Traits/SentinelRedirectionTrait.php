@@ -13,7 +13,7 @@ trait SentinelRedirectionTrait {
      *
      * @return Response
      */
-    public function answerFromResponse($key, BaseResponse $response)
+    public function answerWithResponse($key, BaseResponse $response)
     {
         if ($response->isSuccessful())
         {
@@ -23,7 +23,7 @@ trait SentinelRedirectionTrait {
         {
             $message = ['error' => $response->getMessage()];
         }
-        return $this->answerWith($key, $message, $response->getPayload());
+        return $this->redirectTo($key, $message, $response->getPayload());
 
     }
 
@@ -33,16 +33,20 @@ trait SentinelRedirectionTrait {
      * @param  int  $id
      * @return Response
      */
-    public function answerWith($key, array $message = null, $payload = [])
+    public function redirectTo($key, array $message = null, $payload = [])
     {
-        // Determine where the developer wants us to go.
-        $direction = Config::get('Sentinel::routing.' . $key);
-        $url       = $this->generateUrl($direction);
+        // A key can either be a string representing a config entry, or
+        // an array representing the "direction" we intend to go in.
+        $direction = (is_array($key) ? $key : Config::get('Sentinel::routing.' . $key));
 
-        // Should this be a JSON response?
+        // Convert this "direction" to a url
+        $url = $this->generateUrl($direction);
+
+        // If the url is null (or blank) the developer wants to return
+        // json rather than a view request.
         if (! $url) { return Response::json($payload); }
 
-        // Do we need to flash any data?
+        // Do we need to flash any session data?
         if ($message)
         {
             $status = key($message);
@@ -50,6 +54,7 @@ trait SentinelRedirectionTrait {
             Session::flash($status,$text);
         }
 
+        // Redirect to the intended url
         return Redirect::to($url)->with($payload);
 
     }

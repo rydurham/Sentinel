@@ -78,7 +78,7 @@ class SessionController extends BaseController {
 	{
 		$this->session->destroy();
 
-		return $this->answerWith('session.destroy');
+		return $this->redirectTo('session.destroy');
 	}
 
 }
