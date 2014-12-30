@@ -12,7 +12,7 @@ class SessionController extends BaseController {
 	/**
 	 * Members
 	 */
-	protected $session;
+	protected $sessionManager;
 	protected $loginForm;
 
     /**
@@ -23,9 +23,9 @@ class SessionController extends BaseController {
 	/**
 	 * Constructor
 	 */
-	public function __construct(SentinelSessionManagerInterface $session, LoginForm $loginForm)
+	public function __construct(SentinelSessionManagerInterface $sessionManager, LoginForm $loginForm)
 	{
-		$this->session = $session;
+		$this->session = $sessionManager;
 		$this->loginForm = $loginForm;
 	}
 
@@ -51,7 +51,7 @@ class SessionController extends BaseController {
         $this->loginForm->validate($data);
 
         // Attempt the login
-        $result = $this->session->store($data);
+        $result = $this->sessionManager->store($data);
 
         // Did it work?
         if($result->isSuccessful())
@@ -76,7 +76,7 @@ class SessionController extends BaseController {
 	 */
 	public function destroy()
 	{
-		$this->session->destroy();
+		$this->sessionManager->destroy();
 
 		return $this->redirectTo('session.destroy');
 	}
