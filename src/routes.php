@@ -4,7 +4,6 @@
 |--------------------------------------------------------------------------
 | Sentinel Package Routes
 |--------------------------------------------------------------------------
-|
 */
 
 // Session Routes
@@ -15,8 +14,9 @@ Route::post('sessions/store', ['as' => 'sentinel.session.store', 'uses' => 'Sent
 Route::delete('sessions/destroy', ['as' => 'sentinel.session.destroy', 'uses' => 'Sentinel\SessionController@destroy']);
 
 // Registration
-Route::get('register', ['as' => 'sentinel.register', 'uses' => 'Sentinel\UserController@register']);
-Route::get('users/{id}/activate/{code}', ['as' => 'sentinel.activate', 'uses' => 'Sentinel\UserController@activate']);
+Route::get('register', ['as' => 'sentinel.registration.form', 'uses' => 'Sentinel\RegistrationController@registration']);
+Route::post('register', ['as' => 'sentinel.register.user', 'uses' => 'Senintel\RegistrationController@register']);
+Route::get('users/{id}/activate/{code}', ['as' => 'sentinel.activate', 'uses' => 'Sentinel\RegistrationController@activate']);
 Route::get('reactivate', [
     'as' => 'sentinel.reactivate.form',
     function ()
@@ -24,7 +24,7 @@ Route::get('reactivate', [
         return View::make('Sentinel::sentinel.users.resend');
     }
 ]);
-Route::post('reactivate', ['as' => 'sentinel.resend.activation', 'uses' => 'Sentinel\UserController@resend']);
+Route::post('reactivate', ['as' => 'sentinel.resend.activation', 'uses' => 'Sentinel\RegistrationController@resendActivation']);
 Route::get('reminder', [
     'as' => 'sentinel.reminder.form',
     function ()
@@ -32,7 +32,7 @@ Route::get('reminder', [
         return View::make('Sentinel::sentinel.users.forgot');
     }
 ]);
-Route::post('reminder', ['as' => 'sentinel.send.reminder', 'uses' => 'Sentinel\UserController@forgot']);
+Route::post('reminder', ['as' => 'sentinel.send.reminder', 'uses' => 'Sentinel\RegistrationController@forgotPassword']);
 
 // Profile
 Route::post('users/{id}/change', ['as' => 'sentinel.change.password', 'uses' => 'Sentinel\UserController@changePassword']);
@@ -41,7 +41,6 @@ Route::get('users/{id}/reset/{code}', ['as' => 'sentinel.reset.password.form', '
 // Users
 Route::get('users', ['as' => 'sentinel.users.index', 'uses' => 'Sentinel\UserController@index']);
 Route::post('users/add', ['as' => 'sentinel.users.add', 'uses' => 'Sentinel\UserController@add']);
-Route::post('users/register', ['as' => 'sentinel.users.store', 'uses' => 'Sentinel\UserController@register']);
 Route::get('users/{id}', ['as' => 'sentinel.users.show', 'uses' => 'Sentinel\UserController@show']);
 Route::get('users/{id}/edit', ['as' => 'sentinel.users.edit', 'uses' => 'Sentinel\UserController@edit']);
 Route::put('users/{id}', ['as' => 'sentinel.users.update', 'uses' => 'Sentinel\UserController@update']);
