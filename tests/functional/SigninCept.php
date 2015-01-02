@@ -11,5 +11,7 @@ $I->amOnPage('/login');
 $I->fillField('email','user@user.com');
 $I->fillField('password','sentryuser');
 $I->click('Sign In');
-$I->see('You have arrived.');
+$I->seeCurrentUrlEquals('');
 $I->seeInSession('userId', $user->id);
+
+

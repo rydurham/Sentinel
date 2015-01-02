@@ -2,13 +2,13 @@
 $I = new FunctionalTester($scenario);
 $I->wantTo('register as a new user');
 $I->amOnPage('/register');
-$I->fillField('username', 'rydurham');
-$I->fillField('email','rydurham@gmail.com');
-$I->fillField('password','Fool~256');
-$I->fillField('password_confirmation', 'Fool~256');
+$I->fillField('username', 'tuzenbach');
+$I->fillField('email','tuzenbach@aol.com');
+$I->fillField('password','irina99');
+$I->fillField('password_confirmation', 'irina99');
 $I->click('Register', '.btn');
-$I->see('You have arrived.');
+$I->see('Your account has been created.');
 $I->seeRecord('users', [
-    'email' => 'rydurham@gmail.com',
-    'username' => 'rydurham'
+    'email' => 'tuzenbach@aol.com',
+    'username' => 'tuzenbach'
 ]);
