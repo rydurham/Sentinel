@@ -190,6 +190,7 @@ class UserController extends BaseController {
 	public function edit($id)
 	{
         $isOwner = $this->profileOwner($id);
+
         if($isOwner !== true){
             return $isOwner;
         }
@@ -468,12 +469,12 @@ class UserController extends BaseController {
 	*/
 	protected function profileOwner($id)
 	{
-	$user = \Sentry::getUser();
-	if ($id != Session::get('userId') && (!$user->hasAccess('admin'))) {
-		Session::flash('error', trans('Sentinel::users.noaccess'));
-		return Redirect::route(Config::get('Sentinel::config.post_login'));
-	}
-	return true;
+        $user = \Sentry::getUser();
+        if ($id != Session::get('userId') && (!$user->hasAccess('admin'))) {
+            Session::flash('error', trans('Sentinel::users.noaccess'));
+            return Redirect::route(Config::get('Sentinel::config.post_login'));
+        }
+        return true;
 	}
 
 }

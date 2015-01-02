@@ -14,3 +14,4 @@ $I->click('Sign In');
 $I->seeCurrentUrlEquals('');
 $I->seeInSession('userId', $user->id);
 
+
