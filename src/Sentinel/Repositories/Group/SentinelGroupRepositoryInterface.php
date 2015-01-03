@@ -1,6 +1,10 @@
 <?php namespace Sentinel\Repositories\Group;
 
-interface SentinelGroupManagerInterface {
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
+use Sentinel\Models\User;
+
+interface SentinelGroupRepositoryInterface {
 
 	/**
 	 * Store a newly created resource in storage.
@@ -44,7 +48,7 @@ interface SentinelGroupManagerInterface {
 	/**
 	 * Return all the registered users
 	 *
-	 * @return stdObject Collection of users
+	 * @return Collection
 	 */
 	public function all();
 

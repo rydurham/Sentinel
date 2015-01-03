@@ -1,6 +1,8 @@
 <?php namespace Sentinel\Repositories\User;
 
-interface SentinelUserManagerInterface {
+use Illuminate\Http\Response;
+
+interface SentinelUserRepositoryInterface {
 
 	/**
 	 * Store a newly created resource in storage.
@@ -23,7 +25,7 @@ interface SentinelUserManagerInterface {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id);
+	public function delete($id);
 
 	/**
 	 * Return all the registered users

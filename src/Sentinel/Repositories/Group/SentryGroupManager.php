@@ -1,8 +1,10 @@
 <?php namespace Sentinel\Repositories\Group;
 
 use Cartalyst\Sentry\Sentry;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
-class SentryGroupManager implements SentinelGroupManagerInterface {
+class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	
 	protected $sentry;
 
@@ -188,7 +190,7 @@ class SentryGroupManager implements SentinelGroupManagerInterface {
 	/**
 	 * Return all the registered groups
 	 *
-	 * @return stdObject Collection of groups
+	 * @return Collection
 	 */
 	public function all()
 	{

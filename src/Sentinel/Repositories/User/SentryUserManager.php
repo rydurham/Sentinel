@@ -1,14 +1,13 @@
 <?php namespace Sentinel\Repositories\User;
 
-use Illuminate\Auth\UserInterface;
-use Mail;
 use Cartalyst\Sentry\Sentry;
+use Illuminate\Auth\UserInterface;
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Auth\UserProviderInterface;
-use Sentinel\Repositories\User\SentinelUserManagerInterface;
+use Sentinel\Services\Responders\SuccessResponse;
 
-class SentryUserManager implements SentinelUserManagerInterface, UserProviderInterface {
+class SentryUserRepository implements SentinelUserRepositoryInterface, UserProviderInterface {
     
     protected $sentry;
     protected $config;
@@ -37,93 +36,87 @@ class SentryUserManager implements SentinelUserManagerInterface, UserProviderInt
      */
     public function store($data)
     {
-        $result = array();
-        try {
-
-            // Check for firstName or lastName values for backwards compatibility
-            if (isset($data['firstName']) || isset($data['first_name']))
-            {
-                $data['first_name'] = (isset($data['firstName']) ? $data['firstName'] : $data['first_name']);
-            }
-
-            if (isset($data['lastName']) || isset($data['last_name']))
-            {
-                $data['last_name']  = (isset($data['lastName']) ? $data['lastName'] : $data['last_name']);
-            }
-
-            // Check to see if activation has been disabled in the config.
-            if ($this->config->has('Sentinel::config.activation'))
-            {
-                if ($this->config->get('Sentinel::config.activation') == false)
-                {
-                    $data['activate'] = 1;
-                }
-            }
-
-            //Attempt to register the user. 
-            $credentials = array('email' => e($data['email']), 'password' => e($data['password']));
-            if ($this->config->has('Sentinel::config.allow_usernames')  && $this->config->get('Sentinel::config.allow_usernames') == true)
-            {
-                if (array_key_exists('username', $data))
-                {
-                    $credentials['username'] = e($data['username']);
-                }
-                
-            }
-
-            $user = $this->sentry->register($credentials, array_key_exists('activate', $data));
-
-            // Are there additional fields specified in the config?
-            // If so, update them here. 
-            if ($this->config->has('Sentinel::config.additional_user_fields'))
-            {
-                foreach ($this->config->get('Sentinel::config.additional_user_fields') as $key => $value) 
-                {
-                    if (array_key_exists($key, $data))
-                    {
-                        $user->$key = e($data[$key]);
-                    }
-                }
-
-                $user->save();
-            }
-
-            foreach ($data['groups'] as $groupName) {
-                $group = $this->sentry->getGroupProvider()->findByName($groupName);
-                $user->addGroup($group);
-            }
-
-            //success!
-            $result['success']   = true;
-            $result['message']   = trans('Sentinel::users.created');
-            $result['activated'] = array_key_exists('activate', $data);
-            $result['user']      = $user;
-
-            $this->dispatcher->fire('sentinel.user.registered', array(
-                'user'      => $user,
-                'activated' => array_key_exists('activate', $data)
-            ));
-
-            if (array_key_exists('activate', $data))
-            {
-                // This user has been automatically activated.  
-                // Alter the return data as necessary
-                $result['activated'] = true;
-                $result['message'] = trans('Sentinel::users.createdactive');                
-            }
-        }
-        catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
+        // Should we automatically activate this user?
+        if (array_key_exists('activate', $data))
         {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.loginreq');
+            $activateUser = false;
         }
-        catch (\Cartalyst\Sentry\Users\UserExistsException $e)
+        else
         {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.exists');
+            $activateUser = ! $this->config->get('Sentinel::sentinel.require_activation', true);
         }
 
-        return $result;
+        //Prepare the user credentials
+        $credentials = [
+            'email' => e($data['email']),
+            'password' => e($data['password'])
+        ];
+
+        // Are we allowed to use usernames?
+        if ($this->config->has('Sentinel::sentinel.allow_usernames', false))
+        {
+            // Make sure a username was provided with the user data
+            if (array_key_exists('username', $data))
+            {
+                $credentials['username'] = e($data['username']);
+            }
+        }
+
+        // Attempt user registration
+        $user = $this->sentry->register($credentials, $activateUser, $data);
+
+        // If the developer has specified additional fields for this user, update them here.
+        if ($this->config->has('Sentinel::sentinel.additional_user_fields'))
+        {
+            foreach ($this->config->get('Sentinel::sentinel.additional_user_fields') as $key => $value)
+            {
+                if (array_key_exists($key, $data))
+                {
+                    $user->$key = e($data[$key]);
+                }
+            }
+
+            $user->save();
+        }
+
+        // If no group memberships were specified, use the default groups from config
+        if (array_key_exists('groups', $data))
+        {
+            $groups = $data['groups'];
+        }
+        else
+        {
+            $groups = $this->config->get('Sentinel::sentinel.default_user_groups', []);
+        }
+
+        // Assign groups to this user
+        foreach ($groups as $name) {
+            $group = $this->sentry->getGroupProvider()->findByName($name);
+            $user->addGroup($group);
+        }
+
+        // User registration was successful.  Determine response message
+        if ($activateUser)
+        {
+            $message = trans('Sentinel::users.createdactive');
+        }
+        else
+        {
+            $message = trans('Sentinel::users.created');
+        }
+
+        // Response Payload
+        $payload = [
+            'user' => $user,
+            'activated' => $activateUser
+        ];
+
+        // Fire the 'user registered' event
+        $this->dispatcher->fire('sentinel.user.registered', $payload);
+
+        // Return a response
+        return new SuccessResponse($message, $payload);
+
     }
     
     /**
@@ -238,7 +231,7 @@ class SentryUserManager implements SentinelUserManagerInterface, UserProviderInt
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
         try
         {
@@ -485,16 +478,13 @@ class SentryUserManager implements SentinelUserManagerInterface, UserProviderInt
      * @param  int $minutes 
      * @return Array          
      */
-    public function suspend($id, $minutes)
+    public function suspend($id)
     {
         $result = array();
         try
         {
             // Find the user using the user id
             $throttle = $this->sentry->findThrottlerByUserId($id);
-
-            //Set suspension time
-            $throttle->setSuspensionTime($minutes);
 
             // Suspend the user
             $throttle->suspend();
@@ -616,7 +606,9 @@ class SentryUserManager implements SentinelUserManagerInterface, UserProviderInt
      */
     public function retrieveById($identifier)
     {
-        // TODO: Implement retrieveById() method.
+        $model = $this->sentry->getUserProvider()->createModel();
+
+        return $model->find($identifier);
     }
 
     /**
