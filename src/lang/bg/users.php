@@ -57,8 +57,6 @@ return array(
 	'unbanned'		=>	"Потребителя е разрешен.",
 
 	'inactive_reg'	=>	"Inactive Reg"
-	
-
 
 	
 );
