@@ -34,7 +34,7 @@ class SessionController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('Sentinel::sessions.login');
+		return View::make('Sentinel::sessions.login');
 	}
 
 	/**
@@ -51,7 +51,7 @@ class SessionController extends BaseController {
         $this->loginForm->validate($data);
 
         // Attempt the login
-        $result = $this->sessionManager->store($data);
+        $result = $this->session->store($data);
 
         // Did it work?
         if($result->isSuccessful())
@@ -76,7 +76,7 @@ class SessionController extends BaseController {
 	 */
 	public function destroy()
 	{
-		$this->sessionManager->destroy();
+		$this->session->destroy();
 
 		return $this->redirectTo('session.destroy');
 	}
