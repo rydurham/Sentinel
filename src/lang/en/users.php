@@ -48,7 +48,7 @@ return array(
 
 	'oldpassword'	=>	"You did not provide the correct original password.",
 
-	'suspended'		=>	"User has been suspended for :minutes minutes.",
+	'suspended'		=>	"User has been suspended for 15 minutes.",
 
 	'unsuspended'	=>	"Suspension removed.",
 
@@ -56,6 +56,10 @@ return array(
 
 	'unbanned'		=>	"User has been unbanned.",
 
-	'inactive_reg' 	=>  "Registration is not available at this time."
+	'inactive_reg' 	=>  "Registration is not available at this time.",
+
+	'destroyed'     =>  "User has been removed.",
+
+	'notdestroyed'  =>  "Unable to remove user."
 
 );

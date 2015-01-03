@@ -48,7 +48,7 @@ return array(
 
 	'oldpassword'	=>	"Você não informou a senha original correta.",
 
-	'suspended'		=>	"Usuário foi suspenso por :minutes minutos.",
+	'suspended'		=>	"Usuário foi suspenso por 15 minutos.",
 
 	'unsuspended'	=>	"Suspensão removida.",
 

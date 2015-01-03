@@ -48,7 +48,7 @@ return array(
 
 	'oldpassword'	=>	"Du oppga feil orginal-passord.",
 
-	'suspended'		=>	"Bruker har vært suspendert i :minutter minutter.",
+	'suspended'		=>	"Bruker har vært suspendert i 15 minutter.",
 
 	'unsuspended'	=>	"Suspensjon fjernet.",
 

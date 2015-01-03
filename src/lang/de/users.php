@@ -48,7 +48,7 @@ return array(
 
 	'oldpassword'	=>	"Sie haben das falsche Original-Passwort eingegeben.",
 
-	'suspended'		=>	"Der Benutzer ruht für :minutes Minuten.",
+	'suspended'		=>	"Der Benutzer ruht für 15 Minuten.",
 
 	'unsuspended'	=>	"Der Benutzer reaktiviert.",
 
