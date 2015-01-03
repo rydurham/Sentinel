@@ -5,10 +5,12 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Auth\UserProviderInterface;
+use Illuminate\Http\Response;
+use Sentinel\Services\Responders\FailureResponse;
 use Sentinel\Services\Responders\SuccessResponse;
 
-class SentryUserRepository implements SentinelUserRepositoryInterface, UserProviderInterface {
-    
+class SentryUserRepository implements SentinelUserRepositoryInterface, UserProviderInterface
+{
     protected $sentry;
     protected $config;
     protected $dispatcher;
@@ -16,7 +18,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     /**
      * Construct a new SentryUser Object
      */
-    public function __construct(Sentry $sentry, Repository $config, Dispatcher $dispatcher )
+    public function __construct(Sentry $sentry, Repository $config, Dispatcher $dispatcher)
     {
         $this->sentry     = $sentry;
         $this->config     = $config;
@@ -37,27 +39,22 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     public function store($data)
     {
         // Should we automatically activate this user?
-        if (array_key_exists('activate', $data))
-        {
-            $activateUser = false;
-        }
-        else
-        {
-            $activateUser = ! $this->config->get('Sentinel::sentinel.require_activation', true);
+        if (array_key_exists('activate', $data)) {
+            $activateUser = (bool)$data['activate'];
+        } else {
+            $activateUser = ! $this->config->get('Sentinel::auth.require_activation', true);
         }
 
         //Prepare the user credentials
         $credentials = [
-            'email' => e($data['email']),
+            'email'    => e($data['email']),
             'password' => e($data['password'])
         ];
 
         // Are we allowed to use usernames?
-        if ($this->config->has('Sentinel::sentinel.allow_usernames', false))
-        {
+        if ($this->config->has('Sentinel::auth.allow_usernames', false)) {
             // Make sure a username was provided with the user data
-            if (array_key_exists('username', $data))
-            {
+            if (array_key_exists('username', $data)) {
                 $credentials['username'] = e($data['username']);
             }
         }
@@ -66,27 +63,18 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         $user = $this->sentry->register($credentials, $activateUser, $data);
 
         // If the developer has specified additional fields for this user, update them here.
-        if ($this->config->has('Sentinel::sentinel.additional_user_fields'))
-        {
-            foreach ($this->config->get('Sentinel::sentinel.additional_user_fields') as $key => $value)
-            {
-                if (array_key_exists($key, $data))
-                {
-                    $user->$key = e($data[$key]);
-                }
+        foreach ($this->config->get('Sentinel::auth.additional_user_fields', []) as $key => $value) {
+            if (array_key_exists($key, $data)) {
+                $user->$key = e($data[$key]);
             }
-
-            $user->save();
         }
+        $user->save();
 
         // If no group memberships were specified, use the default groups from config
-        if (array_key_exists('groups', $data))
-        {
+        if (array_key_exists('groups', $data)) {
             $groups = $data['groups'];
-        }
-        else
-        {
-            $groups = $this->config->get('Sentinel::sentinel.default_user_groups', []);
+        } else {
+            $groups = $this->config->get('Sentinel::auth.default_user_groups', []);
         }
 
         // Assign groups to this user
@@ -96,18 +84,15 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         }
 
         // User registration was successful.  Determine response message
-        if ($activateUser)
-        {
+        if ($activateUser) {
             $message = trans('Sentinel::users.createdactive');
-        }
-        else
-        {
+        } else {
             $message = trans('Sentinel::users.created');
         }
 
         // Response Payload
         $payload = [
-            'user' => $user,
+            'user'      => $user,
             'activated' => $activateUser
         ];
 
@@ -116,485 +101,283 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
         // Return a response
         return new SuccessResponse($message, $payload);
-
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
      * @param  array $data
+     *
      * @return Response
      */
     public function update($data)
     {
-        $result = array();
-        try
-        {
-            // Find the user using the user id
-            $user = $this->sentry->findUserById($data['id']);
+        // Find the user using the user id
+        $user = $this->sentry->findUserById($data['id']);
 
-            // Check for firstName or lastName values for backwards compatibility
-            if (isset($data['firstName']) || isset($data['first_name']))
-            {
-                $data['first_name'] = (isset($data['firstName']) ? $data['firstName'] : $data['first_name']);
-            }
+        // Update User Details
+        $user->email    = (isset($data['email']) ? e($data['email']) : $user->email);
+        $user->username = (isset($data['username']) ? e($data['username']) : $user->username);
 
-            if (isset($data['lastName']) || isset($data['last_name']))
-            {
-                $data['last_name']  = (isset($data['lastName']) ? $data['lastName'] : $data['last_name']);
-            }
-
-            // Update the user details
-            $user->first_name = e($data['first_name']);
-            $user->last_name = e($data['last_name']);
-
-            // Update Email address? 
-            if (array_key_exists('email', $data))
-            {
-                $user->email = $data['email'];
-            }
-
-            // Update username address? 
-            if (array_key_exists('username', $data))
-            {
-                $user->username = $data['username'];
-            }
-
-            // Are there additional fields specified in the config?
-            // If so, update them here. 
-            if ($this->config->has('Sentinel::config.additional_user_fields'))
-            {
-                foreach ($this->config->get('Sentinel::config.additional_user_fields') as $key => $value) 
-                {
-                    if (array_key_exists($key, $data))
-                    {
-                        $user->$key = e($data[$key]);
-                    }
-                }
-            }
-
-            // Only Admins should be able to change group memberships. 
-            $operator = $this->sentry->getUser();
-            if ($operator->hasAccess('admin'))
-            {
-                // Update group memberships
-                $allGroups = $this->sentry->getGroupProvider()->findAll();
-                foreach ($allGroups as $group)
-                {
-                    if (isset($data['groups'][$group->id])) 
-                    {
-                        //The user should be added to this group
-                        $user->addGroup($group);
-                    } else {
-                        // The user should be removed from this group
-                        $user->removeGroup($group);
-                    }
-                }
-            }
-
-            // Update the user
-            if ($user->save())
-            {
-                // User information was updated
-                $this->dispatcher->fire('sentinel.user.updated', array(
-                    'user' => $user, 
-                ));
-
-                $result['success'] = true;
-                $result['message'] = trans('Sentinel::users.updated');
-                $result['user']    = $user;
-            }
-            else
-            {
-                // User information was not updated
-                $result['success'] = false;
-                $result['message'] = trans('Sentinel::users.notupdated');
-            }
-        }
-        catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.exists');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
+        // Are there additional fields specified in the confi? If so, update them here.
+        foreach ($this->config->get('Sentinel::auth.additional_user_fields', []) as $key => $value) {
+            $user->$key = (isset($data[$key]) ? e($data[$key]) : $user->$key);
         }
 
-        return $result;
+        // Update the user
+        if ($user->save()) {
+            // User information was updated
+            $this->dispatcher->fire('sentinel.user.updated', ['user' => $user]);
+
+            return new SuccessResponse(trans('Sentinel::users.updated'), ['user' => $user]);
+        }
+
+        return new FailureResponse(trans('Sentinel::users.notupdated'), ['user' => $user]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return Response
      */
-    public function delete($id)
+    public function destroy($id)
     {
-        try
-        {
-            // Find the user using the user id
-            $user = $this->sentry->findUserById($id);
+        // Find the user using the user id
+        $user = $this->sentry->findUserById($id);
 
-            // Delete the user
-            $user->delete();
-
+        // Delete the user
+        if ($user->delete()) {
             //Fire the sentinel.user.destroyed event
-            $this->dispatcher->fire('sentinel.user.destroyed', array(
-                'userId' => $id, 
-            ));
+            $this->dispatcher->fire('sentinel.user.destroyed', ['user' => $user]);
+
+            return new SuccessResponse(trans('Sentinel::users.destroyed'), ['user' => $user]);
         }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            return false;
-        }
-        return true;
+
+        // Unable to delete the user
+        return new FailureResponse(trans('Sentinel::users.notdestroyed'), ['user' => $user]);
     }
 
     /**
      * Attempt activation for the specified user
-     * @param  int $id   
-     * @param  string $code 
-     * @return bool       
+     *
+     * @param  int    $id
+     * @param  string $code
+     *
+     * @return bool
      */
     public function activate($id, $code)
     {
-        $result = array();
-        try
-        {
-            // Find the user using the user id
-            $user = $this->sentry->findUserById($id);
+        // Find the user using the user id
+        $user = $this->sentry->findUserById($id);
 
-            // Attempt to activate the user
-            if ($user->attemptActivation($code))
-            {
-                // User activation passed
-                $this->dispatcher->fire('sentinel.user.activated', array(
-                    'userId' => $id, 
-                ));
+        // Attempt to activate the user
+        if ($user->attemptActivation($code)) {
+            // User activation passed
+            $this->dispatcher->fire('sentinel.user.activated', ['user' => $user]);
 
-                $result['success'] = true;
-                $url = route('Sentinel\login');
-                $result['message'] = trans('Sentinel::users.activated', array('url' => $url));
-            }
-            else
-            {
-                // User activation failed
-                $result['success'] = false;
-                $result['message'] = trans('Sentinel::users.notactivated');
-            }
+            // Generate login url
+            $url = route('sentinel.login');
+
+            return new SuccessResponse(trans('Sentinel::users.activated', array('url' => $url)), ['user' => $user]);
         }
-        catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.exists');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+
+        return new FailureResponse(trans('Sentinel::users.notactivated'), ['user' => $user]);
     }
 
     /**
      * Resend the activation email to the specified email address
+     *
      * @param  Array $data
+     *
      * @return Response
      */
     public function resend($data)
     {
-        $result = array();
-        try {
-            //Attempt to find the user. 
-            $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+        //Attempt to find the user.
+        $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
 
-            if (!$user->isActivated())
-            {
-                // The user is not currently activated, so resend the welcome message
-                $this->dispatcher->fire('sentinel.user.resend', array(
-                    'user'     => $user,
-                    'activated' => $user->activated,
-                ));
+        // If the user is not currently activated resend the activation email
+        if ( ! $user->isActivated()) {
 
-                $result['success'] = true;
-                $result['message'] = trans('Sentinel::users.emailconfirm');
-                $result['user']    = $user;
-            }
-            else 
-            {
-                $result['success'] = false;
-                $result['message'] = trans('Sentinel::users.alreadyactive');
-            }
+            $this->dispatcher->fire('sentinel.user.resend', [
+                'user'      => $user,
+                'activated' => $user->activated,
+            ]);
 
+            return new SuccessResponse(trans('Sentinel::users.emailconfirm'), ['user' => $user]);
         }
-        catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.exists');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+
+        // The user is already activated
+        return new FailureResponse(trans('Sentinel::users.alreadyactive'), ['user' => $user]);
     }
 
     /**
      * Handle a password reset rewuest
-     * @param  Array $data 
-     * @return Bool       
+     *
+     * @param  Array $data
+     *
+     * @return Bool
      */
     public function forgotPassword($data)
     {
-        $result = array();
-        try
-        {
-            $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+        $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
 
-            $this->dispatcher->fire('sentinel.user.forgot', array(
-                'email' => $user->email,
-                'userId' => $user->id,
-                'resetCode' => $user->getResetPasswordCode()
-            ));
+        $this->dispatcher->fire('sentinel.user.forgot', [
+            'user'      => $user,
+            'resetCode' => $user->getResetPasswordCode()
+        ]);
 
-            $result['success'] = true;
-            $result['message'] = trans('Sentinel::users.emailinfo');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+        return new SuccessResponse(trans('Sentinel::users.emailinfo'), ['user' => $user]);
     }
+
 
     /**
      * Process the password reset request
-     * @param  int $id   
-     * @param  string $code 
+     *
+     * @param  int    $id
+     * @param  string $code
+     *
      * @return Array
      */
     public function resetPassword($id, $code)
     {
-        $result = array();
-        try
-        {
-            // Find the user
-            $user = $this->sentry->getUserProvider()->findById($id);
-            $newPassword = $this->_generatePassword(8,8);
+        // Find the user
+        $user        = $this->sentry->getUserProvider()->findById($id);
+        $newPassword = $this->_generatePassword(8, 8);
 
-            // Attempt to reset the user password
-            if ($user->attemptResetPassword($code, $newPassword))
-            {
-                // Email the reset code to the user
-                $this->dispatcher->fire('sentinel.user.newpassword', array(
-                    'email' => $user->email,
-                    'newPassword' => $newPassword
-                ));
+        // Attempt to reset the user password
+        if ($user->attemptResetPassword($code, $newPassword)) {
+            // Email the reset code to the user
+            $this->dispatcher->fire('sentinel.user.newpassword', array(
+                'user'        => $user,
+                'newPassword' => $newPassword
+            ));
 
-                $result['success'] = true;
-                $result['message'] = trans('Sentinel::users.emailpassword');
-            }
-            else
-            {
-                // Password reset failed
-                $result['success'] = false;
-                $result['message'] = trans('Sentinel::users.problem');
-            }
-        }
-       catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
+            $result['success'] = true;
+            $result['message'] = trans('Sentinel::users.emailpassword');
+        } else {
+            // Password reset failed
             $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
+            $result['message'] = trans('Sentinel::users.problem');
         }
-        return $result;
     }
 
     /**
-     * Process a change password request. 
+     * Process a change password request.
      * @return Array $data
      */
     public function changePassword($data)
     {
-        $result = array();
-        try
-        {
-            $user = $this->sentry->getUserProvider()->findById($data['id']);        
-        
-            if ($user->checkHash(e($data['oldPassword']), $user->getPassword()))
-            {
-                //The oldPassword matches the current password in the DB. Proceed.
-                $user->password = e($data['newPassword']);
+        $user = $this->sentry->getUserProvider()->findById($data['id']);
 
-                if ($user->save())
-                {
-                    // User saved
-                    $this->dispatcher->fire('sentinel.user.passwordchange', array(
-                        'userId' => $user->id, 
-                    ));
+        if ($user->checkHash(e($data['oldPassword']), $user->getPassword())) {
 
-                    $result['success'] = true;
-                    $result['message'] = trans('Sentinel::users.passwordchg');
-                }
-                else
-                {
-                    // User not saved
-                    $result['success'] = false;
-                    $result['message'] = trans('Sentinel::users.passwordprob');
-                }
-            } 
-            else 
-            {
-                // Password mismatch. Abort.
-                $result['success'] = false;
-                $result['message'] = trans('Sentinel::users.oldpassword');
-            }                                        
+            //The oldPassword matches the current password in the DB. Proceed.
+            $user->password = e($data['newPassword']);
+
+            if ($user->save()) {
+                // User saved
+                $this->dispatcher->fire('sentinel.user.passwordchange', ['user' => $user]);
+
+                return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
+
+            }
+
+            // User not Saved
+            return new FailureResponse(trans('Sentinel::users.passwordprob'), ['user' => $user]);
         }
-        catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = 'Login field required.';
-        }
-        catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.exists');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+
+        // Password mismatch. Abort.
+        return new FailureResponse(trans('Sentinel::users.oldpassword'), ['user' => $user]);
     }
 
     /**
      * Suspend a user
-     * @param  int $id      
-     * @param  int $minutes 
-     * @return Array          
+     *
+     * @param  int $id
+     * @param  int $minutes
+     *
+     * @return Array
      */
     public function suspend($id)
     {
-        $result = array();
-        try
-        {
-            // Find the user using the user id
-            $throttle = $this->sentry->findThrottlerByUserId($id);
+        // Find the user using the user id
+        $throttle = $this->sentry->findThrottlerByUserId($id);
 
-            // Suspend the user
-            $throttle->suspend();
+        // Suspend the user
+        $throttle->suspend();
 
-            $this->dispatcher->fire('sentinel.user.suspended', array(
-                'userId' => $id, 
-            ));
+        // Fire the 'user suspended' event
+        $this->dispatcher->fire('sentinel.user.suspended', ['userId' => $id]);
 
-            $result['success'] = true;
-            $result['message'] = trans('Sentinel::users.suspended', array('minutes' => $minutes));
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+        return new SuccessResponse(trans('Sentinel::users.suspended'), ['userId' => $id]);
     }
 
     /**
      * Remove a users' suspension.
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     *
+     * @param $id
+     *
+     * @return array [type]     [description]
+     * @internal param $ [type] $id [description]
+     *
      */
     public function unSuspend($id)
     {
-        $result = array();
-        try
-        {
-            // Find the user using the user id
-            $throttle = $this->sentry->findThrottlerByUserId($id);
+        // Find the user using the user id
+        $throttle = $this->sentry->findThrottlerByUserId($id);
 
-            // Unsuspend the user
-            $throttle->unsuspend();
+        // Un-suspend the user
+        $throttle->unsuspend();
 
-            $this->dispatcher->fire('sentinel.user.unsuspended', array(
-                'userId' => $id, 
-            ));
+        // Fire the 'user un-suspended' event
+        $this->dispatcher->fire('sentinel.user.unsuspended', ['userId' => $id]);
 
-            $result['success'] = true;
-            $result['message'] = trans('Sentinel::users.unsuspended');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+        return new SuccessResponse(trans('Sentinel::users.unsuspended'), ['userId' => $id]);
     }
 
     /**
      * Ban a user
-     * @param  int $id 
-     * @return Array     
+     *
+     * @param  int $id
+     *
+     * @return Array
      */
     public function ban($id)
     {
-        $result = array();
-        try
-        {
-            // Find the user using the user id
-            $throttle = $this->sentry->findThrottlerByUserId($id);
+        // Find the user using the user id
+        $throttle = $this->sentry->findThrottlerByUserId($id);
 
-            // Ban the user
-            $throttle->ban();
+        // Ban the user
+        $throttle->ban();
 
-            $this->dispatcher->fire('sentinel.user.banned', array(
-                'userId' => $id, 
-            ));
+        // Fire the 'banned user' event
+        $this->dispatcher->fire('sentinel.user.banned', ['userId' => $id]);
 
-            $result['success'] = true;
-            $result['message'] = trans('Sentinel::users.banned');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+        return new SuccessResponse(trans('Sentinel::users.banned'), ['userId' => $id]);
     }
 
     /**
      * Remove a users' ban
-     * @param  int $id 
-     * @return Array     
+     *
+     * @param  int $id
+     *
+     * @return Array
      */
     public function unBan($id)
     {
-        $result = array();
-        try
-        {
-            // Find the user using the user id
-            $throttle = $this->sentry->findThrottlerByUserId($id);
+        // Find the user using the user id
+        $throttle = $this->sentry->findThrottlerByUserId($id);
 
-            // Unban the user
-            $throttle->unBan();
+        // Un-ban the user
+        $throttle->unBan();
 
-            $this->dispatcher->fire('sentinel.user.unbanned', array(
-                'userId' => $id, 
-            ));
+        // Fire the 'un-ban user event'
+        $this->dispatcher->fire('sentinel.user.unbanned', ['userId' => $id]);
 
-            $result['success'] = true;
-            $result['message'] = trans('Sentinel::users.unbanned');
-        }
-        catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
-        {
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.notfound');
-        }
-        return $result;
+        return new SuccessResponse(trans('Sentinel::users.unbanned'), ['userId' => $id]);
     }
 
     /**
@@ -621,7 +404,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      */
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: Implement retrieveByToken() method.
+        $model = $this->sentry->getUserProvider()->createModel();
+
+        return $model->where('id', $identifier)->where('persist_code', $token)->first();
     }
 
     /**
@@ -634,7 +419,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      */
     public function updateRememberToken(UserInterface $user, $token)
     {
-        // TODO: Implement updateRememberToken() method.
+        $model = $this->sentry->getUserProvider()->createModel();
+
+        $model->where('id', $user->id)->update('persist_code', $token);
     }
 
     /**
@@ -646,9 +433,8 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      */
     public function retrieveByCredentials(array $credentials)
     {
-        // TODO: Implement retrieveByCredentials() method.
+        return $this->sentry->findUserByCredentials($credentials);
     }
-
 
 
     /**
@@ -661,12 +447,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         $users = $this->sentry->findAllUsers();
 
         foreach ($users as $user) {
-            if ($user->isActivated()) 
-            {
+            if ($user->isActivated()) {
                 $user->status = "Active";
-            } 
-            else 
-            {
+            } else {
                 $user->status = "Not Active";
             }
 
@@ -674,15 +457,13 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $throttle = $this->throttleProvider->findByUserId($user->id);
 
             //Check for suspension
-            if($throttle->isSuspended())
-            {
+            if ($throttle->isSuspended()) {
                 // User is Suspended
                 $user->status = "Suspended";
             }
 
             //Check for ban
-            if($throttle->isBanned())
-            {
+            if ($throttle->isBanned()) {
                 // User is Banned
                 $user->status = "Banned";
             }
@@ -692,13 +473,13 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     }
 
     /**
-     * Provide a wrapper for Sentry::getUser()
+     * Return the current active user
      *
      * @return user object
      */
     public function getUser()
     {
-        // TODO: Implement getUser() method.
+        return $this->sentry->getUser();
     }
 
     /**
@@ -711,5 +492,14 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      */
     public function validateCredentials(UserInterface $user, array $credentials)
     {
-        // TODO: Implement validateCredentials() method.
-    }}
+        if (isset($credentials['email']) && $credentials['email'] != $user->email) {
+            return false;
+        }
+
+        if (isset($credentials['username']) && $credentials['username'] != $user->username) {
+            return false;
+        }
+
+        return $user->checkPassword($credentials['password']);
+    }
+}
