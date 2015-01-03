@@ -32,6 +32,7 @@ use Cartalyst\Sentry\Throttling\Eloquent\Provider as ThrottleProvider;
 use Cartalyst\Sentry\Throttling\UserBannedException;
 use Cartalyst\Sentry\Throttling\UserSuspendedException;
 use Cartalyst\Sentry\Users\Eloquent\Provider as UserProvider;
+use Cartalyst\Sentry\Users\UserExistsException;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use Illuminate\Support\ServiceProvider;
@@ -354,10 +355,12 @@ class SentryServiceProvider extends ServiceProvider {
 
         });
 
-//        $this->app->error(function( $e)
-//        {
-//
-//        });
+        $this->app->error(function(UserExistsException $e)
+        {
+            // There is alread a user with those credentials
+            $this->session->flash('error', trans('Sentinel::users.exists'));
+            return $this->redirect->back()->withInput();
+        });
     }
 
 }
