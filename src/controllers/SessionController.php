@@ -2,7 +2,7 @@
 
 use BaseController;
 use Illuminate\Http\Response;
-use Sentinel\Repositories\Session\SentinelSessionManagerInterface;
+use Sentinel\Managers\Session\SentinelSessionManagerInterface;
 use Sentinel\Services\Forms\LoginForm;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use View, Input, Event, Redirect, Session, Config;

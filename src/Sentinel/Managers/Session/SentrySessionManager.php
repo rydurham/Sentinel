@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Repositories\Session;
+<?php namespace Sentinel\Managers\Session;
 
 use Config;
 use Illuminate\Events\Dispatcher;
