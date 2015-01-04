@@ -12,7 +12,7 @@ return array(
     |
     */
 
-    'routes_enabled' => true,
+    'routes_enabled'               => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -25,8 +25,14 @@ return array(
     |
     */
 
-    'session.store'   => ['route' => 'home'],
-    'session.destroy' => ['action' => 'Sentinel\SessionController@create'],
+    'session.store'                => ['route' => 'home'],
+    'session.destroy'              => ['action' => 'Sentinel\SessionController@create'],
+    'registration.complete'        => ['route' => 'home'],
+    'registration.activated'       => ['route' => 'home'],
+    'registration.resend'          => ['route' => 'home'],
+    'registration.reset.triggered' => ['route' => 'home'],
+    'registration.reset.invalid'   => ['route' => 'home'],
+    'registration.reset.complete'  => ['route' => 'home'],
 
 
 
