@@ -15,28 +15,16 @@ Route::delete('sessions/destroy', ['as' => 'sentinel.session.destroy', 'uses' =>
 
 // Registration
 Route::get('register', ['as' => 'sentinel.registration.form', 'uses' => 'Sentinel\RegistrationController@registration']);
-Route::post('register', ['as' => 'sentinel.register.user', 'uses' => 'Senintel\RegistrationController@register']);
-Route::get('users/{id}/activate/{code}', ['as' => 'sentinel.activate', 'uses' => 'Sentinel\RegistrationController@activate']);
-Route::get('reactivate', [
-    'as' => 'sentinel.reactivate.form',
-    function ()
-    {
-        return View::make('Sentinel::sentinel.users.resend');
-    }
-]);
+Route::post('register', ['as' => 'sentinel.register.user', 'uses' => 'Sentinel\RegistrationController@register']);
+Route::get('users/activate/{id}/{code}', ['as' => 'sentinel.activate', 'uses' => 'Sentinel\RegistrationController@activate']);
+Route::get('reactivate', ['as' => 'sentinel.reactivate.form', 'uses' => 'Sentinel\RegistrationController@resendActivationForm']);
 Route::post('reactivate', ['as' => 'sentinel.resend.activation', 'uses' => 'Sentinel\RegistrationController@resendActivation']);
-Route::get('reminder', [
-    'as' => 'sentinel.reminder.form',
-    function ()
-    {
-        return View::make('Sentinel::sentinel.users.forgot');
-    }
-]);
-Route::post('reminder', ['as' => 'sentinel.send.reminder', 'uses' => 'Sentinel\RegistrationController@forgotPassword']);
 
 // Profile
-Route::post('users/{id}/change', ['as' => 'sentinel.change.password', 'uses' => 'Sentinel\UserController@changePassword']);
-Route::get('users/{id}/reset/{code}', ['as' => 'sentinel.reset.password.form', 'uses' => 'Sentinel\UserController@resetPassword']);
+Route::get('forgot', ['as' => 'sentinel.forgot.form', 'uses' => 'Sentinel\RegistrationController@forgotPasswordForm']);
+Route::post('forgot', ['as' => 'sentinel.reset.request', 'uses' => 'Sentinel\RegistrationController@sendResetPasswordEmail']);
+Route::get('reset/{id}/{code}', ['as' => 'sentinel.reset.form', 'uses' => 'Sentinel\RegistrationController@passwordResetForm']);
+Route::post('reset/{id}/{code}', ['as' => 'sentinel.reset.password', 'uses' => 'Sentinel\RegistrationController@resetPassword']);
 
 // Users
 Route::get('users', ['as' => 'sentinel.users.index', 'uses' => 'Sentinel\UserController@index']);
