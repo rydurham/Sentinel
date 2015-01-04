@@ -5,7 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Auth\UserProviderInterface;
-use Illuminate\Http\Response;
+use Sentinel\Services\Responders\BaseResponse;
 use Sentinel\Services\Responders\FailureResponse;
 use Sentinel\Services\Responders\SuccessResponse;
 
@@ -34,7 +34,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     /**
      * Store a newly created user in storage.
      *
-     * @return Response
+     * @return BaseResponse
      */
     public function store($data)
     {
@@ -90,6 +90,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $message = trans('Sentinel::users.created');
         }
 
+
         // Response Payload
         $payload = [
             'user'      => $user,
@@ -108,7 +109,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      *
      * @param  array $data
      *
-     * @return Response
+     * @return BaseResponse
      */
     public function update($data)
     {
@@ -140,7 +141,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      *
      * @param  int $id
      *
-     * @return Response
+     * @return BaseResponse
      */
     public function destroy($id)
     {
@@ -191,7 +192,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      *
      * @param  Array $data
      *
-     * @return Response
+     * @return BaseResponse
      */
     public function resend($data)
     {
@@ -309,6 +310,34 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
         // Password mismatch. Abort.
         return new FailureResponse(trans('Sentinel::users.oldpassword'), ['user' => $user]);
+    }
+
+    /**
+     * Process a change password request.
+     *
+     * @return BaseResponse
+     */
+    public function changeGroupMemberships($userId, $selections)
+    {
+        $user = $this->sentry->getUserProvider()->findById(e($userId));
+
+        // Gather all available groups
+        $allGroups = $this->sentry->getGroupProvider()->findAll();
+
+        // Update group memberships
+        foreach ($allGroups as $group)
+        {
+            if (isset($selections[$group->name]))
+            {
+                //The user should be added to this group
+                $user->addGroup($group);
+            } else {
+                // The user should be removed from this group
+                $user->removeGroup($group);
+            }
+        }
+
+        return new SuccessResponse(trans('Sentinel::users.memberships'), ['user' => $user]);
     }
 
     /**

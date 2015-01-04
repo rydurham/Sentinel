@@ -2,7 +2,7 @@
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Response;
+use Sentinel\Services\Responders\BaseResponse;
 use Sentinel\Models\User;
 
 interface SentinelUserRepositoryInterface {
@@ -10,23 +10,26 @@ interface SentinelUserRepositoryInterface {
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @return Response
+     * @param $data
+     *
+	 * @return BaseResponse
 	 */
 	public function store($data);
-	
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id);
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param $data
+     *
+     * @return BaseResponse
+     */
+	public function update($data);
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return BaseResponse
 	 */
 	public function destroy($id);
 
@@ -50,7 +53,7 @@ interface SentinelUserRepositoryInterface {
 	 * @param  int $id
 	 * @param  string $code
 	 *
-	 * @return bool
+	 * @return Bool
 	 */
 	public function activate( $id, $code);
 
@@ -59,17 +62,19 @@ interface SentinelUserRepositoryInterface {
 	 *
 	 * @param  Array $data
 	 *
-	 * @return Response
+	 * @return BaseResponse
 	 */
 	public function resend($data);
 
-	/**
-	 * The user has requested a password reset
-	 *
-	 * @param  Array $data
-	 *
-	 * @return Bool
-	 */
+    /**
+     * The user has requested a password reset
+     *
+     * @param $email
+     *
+     * @return Bool
+     * @internal param Array $data
+     *
+     */
     public function triggerPasswordReset($email);
 
     /**
@@ -78,7 +83,7 @@ interface SentinelUserRepositoryInterface {
      * @param $id
      * @param $code
      *
-     * @return FailureResponse
+     * @return BaseResponse
      */
     public function validateResetCode($id, $code);
 
@@ -88,24 +93,31 @@ interface SentinelUserRepositoryInterface {
 	 * @param  int $id
 	 * @param  string $code
 	 *
-	 * @return Array
+	 * @return BaseResponse
 	 */
 	public function resetPassword($id, $code, $password);
 
 	/**
 	 * Process a change password request.
-	 * @return Array $data
+     *
+     * @return BaseResponse
 	 */
 	public function changePassword($data);
 
-	/**
-	 * Suspend a user
-	 *
-	 * @param  int $id
-	 * @param  int $minutes
-	 *
-	 * @return Array
-	 */
+    /**
+     * Process a change password request.
+     *
+     * @return BaseResponse
+     */
+    public function changeGroupMemberships($userId, $groups);
+
+    /**
+     * Suspend a user
+     *
+     * @param  int $id
+     *
+     * @return BaseResponse
+     */
 	public function suspend($id);
 
 	/**
