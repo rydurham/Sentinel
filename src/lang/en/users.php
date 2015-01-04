@@ -62,6 +62,8 @@ return array(
 
     'invalidreset'  =>  "Invalid password reset link.",
 
-    'resetcomplete' =>  "Your password has been changed."
+    'resetcomplete' =>  "Your password has been changed.",
+
+    'memberships'   =>  "User's group memberships have been updated."
 
 );
