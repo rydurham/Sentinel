@@ -273,12 +273,11 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             // Fire the 'password reset' event
             $this->dispatcher->fire('sentinel.password.reset', ['user' => $user]);
 
-            return new SuccessResponse(trans('Sentinel::users.resetcomplete'), ['user' => $user]);
+            return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
         }
 
         return new FailureResponse(trans('Sentinel::users.problem'), ['user' => $user]);
     }
-
 
     /**
      * Process a password change request
@@ -291,9 +290,10 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     {
         $user = $this->sentry->getUserProvider()->findById($data['id']);
 
+        // Does the old password input match the user's existing password?
         if ($user->checkHash(e($data['oldPassword']), $user->getPassword())) {
 
-            //The oldPassword matches the current password in the DB. Proceed.
+            // Set the new password (Sentry will hash it behind the scenes)
             $user->password = e($data['newPassword']);
 
             if ($user->save()) {
@@ -311,6 +311,33 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         // Password mismatch. Abort.
         return new FailureResponse(trans('Sentinel::users.oldpassword'), ['user' => $user]);
     }
+
+    /**
+     * Change a user's password without checking their old password first
+     *
+     * @param $data
+     *
+     * @return FailureResponse|SuccessResponse
+     */
+    public function changePasswordWithoutCheck($data)
+    {
+        $user = $this->sentry->getUserProvider()->findById($data['id']);
+
+        // Set the new password (Sentry will hash it behind the scenes)
+        $user->password = e($data['newPassword']);
+
+        if ($user->save()) {
+
+            // User saved
+            $this->dispatcher->fire('sentinel.user.passwordchange', ['user' => $user]);
+
+            return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
+        }
+
+        // User not Saved
+        return new FailureResponse(trans('Sentinel::users.passwordprob'), ['user' => $user]);
+    }
+
 
     /**
      * Process a change password request.

@@ -2,7 +2,7 @@
 $I = new FunctionalTester($scenario);
 
 // Create the reset code
-$I->wantTo('reset a forgotten password');
+$I->wantTo('reset my forgotten password');
 $I->amOnPage('/forgot');
 $I->fillField('email','user@user.com');
 $I->click('Send Instructions', '.btn');
@@ -18,7 +18,7 @@ $I->amOnPage(route('sentinel.reset.form', ['id' => $user->id, 'code' => $code]))
 $I->fillField('password','sergeyevna');
 $I->fillField('password_confirmation','sergeyevna');
 $I->click('Change Password', '.btn');
-$I->see('Your password has been changed.');
+$I->see('Password has been changed.');
 
 // Test new password
 $I->amOnPage('/login');

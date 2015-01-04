@@ -1,475 +1,327 @@
 <?php namespace Sentinel;
 
-use Sentinel\Repositories\Group\SentinelGroupManagerInterface;
-use Sentinel\Repositories\User\SentinelUserManagerInterface;
-use Sentinel\Service\Form\Register\RegisterForm;
-use Sentinel\Service\Form\User\UserForm;
-use Sentinel\Service\Form\ResendActivation\ResendActivationForm;
-use Sentinel\Service\Form\ForgotPassword\ForgotPasswordForm;
-use Sentinel\Service\Form\ChangePassword\ChangePasswordForm;
-use Sentinel\Service\Form\SuspendUser\SuspendUserForm;
-use BaseController, View, Input, Event, Redirect, Session, Config;
+use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
+use Sentinel\Services\Forms\ChangePasswordForm;
+use Sentinel\Services\Forms\ForgotPasswordForm;
+use Sentinel\Services\Forms\RegisterForm;
+use Sentinel\Services\Forms\ResendActivationForm;
+use Sentinel\Services\Forms\UserCreateForm;
+use BaseController, View, Input, Event, Redirect, Session, Config, Paginator;
+use Sentinel\Services\Forms\UserUpdateForm;
+use Sentinel\Traits\SentinelRedirectionTrait;
 
 class UserController extends BaseController {
 
-	protected $user;
-	protected $group;
-	protected $registerForm;
-	protected $userForm;
-	protected $resendActivationForm;
-	protected $forgotPasswordForm;
-	protected $changePasswordForm;
-	protected $suspendUserForm;
-
-	/**
-	 * Instantiate a new UserController
-	 */
-	public function __construct(
-		SentinelUserManagerInterface $user,
-		SentinelGroupManagerInterface $group
-    )
-	{
-		$this->user = $user;
-		$this->group = $group;
-//		$this->registerForm = $registerForm;
-//		$this->userForm = $userForm;
-//		$this->resendActivationForm = $resendActivationForm;
-//		$this->forgotPasswordForm = $forgotPasswordForm;
-//		$this->changePasswordForm = $changePasswordForm;
-//		$this->suspendUserForm = $suspendUserForm;
-
-		//Check CSRF token on POST
-		$this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
-
-		// Set up Auth Filters
-		$this->beforeFilter('Sentinel\auth', array('only' => array('show', 'edit', 'update', 'change' )));
-		$this->beforeFilter('Sentinel\hasAccess:admin', array('only' => array( 'index', 'create', 'add', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban')));
-	}
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-        $users = $this->user->all();
-
-        return View::make('Sentinel::users.index')->with('users', $users);
-	}
-
-	/**
-     * Show the form for creating a new user.
-     *
-     * @return Response
+    /**
+     * Members
      */
-    public function register()
-    {
-        $registration = Config::get('Sentinel::config.registration');
-
-        if (!$registration)
-        {
-            Session::flash('error', trans('Sentinel::users.inactive_reg'));
-            return Redirect::route('home');
-        }
-
-        return View::make('Sentinel::users.create');
-    }
-
-	/**
-	 * Store a newly created user.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-        // Collect Data
-        $data = Input::all();
-        $data['groups'] = Config::get('Sentinel::config.default_user_groups');
-
-        // Forms Processing
-        $result = $this->registerForm->save( $data );
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::route(Config::get('Sentinel::config.post_confirmation_sent', 'home'));
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::route('Sentinel\register')
-                ->withInput()
-                ->withErrors( $this->registerForm->errors() );
-        }
-	}
+    protected $user;
+    protected $group;
+    protected $userCreateForm;
+    protected $userUpdateForm;
+    protected $changePasswordForm;
 
     /**
-     * [create description]
-     * @return [type] [description]
+     * Traits
+     */
+    use SentinelRedirectionTrait;
+
+    /**
+     * Constructor
+     */
+    public function __construct(
+        SentinelUserRepositoryInterface $userRepository,
+        SentinelGroupRepositoryInterface $groupRepository,
+        UserCreateForm $userCreateForm,
+        UserUpdateForm $userUpdateForm,
+        ChangePasswordForm $changePasswordForm
+    ) {
+        $this->userRepository     = $userRepository;
+        $this->groupRepository    = $groupRepository;
+        $this->userCreateForm     = $userCreateForm;
+        $this->userUpdateForm     = $userUpdateForm;
+        $this->changePasswordForm = $changePasswordForm;
+
+        //Check CSRF token on POST
+        $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
+
+        // Set up Auth Filters
+        $this->beforeFilter('Sentinel\auth', ['only' => ['show', 'edit', 'update', 'change']]);
+        $this->beforeFilter(
+            'Sentinel\hasAccess:admin',
+            ['only' => ['index', 'create', 'add', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban']]
+        );
+    }
+
+    /**
+     * Display a paginated index of all current users, with throttle data
+     *
+     * @return View
+     */
+    public function index()
+    {
+        // Paginate the existing users
+        $users       = $this->userRepository->all();
+        $perPage     = 15;
+        $currentPage = Input::get('page') - 1;
+        $pagedData   = array_slice($users, $currentPage * $perPage, $perPage);
+        $users       = Paginator::make($pagedData, count($users), $perPage);
+
+        return View::make('Sentinel::users.index')->with('users', $users);
+    }
+
+
+    /**
+     * Show the "Create new User" form
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
-        if (View::exists('Sentinel::users.new'))
-        {
-            return View::make('Sentinel::users.new');
-        }
-        else
-        {
-            return View::make('Sentinel::users.create');
-        }
-
+        return View::make('Sentinel::users.create');
     }
 
     /**
-     * Allow an admin user to create a new user account
+     * Create a new user account manually
      *
-     * @return Response
+     * @return Redirect
      */
-    public function add()
+    public function store()
     {
         // Collect Data
         $data = Input::all();
-        $data['groups'] = Config::get('Sentinel::config.default_user_groups');
 
-        // Forms Processing
-        $result = $this->registerForm->save( $data );
+        // Validate form data
+        $this->userCreateForm->validate($data);
 
-        if( $result['success'] )
-        {
-            if ($result['activated'])
-            {
-                $result['message'] = trans('Sentinel::users.addedactive');
-            }
-            else
-            {
-                $result['message'] = trans('Sentinel::users.added');
-            }
+        // Create and store the new user
+        $result = $this->userRepository->store($data);
 
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::route('users.index');
+        // Determine response message based on whether or not the user was activated
+        $message = ($result->getPayload()['activated'] ? trans('Sentinel::users.addedactive') : trans('Sentinel::users.added'));
 
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::route('users.create')
-                ->withInput()
-                ->withErrors( $this->registerForm->errors() );
-        }
+        // Finished!
+        return $this->redirectTo('users.store', ['success' => $message]);
     }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
+
+    /**
+     * Show the profile of a specific user account
+     *
+     * @param $id
+     *
+     * @return Redirect|View
+     */
+    public function show($id)
+    {
+        // This action can only be executed if the operator is an admin,
+        // or is this specific user
         $isOwner = $this->profileOwner($id);
-        if($isOwner !== true){
+        if ($isOwner !== true) {
             return $isOwner;
         }
 
-        $user = $this->user->byId($id);
+        // Get the user
+        $user = $this->userRepository->retrieveById($id);
 
         return View::make('Sentinel::users.show')->with('user', $user);
-	}
+    }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return Redirect
+     */
+    public function edit($id)
+    {
+        // This action can only be executed if the operator is an admin,
+        // or is this specific user
         $isOwner = $this->profileOwner($id);
-        if($isOwner !== true){
+        if ($isOwner !== true) {
             return $isOwner;
         }
 
-        $user = $this->user->byId($id);
+        // Get the user
+        $user = $this->userRepository->retrieveById($id);
 
-        $currentGroups = $user->getGroups()->toArray();
-        $userGroups = array();
-        foreach ($currentGroups as $group) {
-        	array_push($userGroups, $group['name']);
-        }
-        $allGroups = $this->group->all();
+        // Get all available groups
+        $groups = $this->groupRepository->all();
 
-        return View::make('Sentinel::users.edit')->with('user', $user)->with('userGroups', $userGroups)->with('allGroups', $allGroups);
-	}
+        return View::make('Sentinel::users.edit')
+            ->with('user', $user)
+            ->with('groups', $groups);
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int $id
+     *
+     * @return Redirect
+     */
+    public function update($id)
+    {
+        // This action can only be executed if the operator is an admin,
+        // or is this specific user
         $isOwner = $this->profileOwner($id);
-        if($isOwner !== true){
+        if ($isOwner !== true) {
             return $isOwner;
         }
 
-		// Forms Processing
-        $result = $this->userForm->update( Input::all() );
+        // Gather Input
+        $data = Input::all();
 
-        if( $result['success'] )
+        // Validate form data
+        $this->userUpdateForm->validate($data);
+
+        // Attempt to update the user
+        $result = $this->userRepository->update($data);
+
+        // Done!
+        return $this->redirectViaResponse('users.update', $result);
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return Redirect
+     */
+    public function destroy($id)
+    {
+        $result = $this->userRepository->destroy($id);
+
+        return $this->redirectViaResponse('users.destroy', $result);
+    }
+
+    /**
+     * Change the group memberships for a given user
+     *
+     * @param $id
+     *
+     * @return \Response
+     */
+    public function updateGroupMemberships($id)
+    {
+        // Gather input
+        $groups = Input::get('groups');
+
+        // Change memberships
+        $result = $this->userRepository->changeGroupMemberships($id, $groups);
+
+        // Done
+        return $this->redirectViaResponse('users.change.memberships', $result);
+    }
+
+    /**
+     * Process a password change request
+     *
+     * @param  int $id
+     *
+     * @return redirect
+     */
+    public function changePassword($id)
+    {
+        // Gather input
+        $data       = Input::all();
+        $data['id'] = $id;
+
+        // Validate form Data
+        $this->changePasswordForm->validate($data);
+
+        // Grab the current user
+        $user = $this->userRepository->getUser();
+
+        // Change the User's password
+        $result = ($user->hasAccess('admin') ? $this->userRepository->changePasswordWithoutCheck($data) : $this->userRepository->changePassword($data));
+
+        // Was the change successful?
+        if (! $result->isSuccessful())
         {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\UserController@show', array($id));
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@edit', array($id))
-                ->withInput()
-                ->withErrors( $this->userForm->errors() );
-        }
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-
-		if ($this->user->destroy($id))
-		{
-			Session::flash('success', 'User Deleted');
-            return Redirect::action('Sentinel\UserController@index');
-        }
-        else
-        {
-        	Session::flash('error', 'Unable to Delete User');
-            return Redirect::action('Sentinel\UserController@index');
-        }
-	}
-
-	/**
-	 * Activate a new user
-	 * @param  int $id
-	 * @param  string $code
-	 * @return Response
-	 */
-	public function activate($id, $code)
-	{
-		$result = $this->user->activate($id, $code);
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::route('home');
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::route('home');
-        }
-	}
-
-	/**
-	 * Process resend activation request
-	 * @return Response
-	 */
-	public function resend()
-	{
-		// Forms Processing
-        $result = $this->resendActivationForm->resend( Input::all() );
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::route(Config::get('Sentinel::config.post_confirmation_sent'));
-        }
-        else
-        {
-            Session::flash('error', $result['message']);
-            return Redirect::route('Sentinel\resendActivationForm')
-                ->withInput()
-                ->withErrors( $this->resendActivationForm->errors() );
-        }
-	}
-
-	/**
-	 * Process Forgot Password request
-	 * @return Response
-	 */
-	public function forgot()
-	{
-		// Forms Processing
-        $result = $this->forgotPasswordForm->forgot( Input::all() );
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::route('home');
-        }
-        else
-        {
-            Session::flash('error', $result['message']);
-            return Redirect::route('Sentinel\forgotPasswordForm')
-                ->withInput()
-                ->withErrors( $this->forgotPasswordForm->errors() );
-        }
-	}
-
-	/**
-	 * Process a password reset request link
-	 * @param  [type] $id   [description]
-	 * @param  [type] $code [description]
-	 * @return [type]       [description]
-	 */
-	public function reset($id, $code)
-	{
-		$result = $this->user->resetPassword($id, $code);
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::route('home');
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::route('home');
-        }
-	}
-
-	/**
-	 * Process a password change request
-	 * @param  int $id
-	 * @return redirect
-	 */
-	public function change($id)
-	{
-
-		$data = Input::all();
-		$data['id'] = $id;
-
-		// Forms Processing
-        $result = $this->changePasswordForm->change( $data );
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
+            Session::flash('error', $result->getMessage());
             return Redirect::back();
-        } 
-        else
-        {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@edit', array($id))
-                ->withInput()
-                ->withErrors( $this->changePasswordForm->errors() );
         }
-	}
+        return $this->redirectViaResponse('users.change.password', $result);
+    }
 
-	/**
-	 * Process a suspend user request
-	 * @param  int $id
-	 * @return Redirect
-	 */
-	public function suspend($id)
-	{
- 		// Forms Processing
-        $result = $this->suspendUserForm->suspend( Input::all() );
+    /**
+     * Process a suspend user request
+     *
+     * @param  int $id
+     *
+     * @return Redirect
+     */
+    public function suspend($id)
+    {
+        $result = $this->userRepository->suspend($id);
 
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
+        return $this->redirectViaResponse('users.suspend', $result);
+    }
 
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@suspend', array($id))
-                ->withInput()
-                ->withErrors( $this->suspendUserForm->errors() );
+    /**
+     * Unsuspend user
+     *
+     * @param  int $id
+     *
+     * @return Redirect
+     */
+    public function unsuspend($id)
+    {
+        $result = $this->userRepository->unsuspend($id);
+
+        return $this->redirectViaResponse('users.unsuspend', $result);
+    }
+
+    /**
+     * Ban a user
+     *
+     * @param  int $id
+     *
+     * @return Redirect
+     */
+    public function ban($id)
+    {
+        $result = $this->userRepository->ban($id);
+
+        return $this->redirectViaResponse('users.ban', $result);
+    }
+
+    /**
+     * Unban a user
+     *
+     * @param $id
+     *
+     * @return Redirect
+     */
+    public function unban($id)
+    {
+        $result = $this->userRepository->unban($id);
+
+        return $this->redirectViaResponse('users.unban', $result);
+    }
+
+    /**
+     * Check if the current user can update a profile
+     *
+     * @param $id
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse
+     */
+    protected function profileOwner($id)
+    {
+        $user = $this->userRepository->getUser();
+
+        if ($id != Session::get('userId') && (! $user->hasAccess('admin'))) {
+            return $this->redirectTo('users.invalid', ['error' => trans('Sentinel::users.noaccess')]);
         }
-	}
 
-	/**
-	 * Unsuspend user
-	 * @param  int $id
-	 * @return Redirect
-	 */
-	public function unsuspend($id)
-	{
-		$result = $this->user->unSuspend($id);
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
-        }
-	}
-
-	/**
-	 * Ban a user
-	 * @param  int $id
-	 * @return Redirect
-	 */
-	public function ban($id)
-	{
-		$result = $this->user->ban($id);
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
-        }
-	}
-
-	public function unban($id)
-	{
-    	$result = $this->user->unBan($id);
-
-        if( $result['success'] )
-        {
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
-
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\UserController@index');
-        }
-	}
-
-	/**
-	* Check if the current user can update a profile
-	* @param $id
-	* @return bool|\Illuminate\Http\RedirectResponse
-	*/
-	protected function profileOwner($id)
-	{
-	$user = \Sentry::getUser();
-	if ($id != Session::get('userId') && (!$user->hasAccess('admin'))) {
-		Session::flash('error', trans('Sentinel::users.noaccess'));
-		return Redirect::route(Config::get('Sentinel::config.post_login'));
-	}
-	return true;
-	}
+        return true;
+    }
 
 }
 

@@ -17,4 +17,10 @@ class FunctionalHelper extends \Codeception\Module
         $session->put('userId', $user->id);
         $session->put('email', $user->email);
     }
+
+    public function logout()
+    {
+        $sentry = $this->getModule('Laravel4')->grabService('sentry');
+        $sentry->logout();
+    }
 }

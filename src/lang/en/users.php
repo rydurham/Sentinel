@@ -40,9 +40,9 @@ return array(
 
 	'problem'		=>	"There was a problem. Please contact the system administrator.",
 
-	'passwordchg'	=> 	"Your password has been changed.",
+	'passwordchg'	=> 	"Password has been changed.",
 
-	'passwordprob'	=>	"Your password could not be changed.",
+	'passwordprob'	=>	"Password could not be changed.",
 
 	'oldpassword'	=>	"You did not provide the correct original password.",
 
@@ -61,8 +61,6 @@ return array(
 	'notdestroyed'  =>  "Unable to remove user.",
 
     'invalidreset'  =>  "Invalid password reset link.",
-
-    'resetcomplete' =>  "Your password has been changed.",
 
     'memberships'   =>  "User's group memberships have been updated."
 

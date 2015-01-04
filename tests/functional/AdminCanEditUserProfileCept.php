@@ -7,7 +7,7 @@ $user = $sentry->findUserByLogin('user@user.com');
 
 // Test
 $I->amActingAs('admin@admin.com');
-$I->wantTo('edit a users profile');
+$I->wantTo('edit a users profile as an admin');
 $I->amOnPage('/users/' . $user->id . '/edit');
 $I->seeElement('form', ['class' => 'form-horizontal']);
 $I->fillField('first_name', 'Irina');

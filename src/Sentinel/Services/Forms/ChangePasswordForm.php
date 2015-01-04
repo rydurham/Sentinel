@@ -5,7 +5,7 @@ use Sentinel\Services\Validation\FormValidator;
 class ChangePasswordForm extends FormValidator {
 
     protected $rules = [
-        'oldPassword'              => 'required|min:6',
+        'oldPassword'              => 'min:6',
         'newPassword'              => 'required|min:6|confirmed',
         'newPassword_confirmation' => 'required'
     ];

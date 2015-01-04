@@ -105,6 +105,15 @@ interface SentinelUserRepositoryInterface {
 	public function changePassword($data);
 
     /**
+     * Change a user's password without checking their old password first
+     *
+     * @param $data
+     *
+     * @return BaseResponse
+     */
+    public function changePasswordWithoutCheck($data);
+
+    /**
      * Process a change password request.
      *
      * @return BaseResponse
