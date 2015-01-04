@@ -13,7 +13,7 @@ trait SentinelRedirectionTrait {
      *
      * @return Response
      */
-    public function answerWithResponse($key, BaseResponse $response)
+    public function redirectViaResponse($key, BaseResponse $response)
     {
         if ($response->isSuccessful())
         {
