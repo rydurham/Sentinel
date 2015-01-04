@@ -60,7 +60,14 @@ class SentrySessionManager implements SentinelSessionManagerInterface {
         // If the email address is blank or not valid, try using the username as the primary login credential
         if ( ! $this->validEmail($credentials['email']))
         {
+            // Tell sentry to look for a username when attempting login
             $this->userProvider->getEmptyUser()->setLoginAttributeName('username');
+
+            // Remove the email credential
+            unset($credentials['email']);
+
+            // Set the 'username' credential
+            $credentials['username'] = (isset($credentials['username']) ? $credentials['username'] : e($data['email']));
         }
 
         //Check for suspension or banned status
