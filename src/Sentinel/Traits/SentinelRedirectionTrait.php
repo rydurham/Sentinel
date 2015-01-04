@@ -23,8 +23,8 @@ trait SentinelRedirectionTrait {
         {
             $message = ['error' => $response->getMessage()];
         }
-        return $this->redirectTo($key, $message, $response->getPayload());
 
+        return $this->redirectTo($key, $message, $response->getPayload());
     }
 
     /**
@@ -40,10 +40,10 @@ trait SentinelRedirectionTrait {
         $direction = (is_array($key) ? $key : Config::get('Sentinel::routing.' . $key));
 
         // Convert this "direction" to a url
-        $url = $this->generateUrl($direction);
+        $url = $this->generateUrl($direction, $payload);
 
-        // If the url is null (or blank) the developer wants to return
-        // json rather than a view request.
+        // If the url is null (or blank) the developer wants to
+        // return json rather than a view request.
         if (! $url) { return Response::json($payload); }
 
         // Do we need to flash any session data?
@@ -56,7 +56,6 @@ trait SentinelRedirectionTrait {
 
         // Redirect to the intended url
         return Redirect::to($url)->with($payload);
-
     }
 
     /**
@@ -66,19 +65,47 @@ trait SentinelRedirectionTrait {
      *
      * @return string|null
      */
-    public function generateUrl(array $direction)
+    public function generateUrl(array $direction, array $payload = [])
     {
+        // Do we need to pull any data from the payload to build the url?
+        $parameters = (isset($direction['parameters']) ? $this->extractParameters($direction['parameters'], $payload) : []);
+        unset($direction['parameters']);
+
+        // Determine how the URL has been referenced
         $key      = key($direction);
         $location = current($direction);
 
+        // If no URL target was specified we can't do anything.
         if (is_null($location))
         {
             return null;
         }
 
-        return call_user_func($key, $location);
+        return call_user_func_array($key, array_merge([$location], $parameters));
     }
 
+    /**
+     * Extract URL data from the payload
+     *
+     * @param $specifications
+     * @param $payload
+     *
+     * @return array
+     */
+    public function extractParameters($specifications, $payload)
+    {
+        $parameters = [];
+
+        foreach($specifications as $name => $member)
+        {
+            if (isset($payload[$name]))
+            {
+                $parameters[] = $payload[$name]->$member;
+            }
+        }
+
+        return $parameters;
+    }
 
 
 
