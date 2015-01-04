@@ -50,7 +50,8 @@ return array(
     */
 
     'additional_user_fields' => array(
-        //'field_name' => 'validation'
+        'first_name' => 'alpha_spaces',
+	    'last_name'  => 'alpha_spaces'
     ),
 
     /*
