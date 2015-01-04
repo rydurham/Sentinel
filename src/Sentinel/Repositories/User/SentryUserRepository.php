@@ -214,24 +214,44 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     }
 
     /**
-     * Handle a password reset rewuest
+     * The user has requested a password reset
      *
      * @param  Array $data
      *
      * @return Bool
      */
-    public function forgotPassword($data)
+    public function triggerPasswordReset($email)
     {
-        $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+        $user = $this->sentry->getUserProvider()->findByLogin(e($email));
 
-        $this->dispatcher->fire('sentinel.user.forgot', [
-            'user'      => $user,
-            'resetCode' => $user->getResetPasswordCode()
+        $this->dispatcher->fire('sentinel.user.reset', [
+            'user' => $user,
+            'code' => $user->getResetPasswordCode()
         ]);
 
         return new SuccessResponse(trans('Sentinel::users.emailinfo'), ['user' => $user]);
     }
 
+
+    /**
+     * Validate a password reset link
+     *
+     * @param $id
+     * @param $code
+     *
+     * @return FailureResponse
+     */
+    public function validateResetCode($id, $code)
+    {
+        $user = $this->sentry->findUserById($id);
+
+        if (! $user->checkResetPasswordCode($code))
+        {
+            return new FailureResponse(trans('Sentinel::users.invalidreset'), ['user' => $user]);
+        }
+
+        return new SuccessResponse(null);
+    }
 
     /**
      * Process the password reset request
@@ -241,32 +261,30 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      *
      * @return Array
      */
-    public function resetPassword($id, $code)
+    public function resetPassword($id, $code, $password)
     {
-        // Find the user
-        $user        = $this->sentry->getUserProvider()->findById($id);
-        $newPassword = $this->_generatePassword(8, 8);
+        // Grab the user
+        $user = $this->sentry->getUserProvider()->findById($id);
 
         // Attempt to reset the user password
-        if ($user->attemptResetPassword($code, $newPassword)) {
-            // Email the reset code to the user
-            $this->dispatcher->fire('sentinel.user.newpassword', array(
-                'user'        => $user,
-                'newPassword' => $newPassword
-            ));
+        if ($user->attemptResetPassword($code, $password)) {
 
-            $result['success'] = true;
-            $result['message'] = trans('Sentinel::users.emailpassword');
-        } else {
-            // Password reset failed
-            $result['success'] = false;
-            $result['message'] = trans('Sentinel::users.problem');
+            // Fire the 'password reset' event
+            $this->dispatcher->fire('sentinel.password.reset', ['user' => $user]);
+
+            return new SuccessResponse(trans('Sentinel::users.resetcomplete'), ['user' => $user]);
         }
+
+        return new FailureResponse(trans('Sentinel::users.problem'), ['user' => $user]);
     }
 
+
     /**
-     * Process a change password request.
-     * @return Array $data
+     * Process a password change request
+     *
+     * @param $data
+     *
+     * @return FailureResponse|SuccessResponse
      */
     public function changePassword($data)
     {
@@ -278,11 +296,11 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $user->password = e($data['newPassword']);
 
             if ($user->save()) {
+
                 // User saved
                 $this->dispatcher->fire('sentinel.user.passwordchange', ['user' => $user]);
 
                 return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
-
             }
 
             // User not Saved

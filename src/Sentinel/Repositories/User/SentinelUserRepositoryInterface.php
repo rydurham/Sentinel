@@ -64,13 +64,23 @@ interface SentinelUserRepositoryInterface {
 	public function resend($data);
 
 	/**
-	 * Handle a password reset request
+	 * The user has requested a password reset
 	 *
 	 * @param  Array $data
 	 *
 	 * @return Bool
 	 */
-	public function forgotPassword($data);
+    public function triggerPasswordReset($email);
+
+    /**
+     * Validate a password reset link
+     *
+     * @param $id
+     * @param $code
+     *
+     * @return FailureResponse
+     */
+    public function validateResetCode($id, $code);
 
 	/**
 	 * Process the password reset request
@@ -80,7 +90,7 @@ interface SentinelUserRepositoryInterface {
 	 *
 	 * @return Array
 	 */
-	public function resetPassword($id, $code);
+	public function resetPassword($id, $code, $password);
 
 	/**
 	 * Process a change password request.

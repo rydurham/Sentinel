@@ -38,8 +38,6 @@ return array(
 
 	'emailinfo'		=>	"Check your email for instructions.",
 
-	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
-
 	'problem'		=>	"There was a problem. Please contact the system administrator.",
 
 	'passwordchg'	=> 	"Your password has been changed.",
@@ -60,6 +58,10 @@ return array(
 
 	'destroyed'     =>  "User has been removed.",
 
-	'notdestroyed'  =>  "Unable to remove user."
+	'notdestroyed'  =>  "Unable to remove user.",
+
+    'invalidreset'  =>  "Invalid password reset link.",
+
+    'resetcomplete' =>  "Your password has been changed."
 
 );

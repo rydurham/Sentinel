@@ -10,7 +10,7 @@ Resend Activation
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        {{ Form::open(array('action' => 'Sentinel\UserController@resend', 'method' => 'post')) }}
+        {{ Form::open(array('action' => 'Sentinel\RegistrationController@resendActivation', 'method' => 'post')) }}
         	
             <h2>Resend Activation Email</h2>
     		

@@ -10,7 +10,7 @@ Forgot Password
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        {{ Form::open(array('action' => 'Sentinel\UserController@forgot', 'method' => 'post')) }}
+        {{ Form::open(array('route' => 'sentinel.reset.request', 'method' => 'post')) }}
             
             <h2>Forgot your Password?</h2>
             
