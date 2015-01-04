@@ -324,6 +324,13 @@ class SentryServiceProvider extends ServiceProvider {
             // by those credentials. Check the error message returned
             // for more information.
             $this->session->flash('error', trans('Sentinel::sessions.invalid'));
+
+            // Make sure there is a URL we can go "back" to
+            if ( ! $this->app['request']->header('referer'))
+            {
+                return $this->redirect->route('home');
+            }
+
             return $this->redirect->back()->withInput();
 
         });
@@ -331,7 +338,7 @@ class SentryServiceProvider extends ServiceProvider {
         $this->app->error(function(UserNotActivatedException $e)
         {
             // This user's account has not yet been activated
-            $url     = route('Sentinel\resendActivationForm');
+            $url     = route('sentinel.reactivate.form');
             $message = trans('Sentinel::sessions.notactive', array('url' => $url));
 
             $this->session->flash('error', $message);
