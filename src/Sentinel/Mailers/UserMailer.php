@@ -13,71 +13,54 @@ class UserMailer extends Mailer {
 	{
 		$events->listen('sentinel.user.registered', 	'Sentinel\Mailers\UserMailer@welcome', 10);
 		$events->listen('sentinel.user.resend', 		'Sentinel\Mailers\UserMailer@welcome', 10);
-		$events->listen('sentinel.user.forgot',			'Sentinel\Mailers\UserMailer@forgotPassword', 10);
-		$events->listen('sentinel.user.newpassword',	'Sentinel\Mailers\UserMailer@newPassword', 10);
+		$events->listen('sentinel.user.reset',			'Sentinel\Mailers\UserMailer@passwordReset', 10);
 	}
 
-	/**
-	 * Send a welcome email to a new user.
-	 * @param  string $email          
-	 * @param  int    $userId         
-	 * @param  string $activationCode 		
-	 * @return bool
-	 */
+    /**
+     * Send a welcome email to a new user.
+     *
+     * @param $user
+     * @param $activated
+     *
+     * @return bool
+     * @internal param string $email
+     * @internal param int $userId
+     * @internal param string $activationCode
+     */
 	public function welcome($user, $activated)
 	{
-		$subject = Config::get('Sentinel::config.welcome');
+        $subject = Config::get('Sentinel::email.welcome');
 		$view = 'Sentinel::emails.welcome';
 		$data['userId'] = $user->id;
-		$data['activationCode'] = $user->GetActivationCode();
+		$data['activationCode'] = $user->getActivationCode();
 		$data['email'] = $user->email;
 
-		if ($activated)
+		if (! $activated)
 		{
-			return null;
-		}
-		else 
-		{
-			return $this->sendTo( $user->email, $subject, $view, $data );
+            $this->sendTo( $user->email, $subject, $view, $data );
 		}
 		
 	}
 
-	/**
-	 * Email Password Reset info to a user.
-	 * @param  string $email          
-	 * @param  int    $userId         
-	 * @param  string $resetCode 		
-	 * @return bool
-	 */
-	public function forgotPassword($email, $userId, $resetCode)
+    /**
+     * Email Password Reset info to a user.
+     *
+     * @param $user
+     * @param $code
+     *
+     * @internal param string $email
+     * @internal param int $userId
+     * @internal param string $resetCode
+     */
+	public function passwordReset($user, $code)
 	{
-		$subject = Config::get('Sentinel::config.reset_password');
+		$subject = Config::get('Sentinel::email.reset_password');
 		$view = 'Sentinel::emails.reset';
-		$data['userId'] = $userId;
-		$data['resetCode'] = $resetCode;
-		$data['email'] = $email;
+		$data['userId'] = $user->id;
+		$data['code'] = $code;
+		$data['email'] = $user->email;
 
-		return $this->sendTo($email, $subject, $view, $data );
+		$this->sendTo($user->email, $subject, $view, $data );
 	}
-
-	/**
-	 * Email New Password info to user.
-	 * @param  string $email          
-	 * @param  int    $userId         
-	 * @param  string $resetCode 		
-	 * @return bool
-	 */
-	public function newPassword($email, $newPassword)
-	{
-		$subject = Config::get('Sentinel::config.new_password');
-		$view = 'Sentinel::emails.newpassword';
-		$data['newPassword'] = $newPassword;
-		$data['email'] = $email;
-
-		return $this->sendTo($email, $subject, $view, $data );
-	}
-
-
 
 }
