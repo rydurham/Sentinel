@@ -9,92 +9,112 @@ Edit Profile
 {{-- Content --}}
 @section('content')
 
-<h4>Edit 
-@if ($user->email == Sentry::getUser()->email)
-	Your
-@else 
-	{{ $user->email }}'s 
-@endif 
-
-Profile</h4>
-<div class="well">
-	{{ Form::open(array(
-        'action' => array('Sentinel\UserController@update', $user->id), 
-        'method' => 'put',
-        'class' => 'form-horizontal', 
-        'role' => 'form'
-        )) }}
-        
-        <div class="form-group {{ ($errors->has('first_name')) ? 'has-error' : '' }}" for="first_name">
-            {{ Form::label('edit_first_name', 'First Name', array('class' => 'col-sm-2 control-label')) }}
-            <div class="col-sm-10">
-              {{ Form::text('first_name', $user->first_name, array('class' => 'form-control', 'placeholder' => 'First Name', 'id' => 'edit_first_name'))}}
-            </div>
-            {{ ($errors->has('first_name') ? $errors->first('first_name') : '') }}    			
-    	</div>
-
-
-        <div class="form-group {{ ($errors->has('last_name')) ? 'has-error' : '' }}" for="last_name">
-            {{ Form::label('edit_last_name', 'Last Name', array('class' => 'col-sm-2 control-label')) }}
-            <div class="col-sm-10">
-              {{ Form::text('last_name', $user->last_name, array('class' => 'form-control', 'placeholder' => 'Last Name', 'id' => 'edit_last_name'))}}
-            </div>
-            {{ ($errors->has('last_name') ? $errors->first('last_name') : '') }}                
-        </div>
-
-        @if (Sentry::getUser()->hasAccess('admin'))
-        <div class="form-group">
-            {{ Form::label('edit_memberships', 'Group Memberships', array('class' => 'col-sm-2 control-label'))}}
-            <div class="col-sm-10">
-                @foreach ($allGroups as $group)
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="groups[{{ $group->id }}]" value='1' 
-                        {{ (in_array($group->name, $userGroups) ? 'checked="checked"' : '') }} > {{ $group->name }}
-                    </label>
-                @endforeach
-            </div>
-        </div>
-        @endif
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                {{ Form::hidden('id', $user->id) }}
-                {{ Form::submit('Submit Changes', array('class' => 'btn btn-primary'))}}
-            </div>
-      </div>
-    {{ Form::close()}}
+<div class="row">
+    <div class='page-header'>
+        <h1>
+            Edit
+            @if ($user->email == Sentry::getUser()->email)
+                Your
+            @else
+                {{ $user->email }}'s
+            @endif
+            Account
+        </h1>
+    </div>
 </div>
 
-<h4>Change Password</h4>
-<div class="well">
-    {{ Form::open(array(
-        'action' => array('Sentinel\UserController@change', $user->id), 
-        'class' => 'form-inline', 
-        'role' => 'form'
-        )) }}
-        
-        <div class="form-group {{ $errors->has('oldPassword') ? 'has-error' : '' }}">
-        	{{ Form::label('oldPassword', 'Old Password', array('class' => 'sr-only')) }}
-			{{ Form::password('oldPassword', array('class' => 'form-control', 'placeholder' => 'Old Password')) }}
-    	</div>
+<?php $customFields = Config::get('Sentinel::auth.additional_user_fields'); ?>
 
-        <div class="form-group {{ $errors->has('newPassword') ? 'has-error' : '' }}">
-        	{{ Form::label('newPassword', 'New Password', array('class' => 'sr-only')) }}
-            {{ Form::password('newPassword', array('class' => 'form-control', 'placeholder' => 'New Password')) }}
-    	</div>
+@if (! empty($customFields))
+<div class="row">
+    <h4>Profile</h4>
+    <div class="well">
+        <form method="POST" action="{{ route('sentinel.users.update', $user->id) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
 
-    	<div class="form-group {{ $errors->has('newPassword_confirmation') ? 'has-error' : '' }}">
-        	{{ Form::label('newPassword_confirmation', 'Confirm New Password', array('class' => 'sr-only')) }}
-            {{ Form::password('newPassword_confirmation', array('class' => 'form-control', 'placeholder' => 'Confirm New Password')) }}
-    	</div>
+            @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
+            <div class="form-group {{ ($errors->has($field)) ? 'has-error' : '' }}" for="{{ $field }}">
+                <label for="{{ $field }}" class="col-sm-2 control-label">{{ ucwords(str_replace('_',' ',$field)) }}</label>
+                <div class="col-sm-10">
+                    <input class="form-control" name="{{ $field }}" type="text" value="{{ $user->$field }}">
+                    {{ ($errors->has($field) ? $errors->first($field) : '') }}
+                </div>
+            </div>
+            @endforeach
 
-        {{ Form::submit('Change Password', array('class' => 'btn btn-primary'))}}
-	        	
-      {{ ($errors->has('oldPassword') ? '<br />' . $errors->first('oldPassword') : '') }}
-      {{ ($errors->has('newPassword') ?  '<br />' . $errors->first('newPassword') : '') }}
-      {{ ($errors->has('newPassword_confirmation') ? '<br />' . $errors->first('newPassword_confirmation') : '') }}
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input name="_method" value="PUT" type="hidden">
+                    <input name="_token" value="{{ csrf_token() }}" type="hidden">
+                    <input name="id" value="{{ $user->id }}" type="hidden">
+                    <input class="btn btn-primary" value="Submit Changes" type="submit">
+                </div>
+            </div>
 
-      {{ Form::close() }}
-  </div>
+        </form>
+    </div>
+</div>
+@endif
 
+@if (Sentry::getUser()->hasAccess('admin') && ($user->id != Sentry::getUser()->id))
+<div class="row">
+    <h4>Group Memberships</h4>
+    <div class="well">
+        <form method="POST" action="{{ route('sentinel.users.memberships', $user->id) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    @foreach($groups as $group)
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="groups[{{ $group->name }}]" value="1" {{ ($user->inGroup($group) ? 'checked' : '') }}> {{ $group->name }}
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input name="_token" value="{{ csrf_token() }}" type="hidden">
+                    <input class="btn btn-primary" value="Update Memberships" type="submit">
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+@endif
+
+<div class="row">
+    <h4>Change Password</h4>
+    <div class="well">
+        <form method="POST" action="{{ route('sentinel.change.password', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
+
+            @if(! Sentry::getUser()->hasAccess('admin'))
+            <div class="form-group {{ $errors->has('oldPassword') ? 'has-error' : '' }}">
+                <label for="oldPassword" class="sr-only">Old Password</label>
+                <input class="form-control" placeholder="Old Password" name="oldPassword" value="" id="oldPassword" type="password">
+            </div>
+            @endif
+
+            <div class="form-group {{ $errors->has('newPassword') ? 'has-error' : '' }}">
+                <label for="newPassword" class="sr-only">New Password</label>
+                <input class="form-control" placeholder="New Password" name="newPassword" value="" id="newPassword" type="password">
+            </div>
+
+            <div class="form-group {{ $errors->has('newPassword_confirmation') ? 'has-error' : '' }}">
+                <label for="newPassword_confirmation" class="sr-only">Confirm New Password</label>
+                <input class="form-control" placeholder="Confirm New Password" name="newPassword_confirmation" value="" id="newPassword_confirmation" type="password">
+            </div>
+
+            <input name="_token" value="{{ csrf_token() }}" type="hidden">
+            <input class="btn btn-primary" value="Change Password" type="submit">
+
+            {{ ($errors->has('oldPassword') ? '<br />' . $errors->first('oldPassword') : '') }}
+            {{ ($errors->has('newPassword') ?  '<br />' . $errors->first('newPassword') : '') }}
+            {{ ($errors->has('newPassword_confirmation') ? '<br />' . $errors->first('newPassword_confirmation') : '') }}
+
+        </form>
+
+    </div>
+</div>
 @stop

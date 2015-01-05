@@ -27,6 +27,7 @@ Log In
             <label class="checkbox">
                 {{ Form::checkbox('rememberMe', 'rememberMe') }} Remember me
             </label>
+
             {{ Form::submit('Sign In', array('class' => 'btn btn-primary'))}}
             <a class="btn btn-link" href="{{ route('sentinel.forgot.form') }}">Forgot Password</a>
         {{ Form::close() }}

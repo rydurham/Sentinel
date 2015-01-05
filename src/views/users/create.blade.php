@@ -12,7 +12,7 @@ Register
     <div class="col-md-4 col-md-offset-4">
         {{ Form::open(array('action' => 'Sentinel\UserController@store')) }}
 
-            <h2>Register New Account</h2>
+            <h2>Create New User</h2>
 
             <div class="form-group {{ ($errors->has('username')) ? 'has-error' : '' }}">
                 {{ Form::text('username', null, array('class' => 'form-control', 'placeholder' => 'Username')) }}
@@ -33,8 +33,15 @@ Register
                 {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => 'Confirm Password')) }}
                 {{ ($errors->has('password_confirmation') ?  $errors->first('password_confirmation') : '') }}
             </div>
-            
-            {{ Form::submit('Register', array('class' => 'btn btn-primary')) }}
+
+            <div class="form-group">
+                <label class="checkbox">
+                    {{ Form::checkbox('activate', 'activate') }} Activate
+                </label>
+            </div>
+
+
+            {{ Form::submit('Create', array('class' => 'btn btn-primary')) }}
             
         {{ Form::close() }}
     </div>

@@ -57,11 +57,11 @@
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            @if (Sentry::check())
-				<li {{ (Request::is('users/show/' . Session::get('userId')) ? 'class="active"' : '') }}><a href="{{ URL::route('users.show', Session::get('userId')) }}">{{ Session::get('email') }}</a></li>
-				<li><a href="{{ URL::route('Sentinel\logout') }}">Logout</a></li>
+				<li {{ (Request::is('users/show/' . Session::get('userId')) ? 'class="active"' : '') }}><a href="{{ URL::route('sentinel.users.show', Session::get('userId')) }}">{{ Session::get('email') }}</a></li>
+				<li><a href="{{ URL::route('sentinel.logout') }}">Logout</a></li>
 				@else
-				<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ URL::route('Sentinel\login') }}">Login</a></li>
-				<li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ URL::route('Sentinel\register') }}">Register</a></li>
+				<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ URL::route('sentinel.login') }}">Login</a></li>
+				<li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ URL::route('sentinel.registration.form') }}">Register</a></li>
 				@endif
 	          </ul>
 	        </div><!--/.nav-collapse -->
