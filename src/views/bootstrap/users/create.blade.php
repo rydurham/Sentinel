@@ -3,14 +3,14 @@
 {{-- Web site Title --}}
 @section('title')
 @parent
-Register
+Create New User
 @stop
 
 {{-- Content --}}
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        <form method="POST" action="http://sentinel.dev/users" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.users.store') }}" accept-charset="UTF-8">
 
             <h2>Create New User</h2>
 

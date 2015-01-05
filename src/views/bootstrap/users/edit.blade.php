@@ -78,7 +78,6 @@ Edit Profile
                 </div>
             </div>
 
-
         </form>
     </div>
 </div>

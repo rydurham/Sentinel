@@ -24,7 +24,7 @@ Log In
             </div>
 
             <label class="checkbox">
-                <input name="rememberMe" value="rememberMe" type="checkbox"> Remember me
+                <input name="rememberMe" value="rememberMe" type="checkbox"> Remember Me
             </label>
 
             <input name="_token" value="{{ csrf_token() }}" type="hidden">

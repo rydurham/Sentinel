@@ -3,7 +3,7 @@
 {{-- Web site Title --}}
 @section('title')
 @parent
-Forgot Password
+Reset Password
 @stop
 
 {{-- Content --}}
@@ -26,7 +26,7 @@ Forgot Password
 
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
-            <input class="btn btn-primary" value="Change Password" type="submit">
+            <input class="btn btn-primary" value="Reset Password" type="submit">
 
         </form>
   	</div>

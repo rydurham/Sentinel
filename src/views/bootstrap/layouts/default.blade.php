@@ -57,8 +57,11 @@
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            @if (Sentry::check())
-				<li {{ (Request::is('users/show/' . Session::get('userId')) ? 'class="active"' : '') }}><a href="{{ route('sentinel.users.show', Session::get('userId')) }}">{{ Session::get('email') }}</a></li>
-				<li><a href="{{ route('sentinel.logout') }}">Logout</a></li>
+				<li {{ (Request::is('users/show/' . Session::get('userId')) ? 'class="active"' : '') }}><a href="{{ route('sentinel.users.show', Session::get('userId')) }}">{{ Session::get('email') }}</a>
+				</li>
+				<li>
+					<a href="{{ route('sentinel.logout') }}">Logout</a>
+				</li>
 				@else
 				<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ route('sentinel.login') }}">Login</a></li>
 				<li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
