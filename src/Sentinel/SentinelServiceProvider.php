@@ -43,7 +43,7 @@ class SentinelServiceProvider extends ServiceProvider {
         else
         {
             // The package views have not been published. Use the defaults.
-            $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views');
+            $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views/bootstrap');
         }
 
         // Add the Sentinel Namespace to $app['config']
