@@ -33,7 +33,18 @@ return array(
     'registration.reset.triggered' => ['route' => 'home'],
     'registration.reset.invalid'   => ['route' => 'home'],
     'registration.reset.complete'  => ['route' => 'home'],
-
-
+    'users.invalid'                => ['route' => 'home'],
+    'users.store'                  => ['route' => 'sentinel.users.index'],
+    'users.update'                 => ['route' => 'sentinel.users.show', 'parameters' => ['user' => 'id']],
+    'users.destroy'                => ['route' => 'sentinel.users.index'],
+    'users.change.password'        => ['route' => 'sentinel.users.show', 'parameters' => ['user' => 'id']],
+    'users.change.memberships'     => ['route' => 'sentinel.users.show', 'parameters' => ['user' => 'id']],
+    'users.suspend'                => ['route' => 'sentinel.users.index'],
+    'users.unsuspend'              => ['route' => 'sentinel.users.index'],
+    'users.ban'                    => ['route' => 'sentinel.users.index'],
+    'users.unban'                  => ['route' => 'sentinel.users.index'],
+    'groups.store'                 => ['route' => 'sentinel.groups.index'],
+    'groups.update'                => ['route' => 'sentinel.groups.index'],
+    'groups.destroy'               => ['route' => 'sentinel.groups.index'],
 
 );
