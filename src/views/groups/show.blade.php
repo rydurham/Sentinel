@@ -19,7 +19,7 @@ View Group
 	    </ul>
 	</div>
 	<div class="col-md-2">
-		<button class="btn btn-primary" onClick="location.href='{{ action('Sentinel\GroupController@edit', array($group->id)) }}'">Edit Group</button>
+		<a class="btn btn-primary" href="{{ route('sentinel.groups.edit', array($group->id)) }}">Edit Group</a>
 	</div> 
 </div>
 <hr />

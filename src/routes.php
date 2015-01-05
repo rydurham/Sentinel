@@ -46,7 +46,7 @@ Route::get('groups', ['as' => 'sentinel.groups.index', 'uses' => 'Sentinel\Group
 Route::get('groups/create', ['as' => 'sentinel.groups.create', 'uses' => 'Sentinel\GroupController@create']);
 Route::post('groups', ['as' => 'sentinel.groups.store', 'uses' => 'Sentinel\GroupController@store']);
 Route::get('groups/{group}', ['as' => 'sentinel.groups.show', 'uses' => 'Sentinel\GroupController@show']);
-Route::get('groups/{group}', ['as' => 'sentinel.groups.edit', 'uses' => 'Sentinel\GroupController@edit']);
+Route::get('groups/{group}/edit', ['as' => 'sentinel.groups.edit', 'uses' => 'Sentinel\GroupController@edit']);
 Route::put('groups/{group}', ['as' => 'sentinel.groups.update', 'uses' => 'Sentinel\GroupController@update']);
 Route::delete('groups/{group}', ['as' => 'sentinel.groups.destroy', 'uses' => 'Sentinel\GroupController@destroy']);
 
