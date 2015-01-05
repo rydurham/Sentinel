@@ -1,0 +1,76 @@
+/**
+ * Sentinel Blank Theme Styles
+ * Ryan Durham
+ * 2014
+ */
+
+/** Tags **/
+body {
+    background-color: #FFFFDD;
+}
+
+pre {
+	background-color: #ccc;
+}
+
+/** Structural Elements **/
+
+#container {
+	width: 960px;
+	margin: 0 auto;
+}
+
+#client-portal-navbar {
+	color: #FFF;
+	background: url("../img/cellpic3b.gif") repeat-x;
+	height: 25px;
+	width: 100%;
+}
+
+#client-portal-navbar a, #client-portal-navbar a:visited {
+	color: #FFF;
+	text-decoration: none;
+}
+
+#client-portal-navbar a:hover {
+	text-decoration: underline;
+}
+
+#menu-right {
+	list-style-type: none;
+	margin: 5px;
+	padding: 0;
+	text-align: right;
+	width: 49%;
+	display: inline;
+	float: right;
+}
+
+#menu-left {
+	list-style-type: none;
+	margin: 5px;
+	padding: 0;
+	width: 49%;
+	float: left;
+	display: inline;
+}
+
+#menu-right li, #menu-left li {
+	display: inline;
+	padding: 0 5px;
+}
+
+.sentinel-table {
+	width: 100%;
+}
+
+.sentinel-table td {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+.link {
+	color: blue;
+	cursor: pointer;
+	text-decoration: underline;
+}
