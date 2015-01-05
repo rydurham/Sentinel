@@ -105,7 +105,8 @@ class SentinelServiceProvider extends ServiceProvider {
         $this->app->bind('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface', function($app)
         {
             return new SentryGroupRepository(
-                $app['sentry']
+                $app['sentry'],
+                $app['events']
             );
         });
 

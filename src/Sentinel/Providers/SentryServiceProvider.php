@@ -22,6 +22,9 @@
 
 use Cartalyst\Sentry\Cookies\IlluminateCookie;
 use Cartalyst\Sentry\Groups\Eloquent\Provider as GroupProvider;
+use Cartalyst\Sentry\Groups\GroupExistsException;
+use Cartalyst\Sentry\Groups\GroupNotFoundException;
+use Cartalyst\Sentry\Groups\NameRequiredException;
 use Cartalyst\Sentry\Hashing\BcryptHasher;
 use Cartalyst\Sentry\Hashing\NativeHasher;
 use Cartalyst\Sentry\Hashing\Sha256Hasher;
@@ -364,8 +367,30 @@ class SentryServiceProvider extends ServiceProvider {
 
         $this->app->error(function(UserExistsException $e)
         {
-            // There is alread a user with those credentials
+            // There is already a user with those credentials
             $this->session->flash('error', trans('Sentinel::users.exists'));
+            return $this->redirect->back()->withInput();
+        });
+
+        $this->app->error(function(NameRequiredException $e)
+        {
+            // You must provide a name for a group
+            $this->session->flash('error', trans('Sentinel::groups.namereq'));
+            return $this->redirect->back()->withInput();
+
+        });
+
+        $this->app->error(function(GroupExistsException $e)
+        {
+            // A group with this name already exists
+            $this->session->flash('error', trans('Sentinel::groups.groupexists'));
+            return $this->redirect->back()->withInput();
+        });
+
+        $this->app->error(function(GroupNotFoundException $e)
+        {
+            // Could not find the specified group in storage
+            $this->session->flash('error', trans('Sentinel::groups.notfound'));
             return $this->redirect->back()->withInput();
         });
     }

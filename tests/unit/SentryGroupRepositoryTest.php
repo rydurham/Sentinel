@@ -1,16 +1,13 @@
 <?php
-use Sentinel\Repo\Group\SentryGroup;
-use Cartalyst\Sentry\Sentry;
-use Sentinel\Repo\RepoAbstract;
-use Illuminate\Config\Repository;
-use Illuminate\Events\Dispatcher;
+use Sentinel\Repositories\Group\SentryGroupRepository;
+
 
 /**
  * Class SentryUserTest
  * Test the methods in the SentryUser repository class
  * /src/Sentinel/Repo/User/SentryUser
  */
-class SentryGroupTest extends \Codeception\TestCase\Test
+class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
 {
     protected $sentinelConfiguration = [];
     protected $configMock;
@@ -23,9 +20,8 @@ class SentryGroupTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->dispatcherMock = Mockery::mock('Illuminate\Events\Dispatcher');
-        $this->configMock     = Mockery::mock('Illuminate\Config\Repository');
-        $this->sentry         = new Cartalyst\Sentry\Sentry;
-        $this->repo           = new SentryGroup($this->sentry);
+        $this->sentry         = $this->tester->grabService('sentry');
+        $this->repo           = new SentryGroupRepository($this->sentry, $this->dispatcherMock);
     }
 
     protected function _after()
@@ -42,7 +38,7 @@ class SentryGroupTest extends \Codeception\TestCase\Test
     function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
-        $this->assertInstanceOf('Sentinel\Repo\Group\SentryGroup', $this->repo);
+        $this->assertInstanceOf('Sentinel\Repositories\Group\SentryGroupRepository', $this->repo);
     }
 
     /**
@@ -60,43 +56,21 @@ class SentryGroupTest extends \Codeception\TestCase\Test
      */
     public function testSavingGroup()
     {
+        // Mock the Event::fire() calls
+        $this->dispatcherMock->shouldReceive('fire')
+                             ->with('sentinel.group.created', \Mockery::hasKey('group'))->once();
+
         // This is the code we are testing
         $result = $this->repo->store([
             'name' => 'Prozorovs',
             'permissions' => ['family' => 1, 'admin' => 0]
         ]);
 
-        $group = $this->sentry->findGroupByName('Prozorovs');
-
         // Assertions
-        $this->assertTrue($result['success']);
-        $this->assertInstanceOf('Cartalyst\Sentry\Groups\Eloquent\Group', $group);
-        $this->assertArrayHasKey('family', $group->getPermissions());
-        $this->assertArrayNotHasKey('admin', $group->getPermissions());
-        $this->tester->seeRecord('groups', array(
-            'name'   => 'Prozorovs',
-        ));
-    }
-
-    /**
-     * Test the creation of a user using the default configuration options
-     */
-    public function testSavingGroupAlternatePermissionsMethod()
-    {
-        // This is the code we are testing
-        $result = $this->repo->store([
-            'name' => 'Prozorovs',
-            'adminPermissions' => 1,
-            'userPermissions' => 1
-        ]);
-
-        $group = $this->sentry->findGroupByName('Prozorovs');
-
-        // Assertions
-        $this->assertTrue($result['success']);
-        $this->assertInstanceOf('Cartalyst\Sentry\Groups\Eloquent\Group', $group);
-        $this->assertArrayHasKey('admin', $group->getPermissions());
-        $this->assertArrayHasKey('users', $group->getPermissions());
+        $this->assertTrue($result->isSuccessful());
+        $this->assertInstanceOf('Sentinel\Models\Group', $result->getPayload()['group']);
+        $this->assertArrayHasKey('family', $result->getPayload()['group']->getPermissions());
+        $this->assertArrayNotHasKey('admin', $result->getPayload()['group']->getPermissions());
         $this->tester->seeRecord('groups', array(
             'name'   => 'Prozorovs',
         ));
@@ -104,6 +78,10 @@ class SentryGroupTest extends \Codeception\TestCase\Test
 
     public function testUpdatingGroup()
     {
+        // Mock the Event::fire() calls
+        $this->dispatcherMock->shouldReceive('fire')
+                             ->with('sentinel.group.updated', \Mockery::hasKey('group'))->once();
+
         // Find the group we will edit
         $group = $this->sentry->findGroupByName('Users');
 
@@ -114,40 +92,19 @@ class SentryGroupTest extends \Codeception\TestCase\Test
             'permissions' => ['admin' => 1, 'users' => 0]
         ]);
 
-        // Pull the group details again
-        $group = $this->sentry->findGroupById($group->id);
-
         // Assertions
-        $this->assertTrue($result['success']);
-        $this->assertEquals('Prozorovs', $group->name);
-        $this->assertArrayHasKey('admin', $group->getPermissions());
-        $this->assertArrayNotHasKey('users', $group->getPermissions());
-    }
-
-    public function testUpdatingGroupAlternatePermissionsMethod()
-    {
-        // Find the group we will edit
-        $group = $this->sentry->findGroupByName('Users');
-
-        // This is the code we are testing
-        $result = $this->repo->update([
-            'id' => $group->id,
-            'name' => 'Prozorovs',
-            'adminPermissions' => 1,
-        ]);
-
-        // Pull the group details again
-        $group = $this->sentry->findGroupById($group->id);
-
-        // Assertions
-        $this->assertTrue($result['success']);
-        $this->assertEquals('Prozorovs', $group->name);
-        $this->assertArrayHasKey('admin', $group->getPermissions());
-        $this->assertArrayNotHasKey('users', $group->getPermissions());
+        $this->assertTrue($result->isSuccessful());
+        $this->assertEquals('Prozorovs', $result->getPayload()['group']->name);
+        $this->assertArrayHasKey('admin', $result->getPayload()['group']->getPermissions());
+        $this->assertArrayNotHasKey('users', $result->getPayload()['group']->getPermissions());
     }
 
     public function testDestroyGroup()
     {
+        // Mock the Event::fire() calls
+        $this->dispatcherMock->shouldReceive('fire')
+                             ->with('sentinel.group.destroyed', \Mockery::hasKey('group'))->once();
+
         // Find the group we will remove from storage
         $group = $this->sentry->findGroupByName('Users');
 
@@ -155,7 +112,7 @@ class SentryGroupTest extends \Codeception\TestCase\Test
         $result = $this->repo->destroy($group->id);
 
         // Assertions
-        $this->assertTrue($result);
+        $this->assertTrue($result->isSuccessful());
         $this->tester->dontSeeRecord('groups', [
             'name' => 'Users'
         ]);
@@ -167,10 +124,10 @@ class SentryGroupTest extends \Codeception\TestCase\Test
         $reference = $this->sentry->findGroupByName('Users');
 
         // This is the code we are testing
-        $group = $this->repo->byId($reference->id);
+        $group = $this->repo->retrieveById($reference->id);
 
         // Assertions
-        $this->assertInstanceOf('Cartalyst\Sentry\Groups\Eloquent\Group', $group);
+        $this->assertInstanceOf('Sentinel\Models\Group', $group);
         $this->assertEquals('Users', $group->name);
     }
 
@@ -180,10 +137,10 @@ class SentryGroupTest extends \Codeception\TestCase\Test
         $reference = $this->sentry->findGroupById(1);
 
         // This is the code we are testing
-        $group = $this->repo->byName($reference->name);
+        $group = $this->repo->retrieveByName($reference->name);
 
         // Assertions
-        $this->assertInstanceOf('Cartalyst\Sentry\Groups\Eloquent\Group', $group);
+        $this->assertInstanceOf('Sentinel\Models\Group', $group);
         $this->assertEquals(1, $group->id);
     }
 

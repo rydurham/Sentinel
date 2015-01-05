@@ -24,4 +24,6 @@ return array(
 
 	'notfound' 		=> "Group not found.",
 
+    'destroyed'     => "Group has been removed."
+
 );

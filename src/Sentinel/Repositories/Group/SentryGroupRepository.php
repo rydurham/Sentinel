@@ -2,7 +2,11 @@
 
 use Cartalyst\Sentry\Sentry;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Response;
+use Sentinel\Models\Group;
+use Sentinel\Services\Responders\FailureResponse;
+use Sentinel\Services\Responders\SuccessResponse;
 
 class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	
@@ -11,9 +15,10 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	/**
 	 * Construct a new SentryGroup Object
 	 */
-	public function __construct(Sentry $sentry)
+	public function __construct(Sentry $sentry, Dispatcher $dispatcher)
 	{
 		$this->sentry = $sentry;
+        $this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -23,39 +28,19 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	 */
 	public function store($data)
 	{
-		// Back suppport for previous permissions options
-		if (array_key_exists('adminPermissions', $data)) $data['permissions']['admin'] = 1;
-		if (array_key_exists('userPermissions', $data)) $data['permissions']['users'] = 1;
+		// Assemble permissions
+        $permissions = (isset($data['permissions']) ? $data['permissions'] : []);
 
-		// Does the permissions array exist in the $data array?
-		if ( ! array_key_exists('permissions', $data))
-		{
-			$data['permissions'] = array();
-		}
+        /// Create the group
+        $group = $this->sentry->createGroup([
+            'name'        => e($data['name']),
+            'permissions' => $permissions,
+        ]);
 
-		$result = array();
-		try {
-			    // Create the group
-			    $group = $this->sentry->createGroup(array(
-			        'name'        => e($data['name']),
-			        'permissions' => $data['permissions'],
-			    ));
+        // Fire the 'group created' event
+        $this->dispatcher->fire('sentinel.group.created', ['group' => $group]);
 
-			   	$result['success'] = true;
-	    		$result['message'] = trans('Sentinel::groups.created'); 
-		}
-		catch (\Cartalyst\Sentry\Users\LoginRequiredException $e)
-		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::groups.loginreq');
-		}
-		catch (\Cartalyst\Sentry\Users\UserExistsException $e)
-		{
-		    $result['success'] = false;
-	    	$result['message'] = trans('Sentinel::groups.userexists');;
-		}
-
-		return $result;
+        return new SuccessResponse(trans('Sentinel::groups.created'), ['group' => $group]);
 	}
 	
 	/**
@@ -66,64 +51,38 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	 */
 	public function update($data)
 	{
-		// Back suppport for previous permissions options
-		if (array_key_exists('adminPermissions', $data)) $data['permissions']['admin'] = 1;
-		if (array_key_exists('userPermissions', $data)) $data['permissions']['users'] = 1;
+        // Assemble permissions
+        $permissions = (isset($data['permissions']) ? $data['permissions'] : []);
 
-		// Does the permissions array exist in the $data array?
-		if ( ! array_key_exists('permissions', $data))
-		{
-			$data['permissions'] = array();
-		}
+        // Find the group using the group id
+        $group = $this->sentry->findGroupById($data['id']);
 
-		try
-		{
-			// Find the group using the group id
-		    $group = $this->sentry->findGroupById($data['id']);
+        // Grab the current (pre-edit) permissions and nullify appropriately
+        $existingPermissions = $group->getPermissions();
+        $nulledPermissions = array_diff_key($existingPermissions, $permissions);
+        foreach ($nulledPermissions as $key => $value) {
+            // Set the nulled permissions to 0
+            $permissions[$key] = 0;
+        }
 
-		    // Grab the current (pre-edit) permissions and nullify appropriately
-		    $existingPermissions = $group->getPermissions();
-		    $nulledPermissions = array_diff_key($existingPermissions, $data['permissions']);
-			foreach ($nulledPermissions as $key => $value) {
-				// Set the nulled permissions to 0
-				$data['permissions'][$key] = 0;
-			}
+        // Update the group details
+        $group->name = e($data['name']);
+        $group->permissions = $permissions;
 
-		    // Update the group details
-		    $group->name = e($data['name']);
-		    $group->permissions = $data['permissions'];
+        // Update the group
+        if ($group->save())
+        {
+            // Fire the 'group updated' event
+            $this->dispatcher->fire('sentinel.group.updated', ['group' => $group]);
 
-		    // Update the group
-		    if ($group->save())
-		    {
-		        // Group information was updated
-		        $result['success'] = true;
-				$result['message'] = trans('Sentinel::groups.updated');;
-		    }
-		    else
-		    {
-		        // Group information was not updated
-		        $result['success'] = false;
-				$result['message'] = trans('Sentinel::groups.updateproblem');;
-		    }
-		}
-		catch (\Cartalyst\Sentry\Groups\NameRequiredException $e)
-		{
-			$result['success'] = false;
-			$result['message'] = trans('Sentinel::groups.namereq');;
-		}
-		catch (\Cartalyst\Sentry\Groups\GroupExistsException $e)
-		{
-			$result['success'] = false;
-			$result['message'] = trans('Sentinel::groups.groupexists');;
-		}
-		catch (\Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-		{
-			$result['success'] = false;
-			$result['message'] = trans('Sentinel::groups.notfound');
-		}
+            return new SuccessResponse(trans('Sentinel::groups.updated'), ['group' => $group]);
+        }
+        else
+        {
+            // There was a problem
+            return new FailureResponse(trans('Sentinel::groups.updateproblem'), ['group' => $group]);
+        }
 
-		return $result;
 	}
 
 	/**
@@ -134,19 +93,16 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	 */
 	public function destroy($id)
 	{
-		try
-		{
-		    // Find the group using the group id
-		    $group = $this->sentry->findGroupById($id);
+        // Find the group using the group id
+        $group = $this->sentry->findGroupById($id);
 
-		    // Delete the group
-		    $group->delete();
-		}
-		catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-		{
-		    return false;
-		}
-		return true;
+        // Delete the group
+        $group->delete();
+
+        // Fire the 'group destroyed' event
+        $this->dispatcher->fire('sentinel.group.destroyed', ['group' => $group]);
+
+        return new SuccessResponse(trans('Sentinel::groups.destroyed'), ['group' => $group]);
 	}
 
 	/**
@@ -155,17 +111,9 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	 * @param  integer $id
 	 * @return Group
 	 */
-	public function byId($id)
+	public function retrieveById($id)
 	{
-		try
-		{
-		    $group = $this->sentry->findGroupById($id);
-		}
-		catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-		{
-		    return false;
-		}
-		return $group;
+		return $this->sentry->findGroupById($id);
 	}
 
 	/**
@@ -174,23 +122,15 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
 	 * @param  string $name
 	 * @return Group
 	 */
-	public function byName($name)
+	public function retrieveByName($name)
 	{
-		try
-		{
-		    $group = $this->sentry->findGroupByName($name);
-		}
-		catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-		{
-		    return false;
-		}
-		return $group;
+		return $this->sentry->findGroupByName($name);
 	}
 
 	/**
 	 * Return all the registered groups
 	 *
-	 * @return Collection
+	 * @return Array
 	 */
 	public function all()
 	{

@@ -35,7 +35,7 @@ interface SentinelGroupRepositoryInterface {
 	 * @param  integer $id
 	 * @return User
 	 */
-	public function byId($id);
+	public function retrieveById($id);
 
 	/**
 	 * Return a specific user by a given name
@@ -43,7 +43,7 @@ interface SentinelGroupRepositoryInterface {
 	 * @param  string $name
 	 * @return User
 	 */
-	public function byName($name);
+	public function retrieveByName($name);
 
 	/**
 	 * Return all the registered users

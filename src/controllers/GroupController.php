@@ -1,156 +1,154 @@
 <?php namespace Sentinel;
 
-use Sentinel\Repo\Group\GroupInterface;
-use Sentinel\Service\Form\Group\GroupForm;
-use BaseController;
-use View;
-use Input;
-use Event;
-use Redirect;
-use Session;
+use BaseController, View, Input, Event, Redirect, Session, Paginator;
+use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
+use Sentinel\Services\Forms\GroupCreateForm;
+use Sentinel\Services\Forms\GroupUpdateForm;
+use Sentinel\Traits\SentinelRedirectionTrait;
 
 class GroupController extends BaseController {
 
-	/**
-	 * Member Vars
-	 */
-	protected $group;
-	protected $groupForm;
+    /**
+     * Members
+     */
+    protected $group;
+    protected $groupForm;
+    /**
+     * @var GroupCreateForm
+     */
+    private $groupCreateForm;
+    /**
+     * @var GroupUpdateForm
+     */
+    private $groupUpdateForm;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct(GroupInterface $group, GroupForm $groupForm) 
+    /**
+     * Traits
+     */
+    use SentinelRedirectionTrait;
+
+    /**
+     * Constructor
+     */
+	public function __construct(
+        SentinelGroupRepositoryInterface $groupRepository,
+        GroupCreateForm $groupCreateForm,
+        GroupUpdateForm $groupUpdateForm
+    )
 	{
-		$this->group = $group;
-		$this->groupForm = $groupForm;
+		$this->groupRepository = $groupRepository;
+        $this->groupCreateForm = $groupCreateForm;
+        $this->groupUpdateForm = $groupUpdateForm;
 
 		// Establish Filters
 		$this->beforeFilter('Sentinel\hasAccess:admin');
-		$this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
-	}
+		$this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
+    }
 
 	/**
-	 * Display a listing of the resource.
+	 * Display a paginated list of all current groups
 	 *
-	 * @return Response
+	 * @return View
 	 */
 	public function index()
 	{
-		$groups = $this->group->all();
+        // Paginate the existing users
+        $groups      = $this->groupRepository->all();
+        $perPage     = 15;
+        $currentPage = Input::get('page') - 1;
+        $pagedData   = array_slice($groups, $currentPage * $perPage, $perPage);
+        $groups      = Paginator::make($pagedData, count($groups), $perPage);
+
 		return View::make('Sentinel::groups.index')->with('groups', $groups);
 	}
 
 	/**
-	 * Show the form for creating a new resource.
+	 * Show the form for creating a group
 	 *
-	 * @return Response
+	 * @return View
 	 */
 	public function create()
 	{
-		//Forms for creating a new Group
 		return View::make('Sentinel::groups.create');
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function store()
 	{
-		// Forms Processing
-        $result = $this->groupForm->save( Input::all() );
-        
-        if( $result['success'] )
-        {
-            Event::fire('sentinel.group.created');
+		// Gather input
+        $data = Input::all();
 
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\GroupController@index');
+        // Form Data Validation
+        $this->groupCreateForm->validate($data);
 
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\GroupController@create')
-                ->withInput()
-                ->withErrors( $this->groupForm->errors() );
-        }
+		// Store the new group
+        $result = $this->groupRepository->store($data);
+
+        return $this->redirectViaResponse('groups.store', $result);
 	}
 
 	/**
-	 * Display the specified resource.
+	 * Display the specified group
 	 *
-	 * @return Response
+	 * @return View
 	 */
 	public function show($id)
 	{
-		//Show a group and its permissions. 
-		$group = $this->group->byId($id);
+		$group = $this->groupRepository->retrieveById($id);
 
 		return View::make('Sentinel::groups.show')->with('group', $group);
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
+	 * Show the form for editing the specified group.
 	 *
-	 * @return Response
+	 * @return View
 	 */
 	public function edit($id)
 	{
-		$group = $this->group->byId($id);
-		return View::make('Sentinel::groups.edit')->with('group', $group)->with('permissions', $group->getPermissions());
+		$group = $this->groupRepository->retrieveById($id);
+
+        return View::make('Sentinel::groups.edit')
+            ->with('group', $group)
+            ->with('permissions', $group->getPermissions());
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function update($id)
 	{
-		// Forms Processing
-        $result = $this->groupForm->update( Input::all() );
+		// Gather Input
+        $data = Input::all();
 
-        if( $result['success'] )
-        {
-            Event::fire('sentinel.group.updated', array(
-                'groupId' => $id, 
-            ));
+        // Grab the group in question for the validator
+        $group = $this->groupRepository->retrieveById($id);
 
-            // Success!
-            Session::flash('success', $result['message']);
-            return Redirect::action('Sentinel\GroupController@index');
+        // Validate form data
+        $this->groupUpdateForm->validate($data, $group);
 
-        } else {
-            Session::flash('error', $result['message']);
-            return Redirect::action('Sentinel\GroupController@edit', $id)
-                ->withInput()
-                ->withErrors( $this->groupForm->errors() );
-        }
+		// Update the group
+        $result = $this->groupRepository->update($data);
+
+        return $this->redirectViaResponse('groups.update', $result);
 	}
 
 	/**
-	 * Remove the specified resource from storage.
+	 * Remove the specified group from storage.
 	 *
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function destroy($id)
 	{
-		if ($this->group->destroy($id))
-		{
-			Event::fire('sentinel.group.destroyed', array(
-                'groupId' => $id, 
-            ));
+		$result = $this->groupRepository->destroy($id);
 
-			Session::flash('success', 'Group Deleted');
-            return Redirect::action('Sentinel\GroupController@index');
-        }
-        else 
-        {
-        	Session::flash('error', 'Unable to Delete Group');
-            return Redirect::action('Sentinel\GroupController@index');
-        }
+        return $this->redirectViaResponse('groups.destroy', $result);
 	}
 
 }
