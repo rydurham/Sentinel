@@ -10,29 +10,32 @@ Edit Group
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-	{{ Form::open(array('action' =>  array('Sentinel\GroupController@update', $group->id), 'method' => 'put')) }}
-        <h2>Edit Group</h2>
-    
-        <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-            {{ Form::text('name', $group->name, array('class' => 'form-control', 'placeholder' => 'Name')) }}
-            {{ ($errors->has('name') ? $errors->first('name') : '') }}
-        </div>
+        <form method="POST" action="{{ route('sentinel.groups.update', $group->id) }}" accept-charset="UTF-8">
 
-        {{ Form::label('Permissions') }}
+            <h2>Edit Group</h2>
 
-        <div class="form-group">
-            <label class="checkbox-inline">
-                {{ Form::checkbox('permissions[admin]', 1, array_key_exists('admin', $permissions)) }} Admin
-            </label>
-            <label class="checkbox-inline">
-                {{ Form::checkbox('permissions[users]', 1, array_key_exists('users', $permissions)) }} User
-            </label>
-        </div>
+            <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
+                <input class="form-control" placeholder="Name" name="name" value="Tester1" type="text">
+                {{ ($errors->has('name') ? $errors->first('name') : '') }}
+            </div>
 
-        {{ Form::hidden('id', $group->id) }}
-        {{ Form::submit('Save Changes', array('class' => 'btn btn-primary')) }}
+            <label for="Permissions">Permissions</label>
+            <div class="form-group">
+                <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+                @foreach ($defaultPermissions as $permission)
+                    <label class="checkbox-inline">
+                        <input name="permissions[{{ $permission }}]" value="1" type="checkbox" {{ (isset($permissions[$permission]) ? 'checked' : '') }}>
+                        {{ ucwords($permission) }}
+                    </label>
+                @endforeach
+            </div>
 
-    {{ Form::close() }}
+            <input name="id" value="{{ $group->id }}" type="hidden">
+            <input name="_method" value="PUT" type="hidden">
+            <input name="_token" value="{{ csrf_token() }}" type="hidden">
+            <input class="btn btn-primary" value="Save Changes" type="submit">
+
+        </form>
     </div>
 </div>
 

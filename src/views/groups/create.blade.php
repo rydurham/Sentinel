@@ -10,27 +10,30 @@ Create Group
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-	{{ Form::open(array('action' => 'Sentinel\GroupController@store')) }}
-        <h2>Create New Group</h2>
-    
-        <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-            {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => 'Name')) }}
-            {{ ($errors->has('name') ? $errors->first('name') : '') }}
-        </div>
+        <form method="POST" action="{{ route('sentinel.groups.store') }}" accept-charset="UTF-8">
 
-        {{ Form::label('Permissions') }}
-        <div class="form-group">
-            <label class="checkbox-inline">
-                {{ Form::checkbox('permissions[admin]', 1) }} Admin
-            </label>
-            <label class="checkbox-inline">
-                {{ Form::checkbox('permissions[users]', 1) }} User
-            </label>
-        </div>
+            <h2>Create New Group</h2>
 
-        {{ Form::submit('Create New Group', array('class' => 'btn btn-primary')) }}
+            <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
+                <input class="form-control" placeholder="Name" name="name" type="text">
+                {{ ($errors->has('name') ? $errors->first('name') : '') }}
+            </div>
 
-    {{ Form::close() }}
+            <label for="Permissions">Permissions</label>
+            <div class="form-group">
+                <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+                @foreach ($defaultPermissions as $permission)
+                    <label class="checkbox-inline">
+                        <input name="permissions[{{ $permission }}]" value="1" type="checkbox"> {{ ucwords($permission) }}
+                    </label>
+                @endforeach
+            </div>
+
+            <input name="_token" value="{{ csrf_token() }}" type="hidden">
+            <input class="btn btn-primary" value="Create New Group" type="submit">
+
+        </form>
+
     </div>
 </div>
 

@@ -40,6 +40,18 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Default Group Permissions
+    |--------------------------------------------------------------------------
+    |
+    | When a new user is created, they will automatically be added to the
+    | groups in this array.
+    |
+    */
+
+    'default_permissions' => array('admin', 'users'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Custom User Fields
     |--------------------------------------------------------------------------
     |
