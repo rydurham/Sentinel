@@ -10,40 +10,40 @@ Register
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        {{ Form::open(array('action' => 'Sentinel\UserController@store')) }}
+        <form method="POST" action="http://sentinel.dev/users" accept-charset="UTF-8">
 
             <h2>Create New User</h2>
 
             <div class="form-group {{ ($errors->has('username')) ? 'has-error' : '' }}">
-                {{ Form::text('username', null, array('class' => 'form-control', 'placeholder' => 'Username')) }}
+                <input class="form-control" placeholder="Username" name="username" type="text">
                 {{ ($errors->has('username') ? $errors->first('username') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => 'E-mail')) }}
+                <input class="form-control" placeholder="E-mail" name="email" type="text">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
-                {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Password')) }}
+                <input class="form-control" placeholder="Password" name="password" value="" type="password">
                 {{ ($errors->has('password') ?  $errors->first('password') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
-                {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => 'Confirm Password')) }}
+                <input class="form-control" placeholder="Confirm Password" name="password_confirmation" value="" type="password">
                 {{ ($errors->has('password_confirmation') ?  $errors->first('password_confirmation') : '') }}
             </div>
 
             <div class="form-group">
                 <label class="checkbox">
-                    {{ Form::checkbox('activate', 'activate') }} Activate
+                    <input name="activate" value="activate" type="checkbox"> Activate
                 </label>
             </div>
 
+            <input name="_token" value="{{ csrf_token() }}" type="hidden">
+            <input class="btn btn-primary" value="Create" type="submit">
 
-            {{ Form::submit('Create', array('class' => 'btn btn-primary')) }}
-            
-        {{ Form::close() }}
+        </form>
     </div>
 </div>
 

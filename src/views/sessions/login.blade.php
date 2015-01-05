@@ -9,28 +9,29 @@ Log In
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-
-        {{ Form::open(array('action' => 'Sentinel\SessionController@store')) }}
+        <form method="POST" action="{{ route('sentinel.session.store') }}" accept-charset="UTF-8">
 
             <h2 class="form-signin-heading">Sign In</h2>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => 'Email', 'autofocus')) }}
+                <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
-                {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Password'))}}
+                <input class="form-control" placeholder="Password" name="password" value="" type="password">
                 {{ ($errors->has('password') ?  $errors->first('password') : '') }}
             </div>
-            
+
             <label class="checkbox">
-                {{ Form::checkbox('rememberMe', 'rememberMe') }} Remember me
+                <input name="rememberMe" value="rememberMe" type="checkbox"> Remember me
             </label>
 
-            {{ Form::submit('Sign In', array('class' => 'btn btn-primary'))}}
-            <a class="btn btn-link" href="{{ route('sentinel.forgot.form') }}">Forgot Password</a>
-        {{ Form::close() }}
+            <input name="_token" value="{{ csrf_token() }}" type="hidden">
+            <input class="btn btn-primary" value="Sign In" type="submit">
+            <a class="btn btn-link" href="http://sentinel.dev/forgot">Forgot Password</a>
+
+        </form>
     </div>
 </div>
 

@@ -46,22 +46,22 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>
-	          <a class="navbar-brand" href="{{ URL::route('home') }}">Sentinel</a>
+	          <a class="navbar-brand" href="{{ route('home') }}">Sentinel</a>
 	        </div>
 	        <div class="collapse navbar-collapse">
 	          <ul class="nav navbar-nav">
 				@if (Sentry::check() && Sentry::getUser()->hasAccess('admin'))
-					<li {{ (Request::is('users*') ? 'class="active"' : '') }}><a href="{{ URL::action('Sentinel\UserController@index') }}">Users</a></li>
-					<li {{ (Request::is('groups*') ? 'class="active"' : '') }}><a href="{{ URL::action('Sentinel\GroupController@index') }}">Groups</a></li>
+					<li {{ (Request::is('users*') ? 'class="active"' : '') }}><a href="{{ action('Sentinel\UserController@index') }}">Users</a></li>
+					<li {{ (Request::is('groups*') ? 'class="active"' : '') }}><a href="{{ action('Sentinel\GroupController@index') }}">Groups</a></li>
 				@endif
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            @if (Sentry::check())
-				<li {{ (Request::is('users/show/' . Session::get('userId')) ? 'class="active"' : '') }}><a href="{{ URL::route('sentinel.users.show', Session::get('userId')) }}">{{ Session::get('email') }}</a></li>
-				<li><a href="{{ URL::route('sentinel.logout') }}">Logout</a></li>
+				<li {{ (Request::is('users/show/' . Session::get('userId')) ? 'class="active"' : '') }}><a href="{{ route('sentinel.users.show', Session::get('userId')) }}">{{ Session::get('email') }}</a></li>
+				<li><a href="{{ route('sentinel.logout') }}">Logout</a></li>
 				@else
-				<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ URL::route('sentinel.login') }}">Login</a></li>
-				<li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ URL::route('sentinel.registration.form') }}">Register</a></li>
+				<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ route('sentinel.login') }}">Login</a></li>
+				<li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
 				@endif
 	          </ul>
 	        </div><!--/.nav-collapse -->

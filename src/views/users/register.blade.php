@@ -7,33 +7,34 @@ Register
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        {{ Form::open(array('action' => 'Sentinel\RegistrationController@register')) }}
+        <form method="POST" action="{{ route('sentinel.register.user') }}" accept-charset="UTF-8">
 
             <h2>Register New Account</h2>
 
             <div class="form-group {{ ($errors->has('username')) ? 'has-error' : '' }}">
-                {{ Form::text('username', null, array('class' => 'form-control', 'placeholder' => 'Username')) }}
+                <input class="form-control" placeholder="Username" name="username" type="text">
                 {{ ($errors->has('username') ? $errors->first('username') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => 'E-mail')) }}
+                <input class="form-control" placeholder="E-mail" name="email" type="text">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('password')) ? 'has-error' : '' }}">
-                {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Password')) }}
+                <input class="form-control" placeholder="Password" name="password" value="" type="password">
                 {{ ($errors->has('password') ?  $errors->first('password') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('password_confirmation')) ? 'has-error' : '' }}">
-                {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => 'Confirm Password')) }}
+                <input class="form-control" placeholder="Confirm Password" name="password_confirmation" value="" type="password">
                 {{ ($errors->has('password_confirmation') ?  $errors->first('password_confirmation') : '') }}
             </div>
-            
-            {{ Form::submit('Register', array('class' => 'btn btn-primary')) }}
-            
-        {{ Form::close() }}
+
+            <input name="_token" value="TU1ensQVfjSgpVMe86Dx1AJDsfNXi5gu8SBMwKo1" type="hidden">
+            <input class="btn btn-primary" value="Register" type="submit">
+
+        </form>
     </div>
 </div>
 
