@@ -1,7 +1,6 @@
 <?php
 
-use Cartalyst\Sentry\Sentry;
-use Sentinel\Repo\Session\SentrySession;
+use Sentinel\Managers\Session\SentrySessionManager;
 
 /**
  * Class SentryUserTest
@@ -21,9 +20,8 @@ class SentrySessionTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->dispatcherMock = Mockery::mock('Illuminate\Events\Dispatcher');
-        $this->configMock     = Mockery::mock('Illuminate\Config\Repository');
-        $this->sentry         = new Cartalyst\Sentry\Sentry;
-        $this->repo           = new SentrySession($this->sentry);
+        $this->sentry         = $this->tester->grabService('sentry');
+        $this->repo           = new SentrySessionManager($this->sentry, $this->dispatcherMock);
     }
 
     protected function _after()
@@ -40,7 +38,7 @@ class SentrySessionTest extends \Codeception\TestCase\Test
     function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
-        $this->assertInstanceOf('Sentinel\Repo\Session\SentrySession', $this->repo);
+        $this->assertInstanceOf('Sentinel\Managers\Session\SentrySessionManager', $this->repo);
     }
 
     /**
@@ -58,6 +56,10 @@ class SentrySessionTest extends \Codeception\TestCase\Test
      */
     public function testCreatingSession()
     {
+        // Mock the Event::fire() call
+        $this->dispatcherMock->shouldReceive('fire')
+                             ->with('sentinel.user.login', \Mockery::hasKey('user'))->once();
+
         // This is the code we are testing
         $result = $this->repo->store([
             'email' => 'user@user.com',
@@ -65,8 +67,7 @@ class SentrySessionTest extends \Codeception\TestCase\Test
         ]);
 
         // Assertions
-        $this->assertTrue($result['success']);
-        $this->assertInstanceOf('Cartalyst\Sentry\Users\Eloquent\User', $result['user']);
+        $this->assertTrue($result->isSuccessful());
     }
 
 
