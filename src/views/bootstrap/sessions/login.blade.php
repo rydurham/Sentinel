@@ -29,7 +29,7 @@ Log In
 
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
             <input class="btn btn-primary" value="Sign In" type="submit">
-            <a class="btn btn-link" href="http://sentinel.dev/forgot">Forgot Password</a>
+            <a class="btn btn-link" href="{{ route('sentinel.forgot.form') }}">Forgot Password</a>
 
         </form>
     </div>
