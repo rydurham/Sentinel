@@ -43,7 +43,7 @@ Groups
                     </td>
                     <td>
                         <button class="btn btn-default" onClick="location.href='{{ route('sentinel.groups.edit', [$group->id]) }}'">Edit</button>
-                        <button class="btn btn-default action_confirm {{ ($group->name == 'Admins') ? 'disabled' : '' }}" type="button" data-token="{{ Session::getToken() }}" data-method="delete" href="{{ route('sentinel.groups.destroy', [$group->id]) }}">Delete</button>
+                        <button class="btn btn-default action_confirm {{ ($group->name == 'Admins') ? 'disabled' : '' }}" type="button" data-token="{{ csrf_token() }}" data-method="delete" href="{{ route('sentinel.groups.destroy', [$group->id]) }}">Delete</button>
                     </td>
                 </tr>
             @endforeach
