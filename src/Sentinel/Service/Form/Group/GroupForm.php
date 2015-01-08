@@ -79,9 +79,7 @@ class GroupForm {
 	 */
 	protected function valid(array $input)
 	{
-
-		return $this->validator->with($input)->updateUnique('name', $input['id'], 'id')->passes();
-		
+		return $this->validator->with($input)->updateUnique('name', 'id', $input['id'])->passes();
 	}
 
 
