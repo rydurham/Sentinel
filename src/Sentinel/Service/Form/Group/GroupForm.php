@@ -39,7 +39,7 @@ class GroupForm {
      */
     public function save(array $input)
     {
-        if( ! $this->valid($input) )
+        if( ! $this->validForSave($input) )
         {
             return false;
         }
@@ -54,7 +54,7 @@ class GroupForm {
      */
     public function update(array $input)
     {
-        if( ! $this->valid($input) )
+        if( ! $this->validForUpdate($input) )
         {
             return false;
         }
@@ -75,12 +75,22 @@ class GroupForm {
 	/**
 	 * Test if form validator passes
 	 *
-	 * @return boolean 
+	 * @return boolean
 	 */
-	protected function valid(array $input)
+	protected function validForUpdate(array $input)
 	{
 		return $this->validator->with($input)->updateUnique('name', 'id', $input['id'])->passes();
 	}
+
+    /**
+     * Test if form validator passes
+     *
+     * @return boolean
+     */
+    protected function validForSave(array $input)
+    {
+        return $this->validator->with($input)->passes();
+    }
 
 
 }
