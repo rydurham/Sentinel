@@ -35,6 +35,7 @@ use Cartalyst\Sentry\Throttling\Eloquent\Provider as ThrottleProvider;
 use Cartalyst\Sentry\Throttling\UserBannedException;
 use Cartalyst\Sentry\Throttling\UserSuspendedException;
 use Cartalyst\Sentry\Users\Eloquent\Provider as UserProvider;
+use Cartalyst\Sentry\Users\UserAlreadyActivatedException;
 use Cartalyst\Sentry\Users\UserExistsException;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
@@ -345,6 +346,14 @@ class SentryServiceProvider extends ServiceProvider {
             $message = trans('Sentinel::sessions.notactive', array('url' => $url));
 
             $this->session->flash('error', $message);
+            return $this->redirect->back()->withInput();
+
+        });
+
+        $this->app->error(function(UserAlreadyActivatedException $e)
+        {
+            // This user has tried to activate, but they are already activated
+            $this->session->flash('error', trans('Sentinel::users.alreadyactive'));
             return $this->redirect->back()->withInput();
 
         });
