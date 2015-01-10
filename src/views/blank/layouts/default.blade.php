@@ -49,7 +49,7 @@
 			<!-- Container -->
 			<div class="sentinel-content">
 				<!-- Notifications -->
-				@include('layouts/notifications')
+				@include('Sentinel::layouts/notifications')
 				<!-- ./ notifications -->
 
 				<!-- Content -->

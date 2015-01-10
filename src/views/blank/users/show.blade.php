@@ -9,23 +9,21 @@ Home
 {{-- Content --}}
 @section('content')
 	<h4>Account Profile</h4>
-	
-	<p>
-	    @if ($user->first_name)
-	    	<p><strong>First Name:</strong> {{ $user->first_name }} </p>
-		@endif
-		@if ($user->last_name)
-	    	<p><strong>Last Name:</strong> {{ $user->last_name }} </p>
-		@endif
-	</p>
-	
+
+    @if ($user->first_name)
+        <p><strong>First Name:</strong> {{ $user->first_name }} </p>
+    @endif
+    @if ($user->last_name)
+        <p><strong>Last Name:</strong> {{ $user->last_name }} </p>
+    @endif
+
 	<p><strong>Email:</strong> {{ $user->email }}</p>
-		    
+
 	<p><em>Account created: {{ $user->created_at }}</em></p>
-	
+
 	<p><em>Last Updated: {{ $user->updated_at }}</em></p>
-	
-	<button onClick="location.href='{{ action('UserController@edit', array($user->id)) }}'">Edit Profile</button>
+
+	<button onClick="location.href='{{ route('sentinel.users.edit', array($user->id)) }}'">Edit Profile</button>
 		
 	<h4>Group Memberships:</h4>
 	<?php $userGroups = $user->getGroups(); ?>

@@ -15,7 +15,7 @@ Edit Profile
 @else 
 	{{ $user->email }}'s 
 @endif 
-Profile</h1>
+Account</h1>
 
 <?php $customFields = Config::get('Sentinel::auth.additional_user_fields'); ?>
 
@@ -41,8 +41,8 @@ Profile</h1>
 
     </form>
 </div>
-
 <hr />
+@endif
 
 @if (Sentry::getUser()->hasAccess('admin') && ($user->id != Sentry::getUser()->id))
 <div class="row">
@@ -63,7 +63,7 @@ Profile</h1>
 @endif
 
 <h4>Change Password</h4>
-<form method="POST" action="{{ route('sentinel.change.password', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
+<form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
         
     @if(! Sentry::getUser()->hasAccess('admin'))
     <p>

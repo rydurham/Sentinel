@@ -17,7 +17,7 @@ View Group
     	@endforeach
     </ul>
 </div>
-<button class="btn btn-primary" onClick="location.href='{{ action('GroupController@edit', array($group->id)) }}'">Edit Group</button>
+<button class="btn btn-primary" onClick="location.href='{{ route('sentinel.groups.edit', array($group->id)) }}'">Edit Group</button>
 <hr />
 <h4>Group Object</h4>
 <div>

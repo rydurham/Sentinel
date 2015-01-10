@@ -9,7 +9,7 @@ Create New User
 {{-- Content --}}
 @section('content')
 
-<form method="POST" action="http://sentinel.dev/users" accept-charset="UTF-8">
+<form method="POST" action="{{ route('sentinel.users.store') }}" accept-charset="UTF-8">
 
     <h2>Create New User</h2>
 

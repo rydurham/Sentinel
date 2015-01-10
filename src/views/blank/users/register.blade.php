@@ -32,7 +32,7 @@ Register
         {{ ($errors->has('password_confirmation') ?  $errors->first('password_confirmation') : '') }}
     </p>
 
-    <input name="_token" value="TU1ensQVfjSgpVMe86Dx1AJDsfNXi5gu8SBMwKo1" type="hidden">
+    <input name="_token" value="{{ csrf_token() }}" type="hidden">
     <input value="Register" type="submit">
 
 </form>
