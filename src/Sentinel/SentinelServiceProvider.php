@@ -1,8 +1,10 @@
 <?php namespace Sentinel;
 
+use Artisan;
+use ReflectionClass;
+use Sentinel\Commands\SentinelPublishCommand;
 use Sentinel\Managers\Session\SentrySessionManager;
 use Sentinel\Providers\EventServiceProvider;
-use Sentinel\Providers\RepositoryServiceProvider;
 use Sentinel\Providers\ValidationServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Sentinel\Repositories\Group\SentryGroupRepository;
@@ -25,14 +27,14 @@ class SentinelServiceProvider extends ServiceProvider {
     public function boot()
     {
         // Find path to the package
-        $sentinelFilename = with(new \ReflectionClass('\Sentinel\SentinelServiceProvider'))->getFileName();
+        $sentinelFilename = with(new ReflectionClass('Sentinel\SentinelServiceProvider'))->getFileName();
         $sentinelPath = dirname($sentinelFilename);
 
         // Load the package
         $this->package('rydurham/sentinel');
 
-        // Register the Sentry Service Provider
-        $this->app->register('Sentinel\Providers\SentryServiceProvider');
+        // Register Artisan Commands
+        $this->registerArtisanCommands();
 
         // Add the Views Namespace
         if (is_dir(app_path().'/views/packages/rydurham/sentinel'))
@@ -43,7 +45,7 @@ class SentinelServiceProvider extends ServiceProvider {
         else
         {
             // The package views have not been published. Use the defaults.
-            $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views/bootstrap');
+            $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views/materialize');
         }
 
         // Add the Sentinel Namespace to $app['config']
@@ -61,19 +63,21 @@ class SentinelServiceProvider extends ServiceProvider {
         // Add the Translator Namespace
         $this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
 
-        // Make the app aware of these files
+        // Include the Sentinel Filters
         include $sentinelPath . '/../filters.php';
+
+        // Include custom validation rules
         include $sentinelPath . '/../validators.php';
 
-        // Should we load the default routes?
+        // Should we register the default routes?
         if ($this->app['config']['Sentinel::routing.routes_enabled'])
         {
             include $sentinelPath . '/../routes.php';
         }
 
         // Boot the Event Service Provider
-        $events = new EventServiceProvider($this->app);
-        $events->boot();
+        $eventProvider = new EventServiceProvider($this->app);
+        $eventProvider->boot();
     }
 
     /**
@@ -83,6 +87,9 @@ class SentinelServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        // Register the Sentry Service Provider
+        $this->app->register('Sentinel\Providers\SentryServiceProvider');
+
         // Load the Sentry Facade Alias
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
@@ -129,6 +136,21 @@ class SentinelServiceProvider extends ServiceProvider {
     public function provides()
     {
         return array();
+    }
+
+    /**
+     * Register the
+     */
+    private function registerArtisanCommands()
+    {
+        $this->app['sentinel.publisher'] = $this->app->share(function($app)
+         {
+            return new SentinelPublishCommand(
+                $app->make('files')
+            );
+         });
+
+        $this->commands('sentinel.publisher');
     }
 
 }
