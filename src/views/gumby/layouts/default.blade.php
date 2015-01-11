@@ -27,7 +27,7 @@
 		      	<a class="toggle" gumby-trigger="#nav1 > ul" href="#"><i class="icon-menu"></i></a>
 		        <h1 class="four columns logo">
 		          <a href="#">
-		            <img src="ackages/rydurham/sentinel/img/gumby_mainlogo.png" gumby-retina />
+		            <img src="packages/rydurham/sentinel/img/gumby_mainlogo.png" gumby-retina />
 		          </a>
 		        </h1>
 

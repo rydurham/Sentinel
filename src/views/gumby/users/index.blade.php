@@ -29,7 +29,7 @@
 						</div>
 						@if ($user->status != 'Suspended')
 							<div class="medium info btn">
-								<a onClick="location.href='{{ route('Sentinel\UserController@suspend', array($user->id)) }}'">Suspend</a> 
+								<a onClick="location.href='{{ route('sentinel.users.suspend', array($user->id)) }}'">Suspend</a>
 							</div>
 						@else
 							<div class="medium info btn">
