@@ -60,10 +60,17 @@ class RegistrationController extends BaseController
      */
     public function registration()
     {
+        // Is this user already signed in? If so redirect to the post login route
+        if (\Sentry::check()) {
+            return $this->redirectTo('session.store');
+        }
+
+        //If registration is currently disabled, show a message and redirect home.
         if ( ! Config::get('Sentinel::auth.registration', false)) {
             return $this->redirectTo(['route' => 'home'], ['error' => trans('Sentinel::users.inactive_reg')]);
         }
 
+        // All clear - show the registration form.
         return $this->viewFinder('Sentinel::users.register');
     }
 

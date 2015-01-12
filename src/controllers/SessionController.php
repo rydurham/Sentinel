@@ -36,6 +36,12 @@ class SessionController extends BaseController {
 	 */
 	public function create()
 	{
+        // Is this user already signed in?
+        if (\Sentry::check()) {
+            return $this->redirectTo('session.store');
+        }
+
+        // No - they are not signed in.  Show the login form.
         return $this->viewFinder('Sentinel::sessions.login');
 	}
 
