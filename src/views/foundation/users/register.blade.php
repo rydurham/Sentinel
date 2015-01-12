@@ -19,7 +19,7 @@ Register
                     <label for="right-label" class="right inline">Username</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                    <input placeholder="Username" name="username" type="text">
+                    <input placeholder="Username" name="username" type="text"  value="{{ Input::old('username') }}">
                     {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>
@@ -29,7 +29,7 @@ Register
                     <label for="right-label" class="right inline">E-mail</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                    <input placeholder="E-mail" name="email" type="text">
+                    <input placeholder="E-mail" name="email" type="text"  value="{{ Input::old('email') }}">
                     {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>

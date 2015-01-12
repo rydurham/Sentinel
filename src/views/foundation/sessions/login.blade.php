@@ -17,7 +17,7 @@ Log In
                 <label for="right-label" class="right inline">Email</label>
             </div>
             <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                <input placeholder="Email" autofocus="autofocus" name="email" type="text">
+                <input placeholder="Email" autofocus="autofocus" name="email" type="text"  value="{{ Input::old('email') }}">
                 {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
             </div>
         </div>

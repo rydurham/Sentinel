@@ -82,7 +82,7 @@ Edit Profile
 @endif
 
 
-<form method="POST" action="{{ route('sentinel.change.password', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
+<form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
     <div class="row">
         <div class="small-6 large-centered columns">
             <h4>Change Password</h4>    

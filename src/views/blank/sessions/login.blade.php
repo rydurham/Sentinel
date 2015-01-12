@@ -13,7 +13,7 @@ Log In
     <h2>Sign In</h2>
 
     <p>
-        <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text">
+        <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text"  value="{{ Input::old('email') }}">
         {{ ($errors->has('email') ? $errors->first('email') : '') }}
     </p>
 

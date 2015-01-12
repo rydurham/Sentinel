@@ -7,17 +7,17 @@ Register
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        <form method="POST" action="{{ route('sentinel.register.user') }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.register.user') }}" accept-charset="UTF-8" id="register-form">
 
             <h2>Register New Account</h2>
 
             <div class="form-group {{ ($errors->has('username')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="Username" name="username" type="text">
+                <input class="form-control" placeholder="Username" name="username" type="text" value="{{ Input::old('username') }}">
                 {{ ($errors->has('username') ? $errors->first('username') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="E-mail" name="email" type="text">
+                <input class="form-control" placeholder="E-mail" name="email" type="text" value="{{ Input::old('email') }}">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 
@@ -37,6 +37,4 @@ Register
         </form>
     </div>
 </div>
-
-
 @stop

@@ -86,7 +86,7 @@ Edit Profile
 <div class="row">
     <h4>Change Password</h4>
     <div class="well">
-        <form method="POST" action="{{ route('sentinel.change.password', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
+        <form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
 
             @if(! Sentry::getUser()->hasAccess('admin'))
             <div class="form-group {{ $errors->has('oldPassword') ? 'has-error' : '' }}">

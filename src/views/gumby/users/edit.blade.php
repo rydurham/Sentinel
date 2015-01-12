@@ -64,7 +64,7 @@
 <div class="row">
     <h4>Change Password</h4>
     <ul class="six columns">
-        <form method="POST" action="{{ route('sentinel.change.password', $user->id) }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8">
 
             @if(! Sentry::getUser()->hasAccess('admin'))
                 <li class="field {{ $errors->has('oldPassword') ? 'danger' : '' }}">
