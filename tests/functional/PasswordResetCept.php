@@ -17,7 +17,7 @@ $code = $user->getResetPasswordCode();
 $I->amOnPage(route('sentinel.reset.form', ['id' => $user->id, 'code' => $code]));
 $I->fillField('password','sergeyevna');
 $I->fillField('password_confirmation','sergeyevna');
-$I->click('Change Password', '.btn');
+$I->click('Reset Password', '.btn');
 $I->see('Password has been changed.');
 
 // Test new password
