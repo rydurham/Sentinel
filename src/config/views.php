@@ -4,14 +4,27 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Layout
+    | Enable HTML Views
     |--------------------------------------------------------------------------
     |
-    | By default, the views provided by the package will extend their own
-    | default view (views/layouts/default.blade.php), even after they have been
-    | published.  This option allows you to extend a custom view instead.
+    | There are situations in which you may not want to display any views
+    | when interacting with Sentinel.  To return JSON instead of HTML,
+    | turn this setting off. This cannot be done selectively.
+    |
+    */
+
+    'enabled' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Master Layout
+    |--------------------------------------------------------------------------
+    |
+    | By default Sentinel views will extend their own master layout. However,
+    | you can specify a custom master layout view to use instead.
     |
     */
 
     'layout' => 'Sentinel::layouts.default',
+
 );

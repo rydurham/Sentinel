@@ -30,7 +30,10 @@ trait SentinelRedirectionTrait {
     /**
      * Redirect the browser to the appropriate location, based on config options
      *
-     * @param  int  $id
+     * @param       $key
+     * @param array $message
+     * @param array $payload
+     *
      * @return Response
      */
     public function redirectTo($key, array $message = null, $payload = [])
@@ -42,9 +45,14 @@ trait SentinelRedirectionTrait {
         // Convert this "direction" to a url
         $url = $this->generateUrl($direction, $payload);
 
-        // If the url is null (or blank) the developer wants to
-        // return json rather than a view request.
-        if (! $url) { return Response::json($payload); }
+        // Determine if the developer has disabled HTML views
+        $views = Config::get('Sentinel::views.enabled');
+
+        // If the url is empty or views have been disabled the developer
+        // wants to return json rather than an HTML view.
+        if (! $url || !$views) {
+            return Response::json(array_merge($payload, $message));
+        }
 
         // Do we need to flash any session data?
         if ($message)
@@ -106,8 +114,4 @@ trait SentinelRedirectionTrait {
 
         return $parameters;
     }
-
-
-
-
 }

@@ -11,6 +11,7 @@ use Sentinel\Services\Forms\ResetPasswordForm;
 use Sentinel\Services\Forms\UserCreateForm;
 use BaseController, View, Input, Event, Redirect, Session, Config;
 use Sentinel\Traits\SentinelRedirectionTrait;
+use Sentinel\Traits\SentinelViewfinderTrait;
 
 class RegistrationController extends BaseController
 {
@@ -28,6 +29,7 @@ class RegistrationController extends BaseController
      * Traits
      */
     use SentinelRedirectionTrait;
+    use SentinelViewfinderTrait;
 
     /**
      * Constructor
@@ -62,7 +64,7 @@ class RegistrationController extends BaseController
             return $this->redirectTo(['route' => 'home'], ['error' => trans('Sentinel::users.inactive_reg')]);
         }
 
-        return View::make('Sentinel::users.register');
+        return $this->viewFinder('Sentinel::users.register');
     }
 
     /**
@@ -106,7 +108,7 @@ class RegistrationController extends BaseController
      */
     function resendActivationForm()
     {
-        return View::make('Sentinel::users.resend');
+        return $this->viewFinder('Sentinel::users.resend');
     }
 
     /**
@@ -132,7 +134,7 @@ class RegistrationController extends BaseController
      */
     public function forgotPasswordForm()
     {
-        return View::make('Sentinel::users.forgot');
+        return $this->viewFinder('Sentinel::users.forgot');
     }
 
 
@@ -170,9 +172,10 @@ class RegistrationController extends BaseController
             return $this->redirectViaResponse('registration.reset.invalid', $result);
         }
 
-        return View::make('Sentinel::users.reset')
-            ->with('userId', $id)
-            ->with('code', $code);
+        return $this->viewFinder('Sentinel::users.reset', [
+            'userId' => $id,
+            'code' => $code
+        ]);
     }
 
     /**

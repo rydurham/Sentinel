@@ -5,6 +5,7 @@ use Illuminate\Http\Response;
 use Sentinel\Managers\Session\SentinelSessionManagerInterface;
 use Sentinel\Services\Forms\LoginForm;
 use Sentinel\Traits\SentinelRedirectionTrait;
+use Sentinel\Traits\SentinelViewfinderTrait;
 use View, Input, Event, Redirect, Session, Config;
 
 class SessionController extends BaseController {
@@ -19,6 +20,7 @@ class SessionController extends BaseController {
      * Traits
      */
     use SentinelRedirectionTrait;
+    use SentinelViewfinderTrait;
 
 	/**
 	 * Constructor
@@ -34,7 +36,7 @@ class SessionController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('Sentinel::sessions.login');
+        return $this->viewFinder('Sentinel::sessions.login');
 	}
 
 	/**
@@ -57,13 +59,24 @@ class SessionController extends BaseController {
         if($result->isSuccessful())
         {
             // Login was successful.  Determine where we should go now.
+            if (! Config::get('Sentinel::views.enabled')){
+                // Views are disabled - return json instead
+                return Response::json('success', 200);
+            }
+
+            // Views are enabled, so go to the determined route
             $redirect_route = Config::get('Sentinel::routing.session.store');
             return Redirect::intended($this->generateUrl($redirect_route));
 
         } else {
             // There was a problem - unrelated to Form validation.
+            if (! Config::get('Sentinel::views.enabled')){
+                // Views are disabled - return json instead
+                return Response::json($result->getMessage(), 400);
+            }
+
             Session::flash('error', $result->getMessage());
-            return Redirect::action('Sentinel\SessionController@create')
+            return Redirect::route('sentinel.session.create')
                 ->withInput();
         }
 	}

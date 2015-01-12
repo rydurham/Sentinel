@@ -5,6 +5,7 @@ use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Services\Forms\GroupCreateForm;
 use Sentinel\Services\Forms\GroupUpdateForm;
 use Sentinel\Traits\SentinelRedirectionTrait;
+use Sentinel\Traits\SentinelViewfinderTrait;
 
 class GroupController extends BaseController {
 
@@ -26,6 +27,7 @@ class GroupController extends BaseController {
      * Traits
      */
     use SentinelRedirectionTrait;
+    use SentinelViewfinderTrait;
 
     /**
      * Constructor
@@ -59,7 +61,7 @@ class GroupController extends BaseController {
         $pagedData   = array_slice($groups, $currentPage * $perPage, $perPage);
         $groups      = Paginator::make($pagedData, count($groups), $perPage);
 
-		return View::make('Sentinel::groups.index')->with('groups', $groups);
+		return $this->viewFinder('Sentinel::groups.index', ['groups' => $groups]);
 	}
 
 	/**
@@ -69,7 +71,7 @@ class GroupController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('Sentinel::groups.create');
+		return $this->viewFinder('Sentinel::groups.create');
 	}
 
 	/**
@@ -100,7 +102,7 @@ class GroupController extends BaseController {
 	{
 		$group = $this->groupRepository->retrieveById($id);
 
-		return View::make('Sentinel::groups.show')->with('group', $group);
+        return $this->viewFinder('Sentinel::groups.show', ['group' => $group]);
 	}
 
 	/**
@@ -112,10 +114,11 @@ class GroupController extends BaseController {
 	{
 		$group = $this->groupRepository->retrieveById($id);
 
-        return View::make('Sentinel::groups.edit')
-            ->with('group', $group)
-            ->with('permissions', $group->getPermissions());
-	}
+        return $this->viewFinder('Sentinel::groups.edit', [
+            'group' => $group,
+            'permissions', $group->getPermissions()
+        ]);
+    }
 
 	/**
 	 * Update the specified resource in storage.

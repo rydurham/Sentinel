@@ -10,6 +10,7 @@ use Sentinel\Services\Forms\UserCreateForm;
 use BaseController, View, Input, Event, Redirect, Session, Config, Paginator;
 use Sentinel\Services\Forms\UserUpdateForm;
 use Sentinel\Traits\SentinelRedirectionTrait;
+use Sentinel\Traits\SentinelViewfinderTrait;
 
 class UserController extends BaseController {
 
@@ -26,6 +27,7 @@ class UserController extends BaseController {
      * Traits
      */
     use SentinelRedirectionTrait;
+    use SentinelViewfinderTrait;
 
     /**
      * Constructor
@@ -68,7 +70,7 @@ class UserController extends BaseController {
         $pagedData   = array_slice($users, $currentPage * $perPage, $perPage);
         $users       = Paginator::make($pagedData, count($users), $perPage);
 
-        return View::make('Sentinel::users.index')->with('users', $users);
+        return $this->viewFinder('Sentinel::users.index', ['users' => $users]);
     }
 
 
@@ -79,7 +81,7 @@ class UserController extends BaseController {
      */
     public function create()
     {
-        return View::make('Sentinel::users.create');
+        return $this->viewFinder('Sentinel::users.create');
     }
 
     /**
@@ -125,7 +127,7 @@ class UserController extends BaseController {
         // Get the user
         $user = $this->userRepository->retrieveById($id);
 
-        return View::make('Sentinel::users.show')->with('user', $user);
+        return $this->viewFinder('Sentinel::users.show', ['user' => $user]);
     }
 
     /**
@@ -150,9 +152,10 @@ class UserController extends BaseController {
         // Get all available groups
         $groups = $this->groupRepository->all();
 
-        return View::make('Sentinel::users.edit')
-            ->with('user', $user)
-            ->with('groups', $groups);
+        return $this->viewFinder('Sentinel::users.edit', [
+           'user' => $user,
+           'groups' => $groups
+        ]);
     }
 
     /**
