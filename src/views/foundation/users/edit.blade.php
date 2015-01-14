@@ -24,37 +24,40 @@ Edit Profile
 <?php $customFields = Config::get('Sentinel::auth.additional_user_fields'); ?>
 
 @if (! empty($customFields))
+
 <div class="row">
     <div class="small-6 large-centered columns">
-        <h4>Profile</h4>
-        
-        @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
-        <div class="row">
-            <div class="small-3 columns">
-                <label for="right-label" class="right inline">{{ ucwords(str_replace('_',' ',$field)) }}</label>
-            </div>
-            <div class="small-9 columns {{ ($errors->has($field)) ? 'has-error' : '' }}">
-                <input name="{{ $field }}" type="text" value="{{ $user->$field }}">
-                {{ ($errors->has($field) ? $errors->first($field, '<small class="error">:message</small>') : '') }}
-            </div>
-        </div>
-        @endforeach
+        <form method="POST" action="{{ route('sentinel.users.update', $user->hash) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
+            <input name="_method" value="PUT" type="hidden">
+            <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
-        <div class="row">
-            <div class="small-9 small-offset-3 columns">
-                <input name="_method" value="PUT" type="hidden">
-                <input name="_token" value="{{ csrf_token() }}" type="hidden">
-                <input name="id" value="{{ $user->id }}" type="hidden">
-                <input class="button" value="Submit Changes" type="submit">
+            <h4>Profile</h4>
+            
+            @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
+            <div class="row">
+                <div class="small-3 columns">
+                    <label for="right-label" class="right inline">{{ ucwords(str_replace('_',' ',$field)) }}</label>
+                </div>
+                <div class="small-9 columns {{ ($errors->has($field)) ? 'has-error' : '' }}">
+                    <input name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
+                    {{ ($errors->has($field) ? $errors->first($field, '<small class="error">:message</small>') : '') }}
+                </div>
             </div>
-        </div>
+            @endforeach
+
+            <div class="row">
+                <div class="small-9 small-offset-3 columns">
+                    <input class="button" value="Submit Changes" type="submit">
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 @endif
 
 
-@if (Sentry::getUser()->hasAccess('admin') && ($user->id != Sentry::getUser()->id))
-<form method="POST" action="{{ route('sentinel.users.memberships', $user->id) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
+@if (Sentry::getUser()->hasAccess('admin') && ($user->hash != Sentry::getUser()->hash))
+<form method="POST" action="{{ route('sentinel.users.memberships', $user->hash) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
     <div class="row">
         <div class="small-6 large-centered columns">
             <h4>Group Memberships</h4>
@@ -82,7 +85,7 @@ Edit Profile
 @endif
 
 
-<form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
+<form method="POST" action="{{ route('sentinel.password.change', $user->hash) }}" accept-charset="UTF-8" class="form-inline" role="form">
     <div class="row">
         <div class="small-6 large-centered columns">
             <h4>Change Password</h4>    

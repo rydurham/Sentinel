@@ -18,9 +18,9 @@ Create New User
                 <div class="small-2 columns">
                     <label for="right-label" class="right inline">Username</label>
                 </div>
-                <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                    <input placeholder="Username" name="username" type="text">
-                    {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
+                <div class="small-10 columns {{ ($errors->has('username')) ? 'error' : '' }}">
+                    <input placeholder="Username" name="username" type="text" value="{{ Input::old('username') }}">
+                    {{ ($errors->has('username') ? $errors->first('username', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>
 
@@ -29,7 +29,7 @@ Create New User
                     <label for="right-label" class="right inline">E-mail</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                    <input placeholder="E-mail" name="email" type="text">
+                    <input placeholder="E-mail" name="email" type="text" value="{{ Input::old('email') }}">
                     {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>

@@ -8,7 +8,7 @@ Edit Group
 
 {{-- Content --}}
 @section('content')
-<form method="POST" action="{{ route('sentinel.groups.update', $group->id) }}" accept-charset="UTF-8">
+<form method="POST" action="{{ route('sentinel.groups.update', $group->hash) }}" accept-charset="UTF-8">
     <div class="row">
         <div class="small-6 large-centered columns">
             <h3>Edit Group</h3>
@@ -18,7 +18,7 @@ Edit Group
                     <label for="right-label" class="right inline">Name</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('name')) ? 'error' : '' }}">
-                    <input placeholder="Name" name="name" value="" type="text">
+                    <input placeholder="Name" name="name" value="{{ Input::old('name') ? Input::old('name') : $group->name }}" type="text">
                     {{ ($errors->has('name') ? $errors->first('name', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>
@@ -36,7 +36,7 @@ Edit Group
 
             <div class="row">
                 <div class="small-10 small-offset-2 columns">
-                    <input name="id" value="{{ $group->id }}" type="hidden">
+                    <input name="id" value="{{ $group->hash }}" type="hidden">
                     <input name="_method" value="PUT" type="hidden">
                     <input name="_token" value="{{ csrf_token() }}" type="hidden">
                     <input class="button" value="Save Changes" type="submit">

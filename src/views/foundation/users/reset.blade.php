@@ -8,7 +8,7 @@ Reset Password
 
 {{-- Content --}}
 @section('content')
-<form method="POST" action="{{ route('sentinel.reset.password', ['id' => $userId, 'code' => $code]) }}" accept-charset="UTF-8">
+<form method="POST" action="{{ route('sentinel.reset.password', [$hash, $code]) }}" accept-charset="UTF-8">
      <div class="row">
         <div class="small-6 large-centered columns">  
 

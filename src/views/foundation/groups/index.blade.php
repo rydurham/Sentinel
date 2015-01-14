@@ -28,7 +28,7 @@ Groups
 		@foreach ($groups as $group)
 			<tr>
 				<td>
-					<a href="groups/{{ $group->id }}">{{ $group->name }}</a>
+					<a href="groups/{{ $group->hash }}">{{ $group->name }}</a>
 				</td>
 				<td>
 					<?php
@@ -41,8 +41,8 @@ Groups
 					@endforeach
 				</td>
 				<td>
-					<button class="button small" onClick="location.href='{{ action('Sentinel\GroupController@edit', array($group->id)) }}'">Edit</button>
-				 	<button class="button small action_confirm {{ ($group->id == 2) ? 'disabled' : '' }}" type="button" data-token="{{ Session::getToken() }}" data-method="delete" href="{{ route('sentinel.groups.destroy', [$group->id]) }}">Delete</button>
+					<button class="button small" onClick="location.href='{{ action('Sentinel\GroupController@edit', array($group->hash)) }}'">Edit</button>
+				 	<button class="button small action_confirm {{ ($group->hash == 2) ? 'disabled' : '' }}" type="button" data-token="{{ Session::getToken() }}" data-method="delete" href="{{ route('sentinel.groups.destroy', [$group->hash]) }}">Delete</button>
 				 </td>
 			</tr>	
 		@endforeach

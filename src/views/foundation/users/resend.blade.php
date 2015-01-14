@@ -9,7 +9,8 @@ Resend Activation
 {{-- Content --}}
 @section('content')
 <form method="POST" action="{{ route('sentinel.reactivate.send') }}" accept-charset="UTF-8">
-     <div class="row">
+    <input name="_token" value="{{ csrf_token() }}" type="hidden">
+    <div class="row">
         <div class="small-6 large-centered columns">  
 
             <h3>Resend Activation Email</h3>
@@ -19,7 +20,7 @@ Resend Activation
                     <label for="right-label" class="right inline">Email</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                    <input placeholder="E-mail" autofocus="autofocus" name="email" type="text">
+                    <input placeholder="E-mail" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
                     {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>

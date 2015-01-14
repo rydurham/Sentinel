@@ -9,6 +9,7 @@ Forgot Password
 {{-- Content --}}
 @section('content')
 <form method="POST" action="{{ route('sentinel.reset.request') }}" accept-charset="UTF-8">
+    <input name="_token" value="{{ csrf_token() }}" type="hidden">
     <div class="row">
         <div class="small-6 large-centered columns">           
             <h3>Forgot your Password?</h3>
@@ -18,7 +19,7 @@ Forgot Password
                     <label for="right-label" class="right inline">Email</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('email')) ? 'error' : '' }}">
-                    <input class="form-control" placeholder="E-mail" autofocus="autofocus" name="email" type="text">
+                    <input class="form-control" placeholder="E-mail" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
                     {{ ($errors->has('email') ? $errors->first('email', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>

@@ -21,7 +21,7 @@ View Group
 	</div>
 
 	<div class="small-4 columns">	
-		<button class="button" onClick="location.href='{{ route('sentinel.groups.edit', array($group->id)) }}'">Edit Group</button>
+		<button class="button" onClick="location.href='{{ route('sentinel.groups.edit', array($group->hash)) }}'">Edit Group</button>
 	</div>
 
 </div>

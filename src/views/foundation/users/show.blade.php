@@ -26,7 +26,7 @@ Home
 					Last Updated: {{ $user->updated_at }}
 				</em>
 			</p>
-			<button class="button" onClick="location.href='{{ action('Sentinel\UserController@edit', array($user->id)) }}'">Edit Profile</button>
+			<button class="button" onClick="location.href='{{ action('Sentinel\UserController@edit', array($user->hash)) }}'">Edit Profile</button>
 		</div>
 
 		<div class="small-6 columns">
