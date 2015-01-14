@@ -16,7 +16,7 @@ Log In
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="email" name="email" type="text" class="validate">
+                    <input id="email" name="email" type="text" class="validate" value="{{ Input::old('email') }}">
                     <label for="email">E-Mail</label>
                     {{ ($errors->has('email') ? $errors->first('email') : '') }}
                 </div>

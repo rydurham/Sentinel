@@ -28,24 +28,24 @@ Current Users
             @foreach ($users as $user)
                 <tr>
                     <td>
-                        <a href="{{ route('sentinel.users.show', array($user->id)) }}">{{ $user->email }}</a>
+                        <a href="{{ route('sentinel.users.show', array($user->hash)) }}">{{ $user->email }}</a>
                     </td>
                     <td>
                         {{ $user->status }}
                     </td>
                     <td>
-                        <button type="button" onClick="location.href='{{ route('sentinel.users.edit', array($user->id)) }}'" class="btn red lighten-1"><i class="mdi-content-create left"></i>Edit</button>
+                        <button type="button" onClick="location.href='{{ route('sentinel.users.edit', array($user->hash)) }}'" class="btn red lighten-1"><i class="mdi-content-create left"></i>Edit</button>
                         @if ($user->status != 'Suspended')
-                            <button type="button" onClick="location.href='{{ route('sentinel.users.suspend', array($user->id)) }}'" class="btn red lighten-1">Suspend</button>
+                            <button type="button" onClick="location.href='{{ route('sentinel.users.suspend', array($user->hash)) }}'" class="btn red lighten-1">Suspend</button>
                         @else
-                            <button type="button" onClick="location.href='{{ route('sentinel.users.unsuspend', array($user->id)) }}'" class="btn red lighten-1">Un-Suspend</button>
+                            <button type="button" onClick="location.href='{{ route('sentinel.users.unsuspend', array($user->hash)) }}'" class="btn red lighten-1">Un-Suspend</button>
                         @endif
                         @if ($user->status != 'Banned')
-                            <button type="button" onClick="location.href='{{ route('sentinel.users.ban', array($user->id)) }}'" class="btn red lighten-1">Ban</button>
+                            <button type="button" onClick="location.href='{{ route('sentinel.users.ban', array($user->hash)) }}'" class="btn red lighten-1">Ban</button>
                         @else
-                            <button type="button" onClick="location.href='{{ route('sentinel.users.unban', array($user->id)) }}'" class="btn red lighten-1">Un-Ban</button>
+                            <button type="button" onClick="location.href='{{ route('sentinel.users.unban', array($user->hash)) }}'" class="btn red lighten-1">Un-Ban</button>
                         @endif
-                        <button class="btn red lighten-1 action_confirm" href="{{ route('sentinel.users.destroy', array($user->id)) }}" data-token="{{ Session::getToken() }}" data-method="delete"><i class="mdi-content-remove-circle left"></i>Delete</button>
+                        <button class="btn red lighten-1 action_confirm" href="{{ route('sentinel.users.destroy', array($user->hash)) }}" data-token="{{ Session::getToken() }}" data-method="delete"><i class="mdi-content-remove-circle left"></i>Delete</button>
                     </td>
                 </tr>
             @endforeach

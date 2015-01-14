@@ -34,7 +34,7 @@ User Profile
             </div>
             <div class="col s4">
                 <p>
-                    <a href="{{ route('sentinel.users.edit', array($user->id)) }}" class="btn red lighten-1">Edit Profile</a>
+                    <a href="{{ route('sentinel.users.edit', array($user->hash)) }}" class="btn red lighten-1">Edit Profile</a>
                 </p>
             </div>
         </div>

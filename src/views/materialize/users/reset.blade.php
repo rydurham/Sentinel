@@ -10,7 +10,7 @@ Forgot Password
 @section('content')
 <div class="row">
     <div class="col l6 offset-l3 m8 offset-m2 s12">
-        <form method="POST" action="{{ route('sentinel.reset.password', ['id' => $userId, 'code' => $code]) }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.reset.password', [$hash, $code]) }}" accept-charset="UTF-8">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
             <h2>Reset Your Password</h2>

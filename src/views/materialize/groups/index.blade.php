@@ -26,7 +26,7 @@ Groups
         <tbody>
         @foreach ($groups as $group)
             <tr>
-                <td><a href="{{ route('sentinel.groups.show', $group->id) }}">{{ $group->name }}</a></td>
+                <td><a href="{{ route('sentinel.groups.show', $group->hash) }}">{{ $group->name }}</a></td>
                 <td>
                     <?php
                         $permissions = $group->getPermissions();
@@ -38,8 +38,8 @@ Groups
                     @endforeach
                 </td>
                 <td>
-                    <a href="{{ route('sentinel.groups.edit', [$group->id]) }}" class="btn red lighten-1"><i class="mdi-content-create left"></i>Edit</a>
-                    <a href="{{ route('sentinel.groups.destroy', [$group->id]) }}" class="btn action_confirm {{ ($group->name == 'Admins') ? 'disabled' : 'red lighten-1' }}" data-token="{{ Session::getToken() }}" data-method="delete"><i class="mdi-content-remove-circle left"></i>Delete</a>
+                    <a href="{{ route('sentinel.groups.edit', [$group->hash]) }}" class="btn red lighten-1"><i class="mdi-content-create left"></i>Edit</a>
+                    <a href="{{ route('sentinel.groups.destroy', [$group->hash]) }}" class="btn action_confirm {{ ($group->name == 'Admins') ? 'disabled' : 'red lighten-1' }}" data-token="{{ Session::getToken() }}" data-method="delete"><i class="mdi-content-remove-circle left"></i>Delete</a>
                  </td>
             </tr>
         @endforeach

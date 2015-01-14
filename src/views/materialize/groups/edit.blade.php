@@ -10,8 +10,7 @@ Edit Group
 @section('content')
 <div class="row">
     <div class="col l6 offset-l3 m8 offset-m2 s12">
-    <form method="POST" action="{{ route('sentinel.groups.update', $group->id) }}" accept-charset="UTF-8">
-        <input name="id" value="{{ $group->id }}" type="hidden">
+    <form method="POST" action="{{ route('sentinel.groups.update', $group->hash) }}" accept-charset="UTF-8">
         <input name="_method" value="PUT" type="hidden">
         <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
@@ -19,7 +18,7 @@ Edit Group
 
         <div class="row">
             <div class="input-field col s12">
-                <input id="name" name="name" type="text" class="validate" value="{{ $group->name }}">
+                <input id="name" name="name" type="text" class="validate" value="{{ Input::old('name') ? Input::old('name') : $group->name }}">
                 <label for="name">Name</label>
                 {{ ($errors->has('name') ? $errors->first('name') : '') }}
             </div>

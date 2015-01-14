@@ -22,7 +22,7 @@ View Group
         </ul>
     </div>
     <div class="col m2 s12">
-        <a href="{{ route('sentinel.groups.edit', array($group->id)) }}" class="btn red">Edit Group</a>
+        <a href="{{ route('sentinel.groups.edit', [$group->hash]) }}" class="btn red">Edit Group</a>
     </div>
 </div>
 

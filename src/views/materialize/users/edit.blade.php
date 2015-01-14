@@ -23,19 +23,18 @@ Account</h3>
 @if (! empty($customFields))
 <div class="row">
     <div class="col l6 offset-l3 m8 offset-m2 s12">
-        <form method="POST" action="{{ route('sentinel.users.update', $user->id) }}" accept-charset="UTF-8" role="form">
+        <form method="POST" action="{{ route('sentinel.users.update', $user->hash) }}" accept-charset="UTF-8" role="form">
             <input name="_method" value="PUT" type="hidden">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
-            <input name="id" value="{{ $user->id }}" type="hidden">
 
             <h4>Profile</h4>
 
             @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="{{ $field }}" name="{{ $field }}" type="text" class="validate">
+                        <input id="{{ $field }}" name="{{ $field }}" type="text" class="validate" value="{{ Input::old($field) ? Input::old($field) : $group->$field }}">
                         <label for="{{ $field }}">{{ ucwords(str_replace('_',' ',$field)) }}</label>
-                        {{ ($errors->has('username') ? $errors->first('username') : '') }}
+                        {{ ($errors->has($field) ? $errors->first($field) : '') }}
                     </div>
                 </div>
             @endforeach
@@ -51,10 +50,10 @@ Account</h3>
 </div>
 @endif
 
-@if (Sentry::getUser()->hasAccess('admin') && ($user->id != Sentry::getUser()->id))
+@if (Sentry::getUser()->hasAccess('admin') && ($user->hash != Sentry::getUser()->hash))
 <div class="row">
     <div class="col l6 offset-l3 m8 offset-m2 s12">
-        <form method="POST" action="{{ route('sentinel.users.memberships', $user->id) }}" accept-charset="UTF-8" role="form">
+        <form method="POST" action="{{ route('sentinel.users.memberships', $user->hash) }}" accept-charset="UTF-8" role="form">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
             <h4>Group Memberships</h4>
@@ -76,7 +75,7 @@ Account</h3>
 @endif
 <div class="row">
     <div class="col l6 offset-l3 m8 offset-m2 s12">
-        <form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8" role="form">
+        <form method="POST" action="{{ route('sentinel.password.change', $user->hash) }}" accept-charset="UTF-8" role="form">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
             <h4>Change Password</h4>
