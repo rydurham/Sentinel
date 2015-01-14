@@ -15,7 +15,7 @@ Create Group
             <h2>Create New Group</h2>
 
             <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="Name" name="name" type="text">
+                <input class="form-control" placeholder="Name" name="name" type="text"  value="{{ Input::old('email') }}">
                 {{ ($errors->has('name') ? $errors->first('name') : '') }}
             </div>
 
@@ -24,7 +24,11 @@ Create Group
                 <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
                 @foreach ($defaultPermissions as $permission)
                     <label class="checkbox-inline">
-                        <input name="permissions[{{ $permission }}]" value="1" type="checkbox"> {{ ucwords($permission) }}
+                        <input name="permissions[{{ $permission }}]" value="1" type="checkbox"
+                        @if (Input::old('permissions[' . $permission .']'))
+                           checked
+                        @endif        
+                        > {{ ucwords($permission) }}
                     </label>
                 @endforeach
             </div>

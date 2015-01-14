@@ -24,7 +24,7 @@ Home
 		<div class="col-md-4">
 			<p><em>Account created: {{ $user->created_at }}</em></p>
 			<p><em>Last Updated: {{ $user->updated_at }}</em></p>
-			<button class="btn btn-primary" onClick="location.href='{{ action('Sentinel\UserController@edit', [$user->id]) }}'">Edit Profile</button>
+			<button class="btn btn-primary" onClick="location.href='{{ action('Sentinel\UserController@edit', [$user->hash]) }}'">Edit Profile</button>
 		</div>
 	</div>
 

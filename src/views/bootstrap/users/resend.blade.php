@@ -15,7 +15,7 @@ Resend Activation
             <h2>Resend Activation Email</h2>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="E-mail" autofocus="autofocus" name="email" type="text">
+                <input class="form-control" placeholder="E-mail" autofocus="autofocus" name="email" type="text" value="{{ Input::old('name') }}">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 
