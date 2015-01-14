@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="four columns colophon centered">
-        <form method="POST" action="{{ route('sentinel.reactivate.send') }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.reset.password', [$hash, $code]) }}" accept-charset="UTF-8">
             <h4>Reset your password</h4>
             <ul >
                     

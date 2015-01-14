@@ -18,11 +18,11 @@
 @if (! empty($customFields))
 <div class="row">
     <ul class="five columns">
-        <form method="POST" action="{{ route('sentinel.users.update', $user->id) }}" accept-charset="UTF-8" role="form">
+        <form method="POST" action="{{ route('sentinel.users.update', $user->hash) }}" accept-charset="UTF-8" role="form">
 
             @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
                 <li class="form-group {{ ($errors->has('username')) ? 'danger' : '' }}">
-                    <input placeholder="{{ ucwords(str_replace('_',' ',$field)) }}" name="{{ $field }}" type="text" value="{{ $user->$field }}">
+                    <input placeholder="{{ ucwords(str_replace('_',' ',$field)) }}" name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
                     {{ ($errors->has($field) ? $errors->first($field, '<p class="form_error">:message</p>') : '') }}
                 </div>
             @endforeach    
@@ -30,18 +30,17 @@
             <div class="medium primary btn">
                 <input name="_method" value="PUT" type="hidden">
                 <input name="_token" value="{{ csrf_token() }}" type="hidden">
-                <input name="id" value="{{ $user->id }}" type="hidden">
                 <input type="submit" value="Submit Changes">
             </div>    
         </form>
     </ul>
 </div>
         
-@if (Sentry::getUser()->hasAccess('admin') && ($user->id != Sentry::getUser()->id))
+@if (Sentry::getUser()->hasAccess('admin') && ($user->hash != Sentry::getUser()->hash))
 <div class="row">
     <h4>Group Memberships</h4>
     <ul class="five columns push_one">
-        <form method="POST" action="{{ route('sentinel.users.memberships', $user->id) }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.users.memberships', $user->hash) }}" accept-charset="UTF-8">
             
             <li class="field">
                 @foreach($groups as $group)
@@ -64,7 +63,7 @@
 <div class="row">
     <h4>Change Password</h4>
     <ul class="six columns">
-        <form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('sentinel.password.change', $user->hash) }}" accept-charset="UTF-8">
 
             @if(! Sentry::getUser()->hasAccess('admin'))
                 <li class="field {{ $errors->has('oldPassword') ? 'danger' : '' }}">

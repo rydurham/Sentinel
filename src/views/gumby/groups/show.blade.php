@@ -21,7 +21,7 @@
 	</div>
 	<div class="six columns">
 		<div class="medium info btn">
-			<a onClick="location.href='{{ route('sentinel.groups.edit', array($group->id)) }}'">Edit Group</a>
+			<a onClick="location.href='{{ route('sentinel.groups.edit', array($group->hash)) }}'">Edit Group</a>
 		</div>
 	</div> 
 </div>

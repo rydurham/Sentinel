@@ -13,7 +13,7 @@
             <ul >
                     
                 <li class="field {{ ($errors->has('email')) ? 'danger' : '' }}">
-                    <input type="text" name='email' placeholder="E-mail" class="text input" value="{{ Request::old('email') }}">
+                    <input type="text" name='email' placeholder="E-mail" class="text input" value="{{ Input::old('email') }}">
                 </li>
                 {{ $errors->first('email',  '<p class="form_error">:message</p>') }}
                 

@@ -7,7 +7,7 @@
 @section('content')
 <div class="row">
     <div class="six columns centered">
-    	<form method="POST" action="{{ route('sentinel.groups.update', $group->id) }}" accept-charset="UTF-8">
+    	<form method="POST" action="{{ route('sentinel.groups.update', $group->hash) }}" accept-charset="UTF-8">
             <ul >
                 <h4>Edit Group</h4>
 
@@ -28,7 +28,6 @@
                 </li>
 
                 <div class="medium primary btn">
-                    <input name="id" value="{{ $group->id }}" type="hidden">
                     <input name="_method" value="PUT" type="hidden">
                     <input name="_token" value="{{ csrf_token() }}" type="hidden">
                     <input value="Save Changes" type="submit">

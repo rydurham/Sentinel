@@ -14,12 +14,12 @@
         <form method="POST" action="{{ route('sentinel.users.store') }}" accept-charset="UTF-8">
             
             <li class="field {{ ($errors->has('username')) ? 'danger' : '' }}">
-                <input class="text input" placeholder="Username" name="username" type="text">
+                <input class="text input" placeholder="Username" name="username" type="text" value="{{ Input::old('username') }}">
             </li> 
             {{ $errors->first('username',  '<p class="form_error">:message</p>') }}
 
             <li class="field {{ ($errors->has('email')) ? 'danger' : '' }}">
-                <input class="text input" placeholder="E-mail" name="email" type="text">
+                <input class="text input" placeholder="E-mail" name="email" type="text" value="{{ Input::old('email') }}">
             </li> 
             {{ $errors->first('email',  '<p class="form_error">:message</p>') }}
             

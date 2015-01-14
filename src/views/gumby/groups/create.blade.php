@@ -12,7 +12,7 @@
                 <h4>Create New Group</h4>
         
                 <li class="field {{ ($errors->has('name')) ? 'danger' : '' }}">
-                    <input class="text-imput" placeholder="Name" name="name" type="text">
+                    <input class="text-imput" placeholder="Name" name="name" type="text" value="{{ Input::old('name') }}">
                 </li>
                 {{ $errors->first('name', '<p class="form_error">:message</p>') }}
 
@@ -21,8 +21,12 @@
                     <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
                     @foreach ($defaultPermissions as $permission)
                         <label class="checkbox" for="permissions[{{ $permission }}]" >
-                          <input type="checkbox"  name="permissions[{{ $permission }}]" value="1">
-                          <span></span> {{ ucwords($permission) }}
+                            <input name="permissions[{{ $permission }}]" value="1" type="checkbox"
+                            @if (Input::old('permissions[' . $permission .']'))
+                              checked
+                            @endif        
+                            > {{ ucwords($permission) }}
+                            <span></span> {{ ucwords($permission) }}
                         </label>
                     @endforeach
                 </li>
