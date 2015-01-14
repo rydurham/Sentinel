@@ -31,8 +31,8 @@ class UserMailer extends Mailer {
 	{
         $subject = Config::get('Sentinel::email.welcome');
 		$view = 'Sentinel::emails.welcome';
-		$data['userId'] = $user->id;
-		$data['activationCode'] = $user->getActivationCode();
+		$data['hash'] = $user->hash;
+		$data['code'] = $user->getActivationCode();
 		$data['email'] = $user->email;
 
 		if (! $activated)
@@ -56,7 +56,7 @@ class UserMailer extends Mailer {
 	{
 		$subject = Config::get('Sentinel::email.reset_password');
 		$view = 'Sentinel::emails.reset';
-		$data['userId'] = $user->id;
+		$data['hash'] = $user->hash;
 		$data['code'] = $code;
 		$data['email'] = $user->email;
 

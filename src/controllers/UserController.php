@@ -1,5 +1,6 @@
 <?php namespace Sentinel;
 
+use Hashids\Hashids;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Services\Forms\ChangePasswordForm;
@@ -37,13 +38,15 @@ class UserController extends BaseController {
         SentinelGroupRepositoryInterface $groupRepository,
         UserCreateForm $userCreateForm,
         UserUpdateForm $userUpdateForm,
-        ChangePasswordForm $changePasswordForm
+        ChangePasswordForm $changePasswordForm,
+        Hashids $hashids
     ) {
         $this->userRepository     = $userRepository;
         $this->groupRepository    = $groupRepository;
         $this->userCreateForm     = $userCreateForm;
         $this->userUpdateForm     = $userUpdateForm;
         $this->changePasswordForm = $changePasswordForm;
+        $this->hashids            = $hashids;
 
         //Check CSRF token on POST
         $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
@@ -115,8 +118,11 @@ class UserController extends BaseController {
      *
      * @return Redirect|View
      */
-    public function show($id)
+    public function show($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
         // This action can only be executed if the operator is an admin,
         // or is this specific user
         $isOwner = $this->profileOwner($id);
@@ -137,8 +143,11 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function edit($id)
+    public function edit($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
         // This action can only be executed if the operator is an admin,
         // or is this specific user
         $isOwner = $this->profileOwner($id);
@@ -165,8 +174,11 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function update($id)
+    public function update($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
         // This action can only be executed if the operator is an admin,
         // or is this specific user
         $isOwner = $this->profileOwner($id);
@@ -195,8 +207,12 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function destroy($id)
+    public function destroy($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Remove the user from storage
         $result = $this->userRepository->destroy($id);
 
         return $this->redirectViaResponse('users.destroy', $result);
@@ -209,8 +225,11 @@ class UserController extends BaseController {
      *
      * @return \Response
      */
-    public function updateGroupMemberships($id)
+    public function updateGroupMemberships($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
         // Gather input
         $groups = Input::get('groups');
 
@@ -228,11 +247,11 @@ class UserController extends BaseController {
      *
      * @return redirect
      */
-    public function changePassword($id)
+    public function changePassword($hash)
     {
         // Gather input
         $data       = Input::all();
-        $data['id'] = $id;
+        $data['id'] = $this->hashids->decode($hash)[0];;
 
         // Validate form Data
         $this->changePasswordForm->validate($data);
@@ -259,8 +278,12 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function suspend($id)
+    public function suspend($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Trigger the suspension
         $result = $this->userRepository->suspend($id);
 
         return $this->redirectViaResponse('users.suspend', $result);
@@ -273,8 +296,12 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function unsuspend($id)
+    public function unsuspend($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Trigger the unsuspension
         $result = $this->userRepository->unsuspend($id);
 
         return $this->redirectViaResponse('users.unsuspend', $result);
@@ -287,8 +314,12 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function ban($id)
+    public function ban($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Ban the user
         $result = $this->userRepository->ban($id);
 
         return $this->redirectViaResponse('users.ban', $result);
@@ -301,8 +332,12 @@ class UserController extends BaseController {
      *
      * @return Redirect
      */
-    public function unban($id)
+    public function unban($hash)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Unban the user
         $result = $this->userRepository->unban($id);
 
         return $this->redirectViaResponse('users.unban', $result);

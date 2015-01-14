@@ -1,6 +1,7 @@
 <?php namespace Sentinel;
 
-use BaseController, View, Input, Event, Redirect, Session, Paginator;
+use BaseController, View, Input, Redirect, Paginator;
+use Hashids\Hashids;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Services\Forms\GroupCreateForm;
 use Sentinel\Services\Forms\GroupUpdateForm;
@@ -35,12 +36,14 @@ class GroupController extends BaseController {
 	public function __construct(
         SentinelGroupRepositoryInterface $groupRepository,
         GroupCreateForm $groupCreateForm,
-        GroupUpdateForm $groupUpdateForm
+        GroupUpdateForm $groupUpdateForm,
+        Hashids $hashids
     )
 	{
 		$this->groupRepository = $groupRepository;
         $this->groupCreateForm = $groupCreateForm;
         $this->groupUpdateForm = $groupUpdateForm;
+        $this->hashids         = $hashids;
 
 		// Establish Filters
 		$this->beforeFilter('Sentinel\hasAccess:admin');
@@ -98,9 +101,13 @@ class GroupController extends BaseController {
 	 *
 	 * @return View
 	 */
-	public function show($id)
+	public function show($hash)
 	{
-		$group = $this->groupRepository->retrieveById($id);
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Pull the group from storage
+        $group = $this->groupRepository->retrieveById($id);
 
         return $this->viewFinder('Sentinel::groups.show', ['group' => $group]);
 	}
@@ -110,9 +117,13 @@ class GroupController extends BaseController {
 	 *
 	 * @return View
 	 */
-	public function edit($id)
+	public function edit($hash)
 	{
-		$group = $this->groupRepository->retrieveById($id);
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Pull the group from storage
+        $group = $this->groupRepository->retrieveById($id);
 
         return $this->viewFinder('Sentinel::groups.edit', [
             'group' => $group,
@@ -125,8 +136,11 @@ class GroupController extends BaseController {
 	 *
 	 * @return Redirect
 	 */
-	public function update($id)
+	public function update($hash)
 	{
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
 		// Gather Input
         $data = Input::all();
 
@@ -147,9 +161,13 @@ class GroupController extends BaseController {
 	 *
 	 * @return Redirect
 	 */
-	public function destroy($id)
+	public function destroy($hash)
 	{
-		$result = $this->groupRepository->destroy($id);
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Remove the group from storage
+        $result = $this->groupRepository->destroy($id);
 
         return $this->redirectViaResponse('groups.destroy', $result);
 	}

@@ -90,9 +90,13 @@ class SentinelServiceProvider extends ServiceProvider {
         // Register the Sentry Service Provider
         $this->app->register('Sentinel\Providers\SentryServiceProvider');
 
-        // Load the Sentry Facade Alias
+        // Register the Mitch\Hashids Service Provider
+        $this->app->register('Mitch\Hashids\HashidsServiceProvider');
+
+        // Load the Sentry and Hashid Facade Aliases
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
+        $loader->alias('Hashids', 'Mitch\Hashids\Hashids');
 
         // Register Validation Handling
         $validation = new ValidationServiceProvider($this->app);

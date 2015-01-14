@@ -1,5 +1,6 @@
 <?php namespace Sentinel;
 
+use Hashids\Hashids;
 use Illuminate\Http\Response;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
@@ -40,7 +41,8 @@ class RegistrationController extends BaseController
         RegisterForm $registerForm,
         ResendActivationForm $resendActivationForm,
         ForgotPasswordForm $forgotPasswordForm,
-        ResetPasswordForm $resetPasswordForm
+        ResetPasswordForm $resetPasswordForm,
+        Hashids $hashids
     ) {
         $this->userRepository       = $userRepository;
         $this->groupRepository      = $groupRepository;
@@ -48,6 +50,7 @@ class RegistrationController extends BaseController
         $this->resendActivationForm = $resendActivationForm;
         $this->forgotPasswordForm   = $forgotPasswordForm;
         $this->resetPasswordForm    = $resetPasswordForm;
+        $this->hashids              = $hashids;
 
         //Check CSRF token on POST
         $this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
@@ -100,8 +103,12 @@ class RegistrationController extends BaseController
      *
      * @return Response
      */
-    public function activate($id, $code)
+    public function activate($hash, $code)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Attempt the activation
         $result = $this->userRepository->activate($id, $code);
 
         // It worked!  Use config to determine where we should go.
@@ -170,8 +177,12 @@ class RegistrationController extends BaseController
      *
      * @return Redirect|View
      */
-    public function passwordResetForm($id, $code)
+    public function passwordResetForm($hash, $code)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
+        // Validate Reset Code
         $result = $this->userRepository->validateResetCode($id, $code);
 
         if (! $result->isSuccessful())
@@ -180,7 +191,7 @@ class RegistrationController extends BaseController
         }
 
         return $this->viewFinder('Sentinel::users.reset', [
-            'userId' => $id,
+            'hash' => $hash,
             'code' => $code
         ]);
     }
@@ -191,8 +202,11 @@ class RegistrationController extends BaseController
      * @param $id
      * @param $code
      */
-    public function resetPassword($id, $code)
+    public function resetPassword($hash, $code)
     {
+        // Decode the hashid
+        $id = $this->hashids->decode($hash)[0];
+
         // Gather input data
         $data = Input::only('password', 'password_confirmation');
 

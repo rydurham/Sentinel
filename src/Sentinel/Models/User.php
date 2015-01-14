@@ -1,5 +1,6 @@
 <?php namespace Sentinel\Models;
 
+use Hashids;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Illuminate\Auth\UserInterface;
 
@@ -65,5 +66,13 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserInterfac
     public function getReminderEmail()
     {
         // TODO: Implement getReminderEmail() method.
+    }
+
+    /**
+     * Set the "hash" attribute for this model dynamically
+     */
+    public function getHashAttribute()
+    {
+        return Hashids::encode($this->id);
     }
 }
