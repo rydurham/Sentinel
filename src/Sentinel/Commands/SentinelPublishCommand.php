@@ -87,6 +87,7 @@ class SentinelPublishCommand extends Command {
         if ($list) {
             $this->info('Currently supported themes:');
 
+            // Print the list of the current theme options
             foreach($this->themes as $theme)
             {
                 $this->info(' | ' . ucwords($theme));
@@ -95,7 +96,7 @@ class SentinelPublishCommand extends Command {
             return;
         }
 
-        // Is the theme valid?
+        // Is the theme selection valid?
         if (! in_array($theme, $this->themes))
         {
             $this->info(ucwords($theme) . ' is not a supported theme.');
@@ -110,6 +111,9 @@ class SentinelPublishCommand extends Command {
 
         // Publish the theme assets
         $this->publishAssets($theme);
+
+        // Optionally publish the migrations
+        $this->publishMigrations();
 
         // All done!
         $this->info('Sentinel is now ready to use!');
@@ -200,6 +204,25 @@ class SentinelPublishCommand extends Command {
 
         // Notify action completion
         $this->info('Sentinel ' . ucwords($theme) . ' assets published.');
+    }
+
+    /**
+     * Optionally copy the migration files to the main migration directory
+     */
+    private function publishMigrations()
+    {
+        if ($this->confirm('Would you like to publish the migration files? (y/n)')){
+            // Prepare file paths
+            $source =  $this->packagePath . '/../migrations';
+            $destination = $this->appPath . '/database/migrations';
+
+            // Copy the migration files
+            $this->file->copyDirectory($source, $destination);
+
+            // Notify action completion
+            $this->info('Sentinel migration files have been published.');
+
+        }
     }
 
 
