@@ -14,7 +14,7 @@ Forgot Password
     <h2>Forgot your Password?</h2>
 
     <p>
-        <input placeholder="E-mail" autofocus="autofocus" name="email" type="text">
+        <input placeholder="E-mail" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
         {{ ($errors->has('email') ? $errors->first('email') : '') }}
     </p>
 

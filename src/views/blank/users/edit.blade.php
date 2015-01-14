@@ -22,12 +22,12 @@ Account</h1>
 @if (! empty($customFields))
 <div>
     <h4>Profile</h4>
-    <form method="POST" action="{{ route('sentinel.users.update', $user->id) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
+    <form method="POST" action="{{ route('sentinel.users.update', $user->hash) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
 
         @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
         <p>
             <label for="{{ $field }}">{{ ucwords(str_replace('_',' ',$field)) }}</label>
-            <input class="form-control" name="{{ $field }}" type="text" value="  {{ $user->$field }}">
+            <input class="form-control" name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
             {{ ($errors->has($field) ? $errors->first($field) : '') }}
         </p>
         @endforeach
@@ -35,7 +35,6 @@ Account</h1>
         <p>         
             <input name="_method" value="PUT" type="hidden">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
-            <input name="id" value="{{ $user->id }}" type="hidden">
             <input class="btn btn-primary" value="Submit Changes" type="submit">
         </p>
 
@@ -44,10 +43,10 @@ Account</h1>
 <hr />
 @endif
 
-@if (Sentry::getUser()->hasAccess('admin') && ($user->id != Sentry::getUser()->id))
+@if (Sentry::getUser()->hasAccess('admin') && ($user->hash != Sentry::getUser()->hash))
 <div class="row">
     <h4>Group Memberships</h4>
-    <form method="POST" action="{{ route('sentinel.users.memberships', $user->id) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
+    <form method="POST" action="{{ route('sentinel.users.memberships', $user->hash) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
 
         @foreach($groups as $group)
         <label class="checkbox-inline">
@@ -63,7 +62,7 @@ Account</h1>
 @endif
 
 <h4>Change Password</h4>
-<form method="POST" action="{{ route('sentinel.password.change', $user->id) }}" accept-charset="UTF-8" class="form-inline" role="form">
+<form method="POST" action="{{ route('sentinel.password.change', $user->hash) }}" accept-charset="UTF-8" class="form-inline" role="form">
         
     @if(! Sentry::getUser()->hasAccess('admin'))
     <p>

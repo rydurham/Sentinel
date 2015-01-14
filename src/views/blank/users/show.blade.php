@@ -23,7 +23,7 @@ Home
 
 	<p><em>Last Updated: {{ $user->updated_at }}</em></p>
 
-	<button onClick="location.href='{{ route('sentinel.users.edit', array($user->id)) }}'">Edit Profile</button>
+	<button onClick="location.href='{{ route('sentinel.users.edit', array($user->hash)) }}'">Edit Profile</button>
 		
 	<h4>Group Memberships:</h4>
 	<?php $userGroups = $user->getGroups(); ?>

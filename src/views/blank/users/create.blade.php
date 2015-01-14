@@ -14,12 +14,12 @@ Create New User
     <h2>Create New User</h2>
 
     <p>
-    	<input class="form-control" placeholder="Username" name="username" type="text">
+    	<input class="form-control" placeholder="Username" name="username" type="text" value="{{ Input::old('username') }}">
         {{ ($errors->has('email') ? $errors->first('email') : '') }}
     </p>
 
     <p>
-    	<input class="form-control" placeholder="E-mail" name="email" type="text">
+    	<input class="form-control" placeholder="E-mail" name="email" type="text" value="{{ Input::old('email') }}">
        	{{ ($errors->has('password') ?  $errors->first('password') : '') }}
    </p>
 

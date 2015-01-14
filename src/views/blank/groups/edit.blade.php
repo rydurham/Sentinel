@@ -9,12 +9,12 @@ Edit Group
 {{-- Content --}}
 @section('content')
 
-<form method="POST" action="{{ route('sentinel.groups.update', $group->id) }}" accept-charset="UTF-8">
+<form method="POST" action="{{ route('sentinel.groups.update', $group->hash) }}" accept-charset="UTF-8">
 
     <h2>Edit Group</h2>
 
     <p>
-        <input class="form-control" placeholder="Name" name="name" value="{{ $group->name }}" type="text">
+        <input class="form-control" placeholder="Name" name="name" value="{{ (Input::old('name') ? Input::old('name') : $group->name }}" type="text">
         {{ ($errors->has('name') ? $errors->first('name') : '') }}
     </p>
 
