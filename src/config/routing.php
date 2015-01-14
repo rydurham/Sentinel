@@ -16,12 +16,12 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | URL Redirection
+    | URL Redirection for Method Completion
     |--------------------------------------------------------------------------
     |
-    | When the Sentinel Controller methods are complete, they will redirect
-    | the browser to the url, route or action specified here. If no
-    | action is specified, a raw JSON response will be returned.
+    | Upon completion of their tasks, controller methods will look-up their
+    | return destination here. You can specify a route, action or URL.
+    | If no action is specified a JSON response will be returned.
     |
     */
 
