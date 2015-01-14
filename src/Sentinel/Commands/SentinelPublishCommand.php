@@ -106,6 +106,9 @@ class SentinelPublishCommand extends Command {
         // Publish the config files
         $this->publishConfig();
 
+        // Publish the Mitch/Hashids config files
+        $this->publishHashidsConfig();
+
         // Publish the theme views
         $this->publishViews($theme);
 
@@ -154,6 +157,31 @@ class SentinelPublishCommand extends Command {
 
         // Notify action completion
         $this->info('Sentinel Configuration Files Published.');
+    }
+
+    /**
+     * Publish the config file for Mitch/Hashids
+     */
+    public function publishHashidsConfig()
+    {
+        // Prepare file paths
+        $hashidsFilename = with(new ReflectionClass('Mitch\Hashids\HashidsServiceProvider'))->getFileName();
+        $source = dirname($hashidsFilename) . '/../../config';
+        $destination = $this->appPath . '/config/packages/mitch/hashids';
+
+        // If there are already config files published, confirm that we want to overwrite them.
+        if ($this->file->isDirectory($destination))
+        {
+            $answer = $this->confirm('Hashid Config files have already been published. Do you want to overwrite? (y/n)');
+
+            if ( ! $answer) { return; }
+        }
+
+        // Copy the configuration files
+        $this->file->copyDirectory($source, $destination);
+
+        // Notify action completion
+        $this->info('Mitch/Hashids configuration files published.');
     }
 
     /**
