@@ -8,7 +8,7 @@ $user = $sentry->findUserByLogin('user@user.com');
 // Test
 $I->amActingAs('user@user.com');
 $I->wantTo('edit my own profile');
-$I->amOnPage('/users/' . $user->id . '/edit');
+$I->amOnPage('/profile/edit');
 $I->seeElement('form', ['class' => 'form-horizontal']);
 $I->fillField('first_name', 'Irina');
 $I->fillField('last_name', 'Sergeyevna');

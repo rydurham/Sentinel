@@ -8,7 +8,7 @@ $user = $sentry->findUserByLogin('user@user.com');
 // Test
 $I->amActingAs('admin@admin.com');
 $I->wantTo('edit a users profile as an admin');
-$I->amOnPage('/users/' . $user->id . '/edit');
+$I->amOnPage('/users/' . $user->hash . '/edit');
 $I->seeElement('form', ['class' => 'form-horizontal']);
 $I->fillField('first_name', 'Irina');
 $I->fillField('last_name', 'Sergeyevna');

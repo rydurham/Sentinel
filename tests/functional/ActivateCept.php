@@ -20,6 +20,6 @@ $sentry = $I->grabService('sentry');
 $user = $sentry->findUserByLogin('tuzenbach@aol.com');
 
 // Attempt activation
-$I->amOnPage(route('sentinel.activate', ['id' => $user->id, 'code' => $user->getActivationCode()]));
+$I->amOnPage(route('sentinel.activate', ['hash' => $user->hash, 'code' => $user->getActivationCode()]));
 $I->see('Activation complete.');
 

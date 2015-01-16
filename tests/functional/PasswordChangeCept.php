@@ -8,13 +8,13 @@ $user = $sentry->findUserByLogin('user@user.com');
 // Attempt Password Change
 $I->amActingAs('user@user.com');
 $I->wantTo('change my password');
-$I->amOnPage('/users/' . $user->id . '/edit');
+$I->amOnPage('/users/' . $user->hash . '/edit');
 $I->fillField('oldPassword','sentryuser');
 $I->fillField('newPassword','sergeyevna');
 $I->fillField('newPassword_confirmation','sergeyevna');
 $I->click('Change Password', '.btn');
 $I->see('Password has been changed.');
-$I->logout();
+$I->logoutOfSentry();
 
 // Test new password
 $I->amOnPage('/login');

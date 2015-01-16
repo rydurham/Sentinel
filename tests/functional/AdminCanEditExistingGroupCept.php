@@ -9,7 +9,7 @@ $group = $sentry->findGroupByName('Users');
 // Test
 $I->amActingAs('admin@admin.com');
 $I->wantTo('edit a group name');
-$I->amOnPage('/groups/' . $group->id . '/edit');
+$I->amOnPage('/groups/' . $group->hash . '/edit');
 $I->seeElement('input', ['class' => 'form-control', 'name' => 'name']);
 $I->fillField('name', 'Prozorovs');
 $I->click('Save Changes');

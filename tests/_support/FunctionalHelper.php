@@ -18,7 +18,7 @@ class FunctionalHelper extends \Codeception\Module
         $session->put('email', $user->email);
     }
 
-    public function logout()
+    public function logoutOfSentry()
     {
         $sentry = $this->getModule('Laravel4')->grabService('sentry');
         $sentry->logout();

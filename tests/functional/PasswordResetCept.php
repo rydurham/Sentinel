@@ -14,7 +14,7 @@ $user = $sentry->findUserByLogin('user@user.com');
 $code = $user->getResetPasswordCode();
 
 // Attempt reset
-$I->amOnPage(route('sentinel.reset.form', ['id' => $user->id, 'code' => $code]));
+$I->amOnPage(route('sentinel.reset.form', ['hash' => $user->hash, 'code' => $code]));
 $I->fillField('password','sergeyevna');
 $I->fillField('password_confirmation','sergeyevna');
 $I->click('Reset Password', '.btn');
