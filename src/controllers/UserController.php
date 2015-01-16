@@ -317,7 +317,7 @@ class UserController extends BaseController {
 
         return $this->redirectViaResponse('users.unban', $result);
     }
-    
+
 }
 
 

@@ -38,7 +38,7 @@ Route::filter('Sentinel\auth', function ()
 {
     if ( ! Sentry::check())
     {
-        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+        return Redirect::guest(route('sentinel.login'));
     }
 });
 
@@ -46,24 +46,14 @@ Route::filter('Sentinel\hasAccess', function ($route, $request, $value)
 {
     if ( ! Sentry::check())
     {
-        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+        return Redirect::guest(route('sentinel.login'));
     }
-    
-    try
+
+    if ( ! Sentry::getUser()->hasAccess($value))
     {
-        $user = Sentry::getUser();
+        Session::flash('error', trans('Sentinel::users.noaccess'));
 
-        if ( ! $user->hasAccess($value))
-        {
-            Session::flash('error', trans('Sentinel::users.noaccess'));
-
-            return Redirect::route('home');
-        }
-    } catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-    {
-        Session::flash('error', trans('Sentinel::users.notfound'));
-
-        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+        return Redirect::route('home');
     }
 });
 
@@ -71,36 +61,21 @@ Route::filter('Sentinel\inGroup', function ($route, $request, $value)
 {
     if ( ! Sentry::check())
     {
-        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+        return Redirect::guest(route('sentinel.login'));
     }
 
-    // we need to determine if a non admin user
-    // is trying to access their own account.
-    $userId = Route::input('id');
+    $user = Sentry::getUser();
 
-    try
+    $group = Sentry::findGroupByName($value);
+
+    if ( ! $user->inGroup($group))
     {
-        $user = Sentry::getUser();
+        Session::flash('error', trans('Sentinel::users.noaccess'));
 
-        $group = Sentry::findGroupByName($value);
-
-        if ($userId != Session::get('userId') && ( ! $user->inGroup($group)))
-        {
-            Session::flash('error', trans('Sentinel::users.noaccess'));
-
-            return Redirect::route('home');
-        }
-    } catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-    {
-        Session::flash('error', trans('Sentinel::users.notfound'));
-
-        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
-    } catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-    {
-        Session::flash('error', trans('Sentinel::groups.notfound'));
-
-        return Redirect::guest(Config::get('Sentinel::config.routes.login.route'));
+        return Redirect::route('home');
     }
+
+
 });
 // thanks to http://laravelsnippets.com/snippets/sentry-route-filters
 
