@@ -25,7 +25,10 @@ Route::get('reset/{hash}/{code}', ['as' => 'sentinel.reset.form', 'uses' => 'Sen
 Route::post('reset/{hash}/{code}', ['as' => 'sentinel.reset.password', 'uses' => 'Sentinel\RegistrationController@resetPassword']);
 
 // Sentinel Profile
-Route::post('users/{hash}/password', ['as' => 'sentinel.password.change', 'uses' => 'Sentinel\UserController@changePassword']);
+Route::get('profile', ['as' => 'sentinel.profile.show', 'uses' => 'Sentinel\ProfileController@show']);
+Route::get('profile/edit', ['as' => 'sentinel.profile.edit', 'uses' => 'Sentinel\ProfileController@edit']);
+Route::put('profile', ['as' => 'sentinel.profile.update', 'uses' => 'Sentinel\ProfileController@update']);
+Route::post('profile/password', ['as' => 'sentinel.profile.password', 'uses' => 'Sentinel\ProfileController@changePassword']);
 
 // Sentinel Users
 Route::get('users', ['as' => 'sentinel.users.index', 'uses' => 'Sentinel\UserController@index']);
@@ -33,6 +36,7 @@ Route::get('users/create', ['as' => 'sentinel.users.create', 'uses' => 'Sentinel
 Route::post('users', ['as' => 'sentinel.users.store', 'uses' => 'Sentinel\UserController@store']);
 Route::get('users/{hash}', ['as' => 'sentinel.users.show', 'uses' => 'Sentinel\UserController@show']);
 Route::get('users/{hash}/edit', ['as' => 'sentinel.users.edit', 'uses' => 'Sentinel\UserController@edit']);
+Route::post('users/{hash}/password', ['as' => 'sentinel.password.change', 'uses' => 'Sentinel\UserController@changePassword']);
 Route::post('users/{hash}/memberships', ['as' => 'sentinel.users.memberships', 'uses' => 'Sentinel\UserController@updateGroupMemberships']);
 Route::put('users/{hash}', ['as' => 'sentinel.users.update', 'uses' => 'Sentinel\UserController@update']);
 Route::delete('users/{hash}', ['as' => 'sentinel.users.destroy', 'uses' => 'Sentinel\UserController@destroy']);

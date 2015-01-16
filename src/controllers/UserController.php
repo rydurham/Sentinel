@@ -48,15 +48,11 @@ class UserController extends BaseController {
         $this->changePasswordForm = $changePasswordForm;
         $this->hashids            = $hashids;
 
-        //Check CSRF token on POST
+        //Check CSRF token on form submission
         $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
 
         // Set up Auth Filters
-        $this->beforeFilter('Sentinel\auth', ['only' => ['show', 'edit', 'update', 'change']]);
-        $this->beforeFilter(
-            'Sentinel\hasAccess:admin',
-            ['only' => ['index', 'create', 'add', 'destroy', 'suspend', 'unsuspend', 'ban', 'unban']]
-        );
+        $this->beforeFilter('Sentinel\hasAccess:admin');
     }
 
     /**
@@ -123,13 +119,6 @@ class UserController extends BaseController {
         // Decode the hashid
         $id = $this->hashids->decode($hash)[0];
 
-        // This action can only be executed if the operator is an admin,
-        // or is this specific user
-        $isOwner = $this->profileOwner($id);
-        if ($isOwner !== true) {
-            return $isOwner;
-        }
-
         // Get the user
         $user = $this->userRepository->retrieveById($id);
 
@@ -147,13 +136,6 @@ class UserController extends BaseController {
     {
         // Decode the hashid
         $id = $this->hashids->decode($hash)[0];
-
-        // This action can only be executed if the operator is an admin,
-        // or is this specific user
-        $isOwner = $this->profileOwner($id);
-        if ($isOwner !== true) {
-            return $isOwner;
-        }
 
         // Get the user
         $user = $this->userRepository->retrieveById($id);
@@ -176,18 +158,11 @@ class UserController extends BaseController {
      */
     public function update($hash)
     {
-        // Decode the hashid
-        $id = $this->hashids->decode($hash)[0];
-
-        // This action can only be executed if the operator is an admin,
-        // or is this specific user
-        $isOwner = $this->profileOwner($id);
-        if ($isOwner !== true) {
-            return $isOwner;
-        }
-
         // Gather Input
         $data = Input::all();
+
+        // Decode the hashid
+        $data['id'] = $this->hashids->decode($hash)[0];
 
         // Validate form data
         $this->userUpdateForm->validate($data);
@@ -251,7 +226,7 @@ class UserController extends BaseController {
     {
         // Gather input
         $data       = Input::all();
-        $data['id'] = $this->hashids->decode($hash)[0];;
+        $data['id'] = $this->hashids->decode($hash)[0];
 
         // Validate form Data
         $this->changePasswordForm->validate($data);
@@ -342,25 +317,7 @@ class UserController extends BaseController {
 
         return $this->redirectViaResponse('users.unban', $result);
     }
-
-    /**
-     * Check if the current user can update a profile
-     *
-     * @param $id
-     *
-     * @return bool|\Illuminate\Http\RedirectResponse
-     */
-    protected function profileOwner($id)
-    {
-        $user = $this->userRepository->getUser();
-
-        if ($id != Session::get('userId') && (! $user->hasAccess('admin'))) {
-            return $this->redirectTo('users.invalid', ['error' => trans('Sentinel::users.noaccess')]);
-        }
-
-        return true;
-    }
-
+    
 }
 
 
