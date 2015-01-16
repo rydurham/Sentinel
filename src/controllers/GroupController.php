@@ -138,14 +138,14 @@ class GroupController extends BaseController {
 	 */
 	public function update($hash)
 	{
-        // Decode the hashid
-        $id = $this->hashids->decode($hash)[0];
-
 		// Gather Input
         $data = Input::all();
 
+        // Decode the hashid
+        $data['id'] = $this->hashids->decode($hash)[0];
+
         // Grab the group in question for the validator
-        $group = $this->groupRepository->retrieveById($id);
+        $group = $this->groupRepository->retrieveById($data['id']);
 
         // Validate form data
         $this->groupUpdateForm->validate($data, $group);
