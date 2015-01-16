@@ -8,9 +8,20 @@ User Profile
 
 {{-- Content --}}
 @section('content')
+
+<?php
+    // Determine the edit profile route
+    if (($user->email == Sentry::getUser()->email)) {
+        $editAction = route('sentinel.profile.edit');
+    } else {
+        $editAction =  action('Sentinel\UserController@edit', [$user->hash]);
+    }
+?>
+
 <div class="row">
     <h2>Account Profile</h2>
 </div>
+
 <div class="row">
     <div class="col m8 s12">
         <h4>Details</h4>
@@ -34,7 +45,7 @@ User Profile
             </div>
             <div class="col s4">
                 <p>
-                    <a href="{{ route('sentinel.users.edit', array($user->hash)) }}" class="btn red lighten-1">Edit Profile</a>
+                    <a href="{{ $editAction }}" class="btn red lighten-1">Edit Profile</a>
                 </p>
             </div>
         </div>
@@ -55,9 +66,11 @@ User Profile
 
     </div>
 </div>
+
 <div class="row">
     <h4>User Object</h4>
     <div class="divider"></div>
     <code>{{ var_dump($user) }}</code>
 </div>
+
 @stop

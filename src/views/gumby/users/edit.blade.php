@@ -5,9 +5,25 @@
 
 {{-- Content --}}
 @section('content')
+
+<?php
+    // Pull the custom fields from config
+    $isProfileUpdate = ($user->email == Sentry::getUser()->email);
+    $customFields = Config::get('Sentinel::auth.additional_user_fields');
+
+    // Determine the form post route
+    if ($isProfileUpdate) {
+        $profileFormAction = route('sentinel.profile.update');
+        $passwordFormAction = route('sentinel.profile.password');
+    } else {
+        $profileFormAction =  route('sentinel.users.update', $user->hash);
+        $passwordFormAction = route('sentinel.users.memberships', $user->hash);
+    }
+?>
+
 <div class="row">
     <h4>Edit 
-        @if ($user->email == Sentry::getUser()->email)
+        @if ($isProfileUpdate)
             Your
         @else 
             {{ $user->email }}'s 
@@ -18,7 +34,7 @@
 @if (! empty($customFields))
 <div class="row">
     <ul class="five columns">
-        <form method="POST" action="{{ route('sentinel.users.update', $user->hash) }}" accept-charset="UTF-8" role="form">
+        <form method="POST" action="{{ $profileFormAction }}" accept-charset="UTF-8" role="form">
 
             @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
                 <li class="form-group {{ ($errors->has('username')) ? 'danger' : '' }}">
@@ -63,7 +79,7 @@
 <div class="row">
     <h4>Change Password</h4>
     <ul class="six columns">
-        <form method="POST" action="{{ route('sentinel.password.change', $user->hash) }}" accept-charset="UTF-8">
+        <form method="POST" action="{{ $passwordFormAction }}" accept-charset="UTF-8">
 
             @if(! Sentry::getUser()->hasAccess('admin'))
                 <li class="field {{ $errors->has('oldPassword') ? 'danger' : '' }}">

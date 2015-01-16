@@ -9,10 +9,25 @@ Edit Profile
 {{-- Content --}}
 @section('content')
 
+<?php
+    // Pull the custom fields from config
+    $isProfileUpdate = ($user->email == Sentry::getUser()->email);
+    $customFields = Config::get('Sentinel::auth.additional_user_fields');
+
+    // Determine the form post route
+    if ($isProfileUpdate) {
+        $profileFormAction = route('sentinel.profile.update');
+        $passwordFormAction = route('sentinel.profile.password');
+    } else {
+        $profileFormAction =  route('sentinel.users.update', $user->hash);
+        $passwordFormAction = route('sentinel.users.memberships', $user->hash);
+    }
+?>
+
 <div class="row">
     <h1>
         Edit
-        @if ($user->email == Sentry::getUser()->email)
+        @if ($isProfileUpdate)
             Your
         @else
             {{ $user->email }}'s
@@ -27,7 +42,7 @@ Edit Profile
 
 <div class="row">
     <div class="small-6 large-centered columns">
-        <form method="POST" action="{{ route('sentinel.users.update', $user->hash) }}" accept-charset="UTF-8" class="form-horizontal" role="form">
+        <form method="POST" action="{{ $profileFormAction }}" accept-charset="UTF-8" class="form-horizontal" role="form">
             <input name="_method" value="PUT" type="hidden">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
@@ -85,7 +100,7 @@ Edit Profile
 @endif
 
 
-<form method="POST" action="{{ route('sentinel.password.change', $user->hash) }}" accept-charset="UTF-8" class="form-inline" role="form">
+<form method="POST" action="{{ $passwordFormAction }}" accept-charset="UTF-8" class="form-inline" role="form">
     <div class="row">
         <div class="small-6 large-centered columns">
             <h4>Change Password</h4>    

@@ -9,6 +9,16 @@ Home
 {{-- Content --}}
 @section('content')
 <div class="row">
+
+	<?php
+	    // Determine the edit profile route
+	    if (($user->email == Sentry::getUser()->email)) {
+	        $editAction = route('sentinel.profile.edit');
+	    } else {
+	        $editAction =  action('Sentinel\UserController@edit', [$user->hash]);
+	    }
+	?>
+
 	<h4>Account Profile</h4>
 	
 	    <div class="small-6 columns">
@@ -26,7 +36,7 @@ Home
 					Last Updated: {{ $user->updated_at }}
 				</em>
 			</p>
-			<button class="button" onClick="location.href='{{ action('Sentinel\UserController@edit', array($user->hash)) }}'">Edit Profile</button>
+			<button class="button" onClick="location.href='{{ $editAction }}'">Edit Profile</button>
 		</div>
 
 		<div class="small-6 columns">

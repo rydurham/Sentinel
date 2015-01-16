@@ -6,6 +6,15 @@
 {{-- Content --}}
 @section('content')
 
+<?php
+    // Determine the edit profile route
+    if (($user->email == Sentry::getUser()->email)) {
+        $editAction = route('sentinel.profile.edit');
+    } else {
+        $editAction =  action('Sentinel\UserController@edit', [$user->hash]);
+    }
+?>
+
 <div class="row">
     <h4>{{ $user->email }}'s Account Details</h4>
 </div>
