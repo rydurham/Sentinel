@@ -94,7 +94,7 @@ class UserForm {
 			$this->validator->addRules($this->config->get('Sentinel::config.additional_user_fields'));
 		}
 
-		return $this->validator->with($input)->updateUnique('username', 'username', $input['id'])->passes();
+		return $this->validator->with($input)->updateUnique('username', $input['id'], 'id')->passes();
 		
 	}
 
