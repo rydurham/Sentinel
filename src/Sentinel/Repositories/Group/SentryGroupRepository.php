@@ -9,26 +9,26 @@ use Sentinel\Services\Responders\FailureResponse;
 use Sentinel\Services\Responders\SuccessResponse;
 
 class SentryGroupRepository implements SentinelGroupRepositoryInterface {
-	
-	protected $sentry;
 
-	/**
-	 * Construct a new SentryGroup Object
-	 */
-	public function __construct(Sentry $sentry, Dispatcher $dispatcher)
-	{
-		$this->sentry = $sentry;
+    protected $sentry;
+
+    /**
+     * Construct a new SentryGroup Object
+     */
+    public function __construct(Sentry $sentry, Dispatcher $dispatcher)
+    {
+        $this->sentry = $sentry;
         $this->dispatcher = $dispatcher;
-	}
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store($data)
-	{
-		// Assemble permissions
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store($data)
+    {
+        // Assemble permissions
         $permissions = (isset($data['permissions']) ? $data['permissions'] : []);
 
         /// Create the group
@@ -41,16 +41,16 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
         $this->dispatcher->fire('sentinel.group.created', ['group' => $group]);
 
         return new SuccessResponse(trans('Sentinel::groups.created'), ['group' => $group]);
-	}
-	
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($data)
-	{
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($data)
+    {
         // Assemble permissions
         $permissions = (isset($data['permissions']) ? $data['permissions'] : []);
 
@@ -83,16 +83,16 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
             return new FailureResponse(trans('Sentinel::groups.updateproblem'), ['group' => $group]);
         }
 
-	}
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
         // Find the group using the group id
         $group = $this->sentry->findGroupById($id);
 
@@ -103,37 +103,37 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface {
         $this->dispatcher->fire('sentinel.group.destroyed', ['group' => $group]);
 
         return new SuccessResponse(trans('Sentinel::groups.destroyed'), ['group' => $group]);
-	}
+    }
 
-	/**
-	 * Return a specific group by a given id
-	 * 
-	 * @param  integer $id
-	 * @return Group
-	 */
-	public function retrieveById($id)
-	{
-		return $this->sentry->findGroupById($id);
-	}
+    /**
+     * Return a specific group by a given id
+     *
+     * @param  integer $id
+     * @return Group
+     */
+    public function retrieveById($id)
+    {
+        return $this->sentry->findGroupById($id);
+    }
 
-	/**
-	 * Return a specific group by a given name
-	 * 
-	 * @param  string $name
-	 * @return Group
-	 */
-	public function retrieveByName($name)
-	{
-		return $this->sentry->findGroupByName($name);
-	}
+    /**
+     * Return a specific group by a given name
+     *
+     * @param  string $name
+     * @return Group
+     */
+    public function retrieveByName($name)
+    {
+        return $this->sentry->findGroupByName($name);
+    }
 
-	/**
-	 * Return all the registered groups
-	 *
-	 * @return Array
-	 */
-	public function all()
-	{
-		return $this->sentry->getGroupProvider()->findAll();
-	}
+    /**
+     * Return all the registered groups
+     *
+     * @return Array
+     */
+    public function all()
+    {
+        return $this->sentry->getGroupProvider()->findAll();
+    }
 }
