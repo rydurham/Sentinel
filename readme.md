@@ -3,7 +3,7 @@
 This pacakge provides an implementation of  [Sentry 2](https://github.com/cartalyst/sentry) for [Laravel 4](https://github.com/laravel/laravel/tree/develop). By default it uses [Bootstrap 3.0](http://getbootstrap.com), but you can make use of whatever UI you want.  It is intended to be a very simple way to get up and running with User access control very quickly.  For simple projects you shouldn't need to do much more than drop it in and dial in the configuration.
 
 ### Instructions
-This package can be installed using Composer:
+**Install the Package Via Composer:**
 
 ```shell
 $ composer require rydurham/sentinel
@@ -11,7 +11,7 @@ $ composer require rydurham/sentinel
 
 Make sure you have configured your application's Database and Mail settings. 
 
-Add the Service Provider to your ```app/config/app.php``` file:
+**Add the Service Provider to your ```app/config/app.php``` file:**
 
 ```php
 'providers' => array(
@@ -21,7 +21,7 @@ Add the Service Provider to your ```app/config/app.php``` file:
 )
 ```  
 
-Publish the Views, Assets, Config files and migrations:
+**Publish the Views, Assets, Config files and migrations:**
 ```shell
 php artisan sentinel:publish
 ```
@@ -33,14 +33,16 @@ php artisan sentinel:publish --theme="foundation"
 
 Run ```php artisan sentinel:publish --list``` to see the currently available themes.
 
-Seed the Database: 
+**Seed the Database:** 
 ```shell
 php artisan db:seed --class="SentinelDatabaseSeeder"
 ```
 
-Set a "Home" Route.  This package requires that you have a named 'home' route in your ```routes.php``` file: 
+**Set a "Home" Route.**  
+
+Sentinel requires that you have a route named 'home' in your ```routes.php``` file: 
 ```php
-// Set Home Route
+// app/routes.php
  Route::get('/', array('as' => 'home', function()
 {
     return View::make('home');
@@ -48,7 +50,7 @@ Set a "Home" Route.  This package requires that you have a named 'home' route in
 ```
 
 ### Basic Usage
-Once installed and the database has been seeded, you can make immediate use of the package via these [routes](src/routes.php) :
+Once installed and seeded, you can make immediate use of the package via these [routes](src/routes.php) :
 * ```yoursite.com/login``` 
 * ```yoursite.com/logout``` 
 * ```yoursite.com/register``` 
