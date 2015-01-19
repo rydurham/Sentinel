@@ -1,6 +1,6 @@
 ## Sentinel: Sentry Implementation for Laravel 4
 
-This pacakge provides an implementation of  [Sentry 2](https://github.com/cartalyst/sentry) for [Laravel 4](https://github.com/laravel/laravel/tree/develop). By default it uses [Bootstrap 3.0](http://getbootstrap.com), but you can make use of whatever UI you want.
+This pacakge provides an implementation of  [Sentry 2](https://github.com/cartalyst/sentry) for [Laravel 4](https://github.com/laravel/laravel/tree/develop). By default it uses [Bootstrap 3.0](http://getbootstrap.com), but you can make use of whatever UI you want.  It is intended to be a very simple way to get up and running with User access control very quickly.  For simple projects you shouldn't need to do much more than drop it in and dial in the configuration.
 
 ### Instructions
 This package can be installed using Composer:
@@ -9,7 +9,7 @@ This package can be installed using Composer:
 $ composer require rydurham/sentinel
 ```
 
-Make sure you have configured your app's Database and Mail settings. 
+Make sure you have configured your application's Database and Mail settings. 
 
 Add the Service Provider to your ```app/config/app.php``` file:
 
@@ -21,19 +21,21 @@ Add the Service Provider to your ```app/config/app.php``` file:
 )
 ```  
 
-Run the Migrations:
+Publish the Views, Assets, Config files and migrations:
 ```shell
-php artisan migrate --package=rydurham/sentinel
+php artisan sentinel:publish
 ```
+
+You can specify a "theme" option to publish the views and assets for a specific theme:  
+```shell
+php artisan sentinel:publish --theme="foundation"
+```
+
+Run ```php artisan sentinel:publish --list``` to see the currently available themes.
 
 Seed the Database: 
 ```shell
 php artisan db:seed --class="SentinelDatabaseSeeder"
-```
-
-Publish the package assets: 
-```shell
-php artisan asset:publish rydurham/sentinel
 ```
 
 Set a "Home" Route.  This package requires that you have a named 'home' route in your ```routes.php``` file: 
@@ -45,29 +47,27 @@ Set a "Home" Route.  This package requires that you have a named 'home' route in
 }));
 ```
 
-__Optional:__ Publish Views
-```shell
-php artisan view:publish rydurham/sentinel
-```
+### Basic Usage
+Once installed and the database has been seeded, you can make immediate use of the package via these [routes](src/routes.php) :
+* ```yoursite.com/login``` 
+* ```yoursite.com/logout``` 
+* ```yoursite.com/register``` 
+* ```yoursite.com/users``` - For user management.  Only available to admins
+* ```yoursite.com/groups``` - For group management. Only available to admins.
 
-__Optional:__ Publish Configuration
-```shell
-php artisan config:publish rydurham/sentinel
-```
-The config file will allow you to control many aspects of Sentinels operation. [Take a look](src/config/config.php) to see what options are available.  If you want to add fields to your user table, this can be done with the config options.
-
-### Usage: Filters and Routes
-Once installed, Sentinel adds a series of [routes](src/routes.php) for User interaction.  You will need to add links to these routes in your app's layouts.
-* ```yoursite.tld/login``` 
-* ```yoursite.tld/logout``` 
-* ```yoursite.tld/register``` 
-* ```yoursite.tld/users``` - For user management.  Only available to admins
-* ```yoursite.tld/groups``` - For group management. Only available to admins.
-
-Sentinel also provides these [filters](src/filters.php) which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your app's routes & methods. 
+Sentinel also provides these [filters](src/filters.php) which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your application's routes & methods. 
 
 * ```Sentinel\auth``` - Require users to be successfully logged in
 * ```Sentinel\inGroup:Admins``` - Block access to all but members of the Admin group. If you create your own groups, you can use it as such: ```Sentinel\inGroup:[YourGroup]```. 
+* ```Sentinel\hasAccess:[PermissionName]``` - Verifiy that the current user has a certain permission before proceeding.
+
+### Advanced Usage
+The recommended method for taking full advantage of this package in larger applications is to do the following:
+* Turn off the default routes and manually specify routes that make more sense for your application
+* Create a new User model that extends the default Sentinel User Model
+* Inject the ```SentryUseRepository``` and/or the ```SentryGroupRepository``` classes into your controllers to have direct access to user and group manipulation.  You may also consider creating your own repositories that extend the repositories that come with the Sentinel. 
+
+It is not advisable to extend the Sentinel Controller classes; you will be better off creating your own controllers from scratch. 
 
 ### Documentation & Questions
 Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
@@ -75,8 +75,6 @@ Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information
 * Events & Listeners
 * Seed & Migration Details
 * Default Routes
-* Basic API Info  
-* Package Version History
 
 Any questions about this package should be posted [on the package website](http://www.ryandurham.com/projects/sentinel/).
 
@@ -89,4 +87,4 @@ Tests are powered by Codeception.  Currently they must be run within a Laravel a
 * Navigate to the Sentinel folder
 * Run ```vendor/bin/codecept run```
 
-I would reccommend turning on "Mail Pretend" in your testing mail config file.
+I would recommend turning on "Mail Pretend" in your testing mail config file.
