@@ -14,11 +14,11 @@
         "php": ">=5.4.0",
         "illuminate/support": "5.0.*@dev",
         "illuminate/contracts": "5.0.*@dev",
-        "cartalyst/sentry": "2.1.*"
+        "cartalyst/sentry": "2.1.*",
+        "mitch/hashids": "~2"
     },
     "autoload": {
         "classmap": [
-            "src/migrations",
             "src/seeds",
             "src/controllers"
         ],
@@ -30,5 +30,11 @@
     "require-dev": {
         "codeception/codeception": "~2.0",
         "codeception/mockery-module": "0.2.*"
-    }
+    },
+    "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/SRLabs-Forks/hashids"
+        }
+    ]
 }
