@@ -5,12 +5,13 @@ use ReflectionClass;
 use Sentinel\Commands\SentinelPublishCommand;
 use Sentinel\Managers\Session\SentrySessionManager;
 use Sentinel\Providers\EventServiceProvider;
-use Sentinel\Providers\ValidationServiceProvider;
-use Illuminate\Support\ServiceProvider;
 use Sentinel\Repositories\Group\SentryGroupRepository;
 use Sentinel\Repositories\User\SentryUserRepository;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
 
-class SentinelServiceProvider extends ServiceProvider {
+class SentinelServiceProvider extends ServiceProvider
+{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -28,40 +29,26 @@ class SentinelServiceProvider extends ServiceProvider {
     {
         // Find path to the package
         $sentinelFilename = with(new ReflectionClass('Sentinel\SentinelServiceProvider'))->getFileName();
-        $sentinelPath = dirname($sentinelFilename);
-
-        // Load the package
-        $this->package('rydurham/sentinel');
+        $sentinelPath     = dirname($sentinelFilename);
 
         // Register Artisan Commands
         $this->registerArtisanCommands();
 
-        // Add the Views Namespace
-        if (is_dir(app_path().'/views/packages/rydurham/sentinel'))
-        {
+        // Establish Fallback Config settings
+        $this->mergeConfigFrom($sentinelPath.'/../config/sentinel.php', 'sentinel');
+        $this->mergeConfigFrom($sentinelPath.'/../config/sentry.php', 'sentry');
+
+        // Establish Views Namespace
+        if (is_dir(base_path() . '/resources/views/packages/rydurham/sentinel')) {
             // The package views have been published - use those views.
-            $this->app['view']->addNamespace('Sentinel', array(app_path().'/views/packages/rydurham/sentinel'));
-        }
-        else
-        {
+            $this->loadViewsFrom(base_path() . '/resources/views/packages/rydurham/sentinel', 'Sentinel');
+        } else {
             // The package views have not been published. Use the defaults.
-            $this->app['view']->addNamespace('Sentinel', __DIR__.'/../views/bootstrap');
+            $this->loadViewsFrom($sentinelPath . '/../views/bootstrap', 'sentinel');
         }
 
-        // Add the Sentinel Namespace to $app['config']
-        if (is_dir(app_path().'/config/packages/rydurham/sentinel'))
-        {
-            // The package config has been published
-            $this->app['config']->addNamespace('Sentinel', app_path().'/config/packages/rydurham/sentinel');
-        }
-        else
-        {
-            // The package config has not been published.
-            $this->app['config']->addNamespace('Sentinel', __DIR__.'/../config');
-        }
-
-        // Add the Translator Namespace
-        $this->app['translator']->addNamespace('Sentinel', __DIR__.'/../lang');
+        // Establish Translator Namespace
+        $this->loadTranslationsFrom($sentinelPath . '/../lang', 'Sentinel');
 
         // Include the Sentinel Filters
         include $sentinelPath . '/../filters.php';
@@ -70,8 +57,8 @@ class SentinelServiceProvider extends ServiceProvider {
         include $sentinelPath . '/../validators.php';
 
         // Should we register the default routes?
-        if ($this->app['config']['Sentinel::routing.routes_enabled'])
-        {
+        if (config('sentinel.routes_enabled')) {
+
             include $sentinelPath . '/../routes.php';
         }
 
@@ -94,17 +81,13 @@ class SentinelServiceProvider extends ServiceProvider {
         $this->app->register('Mitch\Hashids\HashidsServiceProvider');
 
         // Load the Sentry and Hashid Facade Aliases
-        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader = AliasLoader::getInstance();
         $loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
         $loader->alias('Hashids', 'Mitch\Hashids\Hashids');
 
-        // Register Validation Handling
-        $validation = new ValidationServiceProvider($this->app);
-        $validation->register();
 
         // Bind the User Repository
-        $this->app->bind('Sentinel\Repositories\User\SentinelUserRepositoryInterface', function($app)
-        {
+        $this->app->bind('Sentinel\Repositories\User\SentinelUserRepositoryInterface', function ($app) {
             return new SentryUserRepository(
                 $app['sentry'],
                 $app['config'],
@@ -113,8 +96,7 @@ class SentinelServiceProvider extends ServiceProvider {
         });
 
         // Bind the Group Repository
-        $this->app->bind('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface', function($app)
-        {
+        $this->app->bind('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface', function ($app) {
             return new SentryGroupRepository(
                 $app['sentry'],
                 $app['events']
@@ -122,8 +104,7 @@ class SentinelServiceProvider extends ServiceProvider {
         });
 
         // Bind the Session Manager
-        $this->app->bind('Sentinel\Managers\Session\SentinelSessionManagerInterface', function($app)
-        {
+        $this->app->bind('Sentinel\Managers\Session\SentinelSessionManagerInterface', function ($app) {
             return new SentrySessionManager(
                 $app['sentry'],
                 $app->make('events')
@@ -139,7 +120,7 @@ class SentinelServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return array();
+        return array('auth', 'sentry');
     }
 
     /**
@@ -147,12 +128,11 @@ class SentinelServiceProvider extends ServiceProvider {
      */
     private function registerArtisanCommands()
     {
-        $this->app['sentinel.publisher'] = $this->app->share(function($app)
-         {
+        $this->app['sentinel.publisher'] = $this->app->share(function ($app) {
             return new SentinelPublishCommand(
                 $app->make('files')
             );
-         });
+        });
 
         $this->commands('sentinel.publisher');
     }
