@@ -103,8 +103,11 @@ class SentinelPublishCommand extends Command {
             return;
         }
 
-        // Publish the config files
-        $this->publishConfig();
+        // Publish the Sentinel Config
+        $this->publishSentinelConfig();
+
+        // Publish the Sentinel Config
+        $this->publishSentryConfig();
 
         // Publish the Mitch/Hashids config files
         $this->publishHashidsConfig();
@@ -136,28 +139,53 @@ class SentinelPublishCommand extends Command {
 	}
 
     /**
-     * Publish the Sentinel Config files
+     * Publish the Sentinel Config file
      */
-    private function publishConfig()
+    private function publishSentinelConfig()
     {
-        // Prepare for copying files
-        $source      = $this->packagePath . '/../config';
-        $destination = $this->appPath . '/config/packages/rydurham/sentinel';
+        // Prepare for copying
+        $source      = $this->packagePath . '/../config/sentinel.php';
+        $destination = base_path() . '/config/sentinel.php';
 
-        // If there are already config files published, confirm that we want to overwrite them.
-        if ($this->file->isDirectory($destination))
+        // If this file has already been published, confirm that we want to overwrite.
+        if ($this->file->isFile($destination))
         {
-            $answer = $this->confirm('Config files have already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Sentinel config has already been published. Do you want to overwrite? (y/n)');
 
             if ( ! $answer) { return; }
         }
 
         // Copy the configuration files
-        $this->file->copyDirectory($source, $destination);
+        $this->file->copy($source, $destination);
 
         // Notify action completion
-        $this->info('Sentinel Configuration Files Published.');
+        $this->info('Sentinel configuration file published.');
     }
+
+    /**
+     * Publish the Sentry Config file
+     */
+    private function publishSentryConfig()
+    {
+        // Prepare for copying
+        $source      = $this->packagePath . '/../config/sentry.php';
+        $destination = base_path() . '/config/sentry.php';
+
+        // If this file has already been published, confirm that we want to overwrite.
+        if ($this->file->isFile($destination))
+        {
+            $answer = $this->confirm('Sentry config has already been published. Do you want to overwrite? (y/n)');
+
+            if ( ! $answer) { return; }
+        }
+
+        // Copy the configuration files
+        $this->file->copy($source, $destination);
+
+        // Notify action completion
+        $this->info('Sentry configuration file published.');
+    }
+
 
     /**
      * Publish the config file for Mitch/Hashids
@@ -166,22 +194,22 @@ class SentinelPublishCommand extends Command {
     {
         // Prepare file paths
         $hashidsFilename = with(new ReflectionClass('Mitch\Hashids\HashidsServiceProvider'))->getFileName();
-        $source = dirname($hashidsFilename) . '/../../config';
-        $destination = $this->appPath . '/config/packages/mitch/hashids';
+        $source = dirname($hashidsFilename) . '/../../config/config.php';
+        $destination = base_path() . '/config/hashids.php';
 
         // If there are already config files published, confirm that we want to overwrite them.
-        if ($this->file->isDirectory($destination))
+        if ($this->file->isFile($destination))
         {
-            $answer = $this->confirm('Hashid Config files have already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Hashid Config file has already been published. Do you want to overwrite? (y/n)');
 
             if ( ! $answer) { return; }
         }
 
         // Copy the configuration files
-        $this->file->copyDirectory($source, $destination);
+        $this->file->copy($source, $destination);
 
         // Notify action completion
-        $this->info('Mitch/Hashids configuration files published.');
+        $this->info('Mitch/Hashids configuration file published.');
     }
 
     /**
@@ -192,7 +220,7 @@ class SentinelPublishCommand extends Command {
     {
         // Prepare for copying files
         $source      = $this->packagePath . '/../views/' . $theme;
-        $destination = $this->appPath . '/views/packages/rydurham/sentinel';
+        $destination = $this->appPath . '/../resources/views/packages/rydurham/sentinel';
 
         // If there are already views published, confirm that we want to overwrite them.
         if ($this->file->isDirectory($destination))
@@ -242,7 +270,7 @@ class SentinelPublishCommand extends Command {
         if ($this->confirm('Would you like to publish the migration files? (y/n)')){
             // Prepare file paths
             $source =  $this->packagePath . '/../migrations';
-            $destination = $this->appPath . '/database/migrations';
+            $destination = $this->appPath . '/../database/migrations';
 
             // Copy the migration files
             $this->file->copyDirectory($source, $destination);
