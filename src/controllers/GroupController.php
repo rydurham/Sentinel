@@ -1,4 +1,4 @@
-<?php namespace Sentinel;
+<?php namespace App\Http\Controllers\Sentinel;
 
 use BaseController, View, Input, Redirect, Paginator;
 use Hashids\Hashids;

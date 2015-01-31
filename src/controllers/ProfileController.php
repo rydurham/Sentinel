@@ -1,4 +1,4 @@
-<?php namespace Sentinel;
+<?php namespace App\Http\Controllers\Sentinel;
 
 use Hashids\Hashids;
 use Sentinel\Services\Forms\ChangePasswordForm;
