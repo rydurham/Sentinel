@@ -1,9 +1,10 @@
-<?php namespace Sentinel;
+<?php namespace App\Http\Controllers\Sentinel;
 
-use BaseController;
+use App\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Response;
 use Sentinel\Managers\Session\SentinelSessionManagerInterface;
-use Sentinel\Services\Forms\LoginForm;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use View, Input, Event, Redirect, Session, Config;
@@ -14,7 +15,6 @@ class SessionController extends BaseController {
 	 * Members
 	 */
 	protected $sessionManager;
-	protected $loginForm;
 
     /**
      * Traits
@@ -25,10 +25,9 @@ class SessionController extends BaseController {
 	/**
 	 * Constructor
 	 */
-	public function __construct(SentinelSessionManagerInterface $sessionManager, LoginForm $loginForm)
+	public function __construct(SentinelSessionManagerInterface $sessionManager)
 	{
 		$this->session = $sessionManager;
-		$this->loginForm = $loginForm;
 	}
 
 	/**
@@ -38,7 +37,7 @@ class SessionController extends BaseController {
 	{
         // Is this user already signed in?
         if (\Sentry::check()) {
-            return $this->redirectTo('session.store');
+            return $this->redirectTo('session_store');
         }
 
         // No - they are not signed in.  Show the login form.
@@ -55,9 +54,6 @@ class SessionController extends BaseController {
 		// Gather the input
         $data = Input::all();
 
-        // Validate the data
-        $this->loginForm->validate($data);
-
         // Attempt the login
         $result = $this->session->store($data);
 
@@ -65,13 +61,13 @@ class SessionController extends BaseController {
         if($result->isSuccessful())
         {
             // Login was successful.  Determine where we should go now.
-            if (! Config::get('Sentinel::views.enabled')){
+            if (! config('sentinel.views_enabled')){
                 // Views are disabled - return json instead
                 return Response::json('success', 200);
             }
 
             // Views are enabled, so go to the determined route
-            $redirect_route = Config::get('Sentinel::routing.session.store');
+            $redirect_route = config('sentinel.routing.session_store');
             return Redirect::intended($this->generateUrl($redirect_route));
 
         } else {
@@ -97,7 +93,7 @@ class SessionController extends BaseController {
 	{
 		$this->session->destroy();
 
-		return $this->redirectTo('session.destroy');
+		return $this->redirectTo('session_destroy');
 	}
 
 }
