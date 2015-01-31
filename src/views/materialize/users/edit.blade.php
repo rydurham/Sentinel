@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -12,7 +12,7 @@ Edit Profile
 <?php
     // Pull the custom fields from config
     $isProfileUpdate = ($user->email == Sentry::getUser()->email);
-    $customFields = Config::get('Sentinel::auth.additional_user_fields');
+    $customFields = config('sentinel.additional_user_fields');
 
     // Determine the form post route
     if ($isProfileUpdate) {
@@ -33,7 +33,7 @@ Edit Profile
 Account</h3>
 <div class="divider"></div>
 
-<?php $customFields = Config::get('Sentinel::auth.additional_user_fields'); ?>
+<?php $customFields = config('sentinel.additional_user_fields'); ?>
 
 @if (! empty($customFields))
 <div class="row">
@@ -44,7 +44,7 @@ Account</h3>
 
             <h4>Profile</h4>
 
-            @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
+            @foreach(config('sentinel.additional_user_fields') as $field => $rules)
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="{{ $field }}" name="{{ $field }}" type="text" class="validate" value="{{ Input::old($field) ? Input::old($field) : $group->$field }}">

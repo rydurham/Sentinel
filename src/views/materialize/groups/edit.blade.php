@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -24,7 +24,7 @@ Edit Group
             </div>
         </div>
 
-        <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+        <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
 
         @foreach ($defaultPermissions as $permission)
             <p>

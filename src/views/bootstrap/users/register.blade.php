@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 @section('title')
 Register

@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -18,7 +18,7 @@ Edit Group
         {{ ($errors->has('name') ? $errors->first('name') : '') }}
     </p>
 
-    <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+    <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
     
     <p>
         <ul>

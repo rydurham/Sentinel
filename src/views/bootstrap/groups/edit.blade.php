@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -21,7 +21,7 @@ Edit Group
 
             <label for="Permissions">Permissions</label>
             <div class="form-group">
-                <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+                <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
                 @foreach ($defaultPermissions as $permission)
                     <label class="checkbox-inline">
                         <input name="permissions[{{ $permission }}]" value="1" type="checkbox" {{ (isset($permissions[$permission]) ? 'checked' : '') }}>

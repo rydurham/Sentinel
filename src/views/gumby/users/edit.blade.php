@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title', 'Edit Profile')
@@ -9,7 +9,7 @@
 <?php
     // Pull the custom fields from config
     $isProfileUpdate = ($user->email == Sentry::getUser()->email);
-    $customFields = Config::get('Sentinel::auth.additional_user_fields');
+    $customFields = config('sentinel.additional_user_fields');
 
     // Determine the form post route
     if ($isProfileUpdate) {
@@ -36,7 +36,7 @@
     <ul class="five columns">
         <form method="POST" action="{{ $profileFormAction }}" accept-charset="UTF-8" role="form">
 
-            @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
+            @foreach(config('sentinel.additional_user_fields') as $field => $rules)
                 <li class="form-group {{ ($errors->has('username')) ? 'danger' : '' }}">
                     <input placeholder="{{ ucwords(str_replace('_',' ',$field)) }}" name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
                     {{ ($errors->has($field) ? $errors->first($field, '<p class="form_error">:message</p>') : '') }}

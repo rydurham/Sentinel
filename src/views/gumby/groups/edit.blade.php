@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title', 'Edit Group')
@@ -18,7 +18,7 @@
                 
                 <label for="Permissions">Permissions</label>
                 <li class="field">
-                    <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+                    <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
                     @foreach ($defaultPermissions as $permission)
                         <label class="checkbox {{ (isset($permissions[$permission]) ? 'checked' : '') }}">
                           <input type="checkbox"  name="permissions[{{ $permission }}]" value="1" {{ (isset($permissions[$permission]) ? 'checked' : '') }}>

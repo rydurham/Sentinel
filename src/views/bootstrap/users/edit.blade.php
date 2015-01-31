@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -12,7 +12,7 @@ Edit Profile
 <?php
     // Pull the custom fields from config
     $isProfileUpdate = ($user->email == Sentry::getUser()->email);
-    $customFields = Config::get('Sentinel::auth.additional_user_fields');
+    $customFields = config('sentinel.additional_user_fields');
 
     // Determine the form post route
     if ($isProfileUpdate) {
@@ -46,7 +46,7 @@ Edit Profile
             <input name="_method" value="PUT" type="hidden">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
 
-            @foreach(Config::get('Sentinel::auth.additional_user_fields') as $field => $rules)
+            @foreach(config('sentinel.additional_user_fields') as $field => $rules)
             <div class="form-group {{ ($errors->has($field)) ? 'has-error' : '' }}" for="{{ $field }}">
                 <label for="{{ $field }}" class="col-sm-2 control-label">{{ ucwords(str_replace('_',' ',$field)) }}</label>
                 <div class="col-sm-10">

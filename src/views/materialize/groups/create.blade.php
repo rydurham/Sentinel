@@ -1,4 +1,4 @@
-@extends(Config::get('Sentinel::views.layout'))
+@extends(config('sentinel.layout'))
 
 {{-- Web site Title --}}
 @section('title')
@@ -23,7 +23,7 @@ Create Group
                 </div>
             </div>
 
-            <?php $defaultPermissions = Config::get('Sentinel::auth.default_permissions', []); ?>
+            <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
 
 
             <p>Permissions</p>
