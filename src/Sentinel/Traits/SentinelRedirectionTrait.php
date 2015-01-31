@@ -1,6 +1,6 @@
 <?php namespace Sentinel\Traits;
 
-use Config, Redirect, Response, Session;
+use Redirect, Response, Session;
 use Sentinel\Services\Responders\BaseResponse;
 
 trait SentinelRedirectionTrait {
@@ -40,13 +40,13 @@ trait SentinelRedirectionTrait {
     {
         // A key can either be a string representing a config entry, or
         // an array representing the "direction" we intend to go in.
-        $direction = (is_array($key) ? $key : Config::get('Sentinel::routing.' . $key));
+        $direction = (is_array($key) ? $key : config('sentinel.routing.' . $key));
 
         // Convert this "direction" to a url
         $url = $this->generateUrl($direction, $payload);
 
         // Determine if the developer has disabled HTML views
-        $views = Config::get('Sentinel::views.enabled');
+        $views = config('sentinel.views_enabled');
 
         // If the url is empty or views have been disabled the developer
         // wants to return json rather than an HTML view.

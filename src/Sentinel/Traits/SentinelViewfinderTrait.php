@@ -1,6 +1,6 @@
 <?php namespace Sentinel\Traits;
 
-use Config, Redirect, Response, View;
+use Redirect, Response, View;
 
 trait SentinelViewfinderTrait {
 
@@ -15,8 +15,9 @@ trait SentinelViewfinderTrait {
      */
     public function viewFinder($view, $payload = [])
     {
+
         // Check the config for enabled views
-        if (Config::get('Sentinel::views.enabled'))
+        if (config('sentinel.views_enabled'))
         {
             // Views are enabled.
             return View::make($view)->with($payload);
