@@ -15,7 +15,7 @@
         "illuminate/support": "5.0.*@dev",
         "illuminate/contracts": "5.0.*@dev",
         "cartalyst/sentry": "2.1.*",
-        "mitch/hashids": "2.*"
+        "mitch/hashids": "dev-master"
     },
     "autoload": {
         "classmap": [
@@ -33,19 +33,8 @@
     },
     "repositories": [
       {
-        "type": "package",
-        "package": {
-          "name": "mitch/hashids",
-          "version": "~2",
-          "source": {
-            "url": "https://github.com/SRLabs-Forks/hashids.git",
-            "type": "git",
-            "reference": "master"
-          },
-          "autoload": {
-            "classmap": [""]
-          }
-        }
+        "type": "vcs",
+        "url": "https://github.com/SRLabs-Forks/hashids.git"
       }
     ]
 }
