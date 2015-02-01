@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Providers;
+<?php namespace Sentinel;
 /**
  * Modified from the Original Sentry Service Provider. This version pulls
  * config data from the Sentinel "Sentry" config file, rather than the
@@ -58,7 +58,7 @@ class SentryServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->package('cartalyst/sentry', 'cartalyst/sentry');
+        //$this->package('cartalyst/sentry', 'cartalyst/sentry');
     }
 
     /**
@@ -75,7 +75,7 @@ class SentryServiceProvider extends ServiceProvider {
         $this->registerSession();
         $this->registerCookie();
         $this->registerSentry();
-        $this->registerExceptions();
+        //$this->registerExceptions();
     }
 
     /**
@@ -87,7 +87,7 @@ class SentryServiceProvider extends ServiceProvider {
     {
         $this->app['sentry.hasher'] = $this->app->share(function($app)
         {
-            $hasher = $app['config']['Sentinel::sentry.hasher'];
+            $hasher = config('sentry.hasher');
 
             switch ($hasher)
             {
@@ -121,7 +121,7 @@ class SentryServiceProvider extends ServiceProvider {
     {
         $this->app['sentry.user'] = $this->app->share(function($app)
         {
-            $model = $app['config']['Sentinel::sentry.users.model'];
+            $model = config('sentry.users.model');
 
             // We will never be accessing a user in Sentry without accessing
             // the user provider first. So, we can lazily set up our user
@@ -130,7 +130,7 @@ class SentryServiceProvider extends ServiceProvider {
             // overriding at runtime.
             if (method_exists($model, 'setLoginAttributeName'))
             {
-                $loginAttribute = $app['config']['Sentinel::sentry.users.login_attribute'];
+                $loginAttribute = config('sentry.users.login_attribute');
 
                 forward_static_call_array(
                     array($model, 'setLoginAttributeName'),
@@ -141,7 +141,7 @@ class SentryServiceProvider extends ServiceProvider {
             // Define the Group model to use for relationships.
             if (method_exists($model, 'setGroupModel'))
             {
-                $groupModel = $app['config']['Sentinel::sentry.groups.model'];
+                $groupModel = config('sentry.groups.model');
 
                 forward_static_call_array(
                     array($model, 'setGroupModel'),
@@ -152,7 +152,7 @@ class SentryServiceProvider extends ServiceProvider {
             // Define the user group pivot table name to use for relationships.
             if (method_exists($model, 'setUserGroupsPivot'))
             {
-                $pivotTable = $app['config']['Sentinel::sentry.user_groups_pivot_table'];
+                $pivotTable = config('sentry.user_groups_pivot_table');
 
                 forward_static_call_array(
                     array($model, 'setUserGroupsPivot'),
@@ -173,12 +173,12 @@ class SentryServiceProvider extends ServiceProvider {
     {
         $this->app['sentry.group'] = $this->app->share(function($app)
         {
-            $model = $app['config']['Sentinel::sentry.groups.model'];
+            $model = config('sentry.groups.model');
 
             // Define the User model to use for relationships.
             if (method_exists($model, 'setUserModel'))
             {
-                $userModel = $app['config']['Sentinel::sentry.users.model'];
+                $userModel = config('sentry.users.model');
 
                 forward_static_call_array(
                     array($model, 'setUserModel'),
@@ -189,7 +189,7 @@ class SentryServiceProvider extends ServiceProvider {
             // Define the user group pivot table name to use for relationships.
             if (method_exists($model, 'setUserGroupsPivot'))
             {
-                $pivotTable = $app['config']['Sentinel::sentry.user_groups_pivot_table'];
+                $pivotTable = config('sentry.user_groups_pivot_table');
 
                 forward_static_call_array(
                     array($model, 'setUserGroupsPivot'),
@@ -210,18 +210,18 @@ class SentryServiceProvider extends ServiceProvider {
     {
         $this->app['sentry.throttle'] = $this->app->share(function($app)
         {
-            $model = $app['config']['Sentinel::sentry.throttling.model'];
+            $model = config('sentry.throttling.model');
 
             $throttleProvider = new ThrottleProvider($app['sentry.user'], $model);
 
-            if ($app['config']['Sentinel::sentry.throttling.enabled'] === false)
+            if (config('sentry.throttling.enabled') === false)
             {
                 $throttleProvider->disable();
             }
 
             if (method_exists($model, 'setAttemptLimit'))
             {
-                $attemptLimit = $app['config']['Sentinel::sentry.throttling.attempt_limit'];
+                $attemptLimit = config('sentry.throttling.attempt_limit');
 
                 forward_static_call_array(
                     array($model, 'setAttemptLimit'),
@@ -230,7 +230,7 @@ class SentryServiceProvider extends ServiceProvider {
             }
             if (method_exists($model, 'setSuspensionTime'))
             {
-                $suspensionTime = $app['config']['Sentinel::sentry.throttling.suspension_time'];
+                $suspensionTime = config('sentry.throttling.suspension_time');
 
                 forward_static_call_array(
                     array($model, 'setSuspensionTime'),
@@ -241,7 +241,7 @@ class SentryServiceProvider extends ServiceProvider {
             // Define the User model to use for relationships.
             if (method_exists($model, 'setUserModel'))
             {
-                $userModel = $app['config']['Sentinel::sentry.users.model'];
+                $userModel = config('sentry.users.model');
 
                 forward_static_call_array(
                     array($model, 'setUserModel'),
@@ -262,7 +262,7 @@ class SentryServiceProvider extends ServiceProvider {
     {
         $this->app['sentry.session'] = $this->app->share(function($app)
         {
-            $key = $app['config']['Sentinel::sentry.cookie.key'];
+            $key = config('sentry.cookie.key');
 
             return new IlluminateSession($app['session.store'], $key);
         });
@@ -277,7 +277,7 @@ class SentryServiceProvider extends ServiceProvider {
     {
         $this->app['sentry.cookie'] = $this->app->share(function($app)
         {
-            $key = $app['config']['Sentinel::sentry.cookie.key'];
+            $key = config('sentry.cookie.key');
 
             /**
              * We'll default to using the 'request' strategy, but switch to
