@@ -1,7 +1,7 @@
 <?php namespace Sentinel\Traits;
 
 use Redirect, Response, Session;
-use Sentinel\Services\Responders\BaseResponse;
+use Sentinel\DataTransferObjects\BaseResponse;
 
 trait SentinelRedirectionTrait {
 
@@ -22,6 +22,11 @@ trait SentinelRedirectionTrait {
         else
         {
             $message = ['error' => $response->getMessage()];
+        }
+
+        // Was an error caught? If so we need to redirect back.
+        if ($response->isError()) {
+            return $this->redirectBack($message, $response->getPayload());
         }
 
         return $this->redirectTo($key, $message, $response->getPayload());
@@ -64,6 +69,34 @@ trait SentinelRedirectionTrait {
 
         // Redirect to the intended url
         return Redirect::to($url)->with($payload);
+    }
+
+    /**
+     * Redirect back to the previous page.
+     *
+     * @param $message
+     * @param $payload
+     */
+    public function redirectBack($message, $payload)
+    {
+        // Determine if the developer has disabled HTML views
+        $views = config('sentinel.views_enabled');
+
+        // If views have been disabled, return a JSON response
+        if (!$views) {
+            return Response::json(array_merge($payload, $message), 400);
+        }
+
+        // Do we need to flash any session data?
+        if ($message)
+        {
+            $status = key($message);
+            $text   = current($message);
+            Session::flash($status,$text);
+        }
+
+        // Go back
+        return redirect()->back()->withInput()->with($payload);
     }
 
     /**
