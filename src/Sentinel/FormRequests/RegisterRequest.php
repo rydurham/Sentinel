@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Http\FormRequests;
+<?php namespace Sentinel\FormRequests;
 
 use App\Http\Requests\Request;
 
@@ -11,7 +11,7 @@ class RegisterRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**

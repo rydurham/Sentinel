@@ -1,8 +1,8 @@
-<?php namespace Sentinel\Http\FormRequests;
+<?php namespace Sentinel\FormRequests;
 
 use App\Http\Requests\Request;
 
-class ChangePasswordRequest extends Request {
+class GroupUpdateRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class ChangePasswordRequest extends Request {
 	public function rules()
 	{
 		return [
-            'oldPassword'              => 'min:8',
-            'newPassword'              => 'required|min:8|confirmed',
-            'newPassword_confirmation' => 'required'
+            'name' => 'required|min:4|unique:groups'
 		];
 	}
 

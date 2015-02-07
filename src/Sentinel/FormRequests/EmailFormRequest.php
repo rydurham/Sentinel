@@ -1,8 +1,8 @@
-<?php namespace Sentinel\Http\FormRequests;
+<?php namespace Sentinel\FormRequests;
 
 use App\Http\Requests\Request;
 
-class GroupUpdateRequest extends Request {
+class EmailFormRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class GroupUpdateRequest extends Request {
 	public function rules()
 	{
 		return [
-            'name' => 'required|min:4|unique:groups'
+            'email' => 'required|min:4|max:254|email'
 		];
 	}
 

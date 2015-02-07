@@ -1,8 +1,8 @@
-<?php namespace Sentinel\Http\FormRequests;
+<?php namespace Sentinel\FormRequests;
 
 use App\Http\Requests\Request;
 
-class LoginRequest extends Request {
+class GroupCreateRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class LoginRequest extends Request {
 	public function rules()
 	{
 		return [
-            'email'    => 'required|min:4|max:254',
-            'password' => 'required|min:6'
+            'name' => 'required|min:4|unique:groups'
 		];
 	}
 

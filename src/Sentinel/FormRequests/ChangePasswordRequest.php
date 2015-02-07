@@ -1,8 +1,8 @@
-<?php namespace Sentinel\Http\FormRequests;
+<?php namespace Sentinel\FormRequests;
 
 use App\Http\Requests\Request;
 
-class ResetPasswordRequest extends Request {
+class ChangePasswordRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,7 +22,9 @@ class ResetPasswordRequest extends Request {
 	public function rules()
 	{
 		return [
-            'password' => 'required|min:8|confirmed'
+            'oldPassword'              => 'min:8',
+            'newPassword'              => 'required|min:8|confirmed',
+            'newPassword_confirmation' => 'required'
 		];
 	}
 

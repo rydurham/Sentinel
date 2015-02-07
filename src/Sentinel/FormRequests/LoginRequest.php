@@ -1,8 +1,8 @@
-<?php namespace Sentinel\Http\FormRequests;
+<?php namespace Sentinel\FormRequests;
 
 use App\Http\Requests\Request;
 
-class UserUpdateRequest extends Request {
+class LoginRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -11,7 +11,7 @@ class UserUpdateRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -21,7 +21,10 @@ class UserUpdateRequest extends Request {
 	 */
 	public function rules()
 	{
-		return config('sentinel.additional_user_fields');
+		return [
+            'email'    => 'required|min:4|max:254',
+            'password' => 'required|min:6'
+		];
 	}
 
 }
