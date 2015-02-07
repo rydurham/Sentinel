@@ -220,7 +220,7 @@ class SentinelPublishCommand extends Command {
     {
         // Prepare for copying files
         $source      = $this->packagePath . '/../views/' . $theme;
-        $destination = $this->appPath . '/../resources/views/packages/rydurham/sentinel';
+        $destination = base_path() . '/resources/views/sentinel';
 
         // If there are already views published, confirm that we want to overwrite them.
         if ($this->file->isDirectory($destination))
