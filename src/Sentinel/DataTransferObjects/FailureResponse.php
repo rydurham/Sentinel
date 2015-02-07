@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Services\Responders;
+<?php namespace Sentinel\DataTransferObjects;
 
  
 class FailureResponse extends BaseResponse {
