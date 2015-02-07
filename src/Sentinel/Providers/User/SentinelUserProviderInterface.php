@@ -1,11 +1,12 @@
-<?php namespace Sentinel\Repositories\User;
+<?php namespace Sentinel\Providers\User;
 
 use Illuminate\Auth\UserInterface;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
 use Sentinel\Services\Responders\BaseResponse;
 use Sentinel\Models\User;
 
-interface SentinelUserRepositoryInterface {
+interface SentinelUserProviderInterface {
 
 	/**
 	 * Store a newly created resource in storage.
@@ -182,7 +183,7 @@ interface SentinelUserRepositoryInterface {
 	 *
 	 * @return bool
 	 */
-	public function validateCredentials( UserInterface $user, array $credentials);
+	public function validateCredentials(Authenticatable $user, array $credentials);
 
 
 }

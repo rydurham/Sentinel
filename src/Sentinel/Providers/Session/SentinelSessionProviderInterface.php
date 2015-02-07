@@ -1,8 +1,8 @@
-<?php namespace Sentinel\Managers\Session;
+<?php namespace Sentinel\Providers\Session;
 
 use Sentinel\Services\Responders\BaseResponse;
 
-interface SentinelSessionManagerInterface {
+interface SentinelSessionProviderInterface {
 
 	/**
 	 * Store a newly created resource in storage.

@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Repositories\Group;
+<?php namespace Sentinel\Providers\Group;
 
 use Cartalyst\Sentry\Sentry;
 use Illuminate\Database\Eloquent\Collection;
@@ -8,7 +8,7 @@ use Sentinel\Models\Group;
 use Sentinel\Services\Responders\FailureResponse;
 use Sentinel\Services\Responders\SuccessResponse;
 
-class SentryGroupRepository implements SentinelGroupRepositoryInterface {
+class SentryGroupProvider implements SentinelGroupProviderInterface {
 
     protected $sentry;
 

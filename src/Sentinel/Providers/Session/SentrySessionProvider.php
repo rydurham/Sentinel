@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Managers\Session;
+<?php namespace Sentinel\Providers\Session;
 
 use Config;
 use Illuminate\Events\Dispatcher;
@@ -7,11 +7,11 @@ use Cartalyst\Sentry\Throttling\UserBannedException;
 use Cartalyst\Sentry\Throttling\UserSuspendedException;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use Sentinel\Services\Responders\BaseResponse;
-use Sentinel\Services\Responders\SuccessResponse;
-use Sentinel\Services\Responders\FailureResponse;
+use Sentinel\DataTransferObjects\BaseResponse;
+use Sentinel\DataTransferObjects\SuccessResponse;
+use Sentinel\DataTransferObjects\FailureResponse;
 
-class SentrySessionManager implements SentinelSessionManagerInterface {
+class SentrySessionProvider implements SentinelSessionProviderInterface {
 
     protected $sentry;
     protected $throttleProvider;
