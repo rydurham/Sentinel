@@ -75,7 +75,7 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
             $user     = $this->sentryUserProvider->findByCredentials($credentials);
             $throttle = $this->sentryThrottleProvider->findByUserId($user->id);
             $throttle->check();
-            
+
             // Try to authenticate the user
             $user = $this->sentry->authenticate($credentials, $rememberMe);
             dd($user);
