@@ -57,16 +57,16 @@
 
                 // Show session messages if necessary
                 @if ($message = Session::get('success'))
-                    toast('{{ $message }}', 5000);
+                    toast('{!! $message !!}', 5000);
                 @endif
                 @if ($message = Session::get('error'))
-                    toast('{{ $message }}', 5000);
+                    toast('{!! $message !!}', 5000);
                 @endif
                 @if ($message = Session::get('warning'))
-                    toast('{{ $message }}', 5000);
+                    toast('{!! $message !!}', 5000);
                 @endif
                 @if ($message = Session::get('info'))
-                toast('{{ $message }}', 5000);
+                    toast('{!! $message !!}', 5000);
                 @endif
             }); // end of document ready
         })(jQuery); // end of jQuery name space
