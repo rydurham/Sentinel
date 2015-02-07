@@ -90,10 +90,9 @@ return [
     |
     */
 
-    'email' => [
+    'subjects' => [
         'welcome'        => 'Account Registration Confirmation',
-        'reset_password' => 'Password Reset Confirmation',
-        'new_password'   => 'New Password Information',
+        'reset_password' => 'Password Reset Confirmation'
     ],
 
     /*
