@@ -23,9 +23,9 @@ class UserEventHandler
     {
         $events->listen('sentinel.user.login', 'Sentinel\Handlers\UserEventHandler@onUserLogin', 10);
         $events->listen('sentinel.user.logout', 'Sentinel\Handlers\UserEventHandler@onUserLogout', 10);
-        $events->listen('sentinel.user.registered', 'Sentinel\Handlers\UserMailer@welcome', 10);
-        $events->listen('sentinel.user.resend', 'Sentinel\Handlers\UserMailer@welcome', 10);
-        $events->listen('sentinel.user.reset', 'Sentinel\Handlers\UserMailer@passwordReset', 10);
+        $events->listen('sentinel.user.registered', 'Sentinel\Handlers\UserEventHandler@welcome', 10);
+        $events->listen('sentinel.user.resend', 'Sentinel\Handlers\UserEventHandler@welcome', 10);
+        $events->listen('sentinel.user.reset', 'Sentinel\Handlers\UserEventHandler@passwordReset', 10);
     }
 
     /**
@@ -58,7 +58,7 @@ class UserEventHandler
      */
     public function welcome($user, $activated)
     {
-        $subject = $this->config('Sentinel::email.welcome');
+        $subject = $this->config->get('Sentinel::email.welcome');
         $view = 'Sentinel::emails.welcome';
         $data['hash'] = $user->hash;
         $data['code'] = $user->getActivationCode();
@@ -83,7 +83,7 @@ class UserEventHandler
      */
     public function passwordReset($user, $code)
     {
-        $subject = $this->config('Sentinel::email.reset_password');
+        $subject = $this->config->get('Sentinel::email.reset_password');
         $view = 'Sentinel::emails.reset';
         $data['hash'] = $user->hash;
         $data['code'] = $code;
