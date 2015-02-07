@@ -78,7 +78,6 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
 
             // Try to authenticate the user
             $user = $this->sentry->authenticate($credentials, $rememberMe);
-            dd($user);
 
             // Might be unnecessary, but just in case:
             $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('email');
