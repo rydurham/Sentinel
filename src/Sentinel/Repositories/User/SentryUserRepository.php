@@ -259,8 +259,11 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         }
         catch (UserNotFoundException $e)
         {
-            $message = trans('Sentinel::sessions.invalid');
-            return new ExceptionResponse($message);
+            // The user is trying to "reactivate" an account that doesn't exist.  This could be
+            // a vector for determining valid existing accounts, so we will send a vague
+            // response without actually sending a new activation email.
+            $message = trans('Sentinel::users.emailconfirm');
+            return new SuccessResponse($message, []);
         }
     }
 
@@ -285,8 +288,11 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         }
         catch (UserNotFoundException $e)
         {
-            $message = trans('Sentinel::sessions.invalid');
-            return new ExceptionResponse($message);
+            // The user is trying to send a password reset link to an account that doesn't
+            // exist.  This could be a vector for determining valid existing accounts,
+            // so we will send a vague response without actually doing anything.
+            $message = trans('Sentinel::users.emailinfo');
+            return new SuccessResponse($message, []);
         }
     }
 
@@ -493,7 +499,6 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      * @param $id
      *
      * @return array [type]     [description]
-     * @internal param $ [type] $id [description]
      *
      */
     public function unSuspend($id)

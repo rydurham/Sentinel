@@ -72,7 +72,6 @@ interface SentinelUserRepositoryInterface {
      * @param $email
      *
      * @return Bool
-     * @internal param Array $data
      *
      */
     public function triggerPasswordReset($email);

@@ -3,6 +3,8 @@
 use Hashids\Hashids;
 use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\RegisterRequest;
+use Sentinel\FormRequests\EmailRequest;
+use Sentinel\FormRequests\ResetPasswordRequest;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
@@ -116,11 +118,8 @@ class RegistrationController extends BaseController
      * Process resend activation request
      * @return Response
      */
-    public function resendActivation()
+    public function resendActivation(EmailRequest $request)
     {
-        // Validate form data
-        $this->resendActivationForm->validate(Input::only('email'));
-
         // Resend the activation email
         $result = $this->userRepository->resend(['email' => e(Input::get('email'))]);
 
@@ -143,13 +142,10 @@ class RegistrationController extends BaseController
      * Process Forgot Password request
      * @return Response
      */
-    public function sendResetPasswordEmail()
+    public function sendResetPasswordEmail(EmailRequest $request)
     {
-        // Validate form data
-        $this->forgotPasswordForm->validate(Input::only('email'));
-
         // Send Password Reset Email
-        $result = $this->userRepository->triggerPasswordReset(Input::get('email'));
+        $result = $this->userRepository->triggerPasswordReset(e(Input::get('email')));
 
         // It worked!  Use config to determine where we should go.
         return $this->redirectViaResponse('registration_reset_triggered', $result);
@@ -186,10 +182,11 @@ class RegistrationController extends BaseController
     /**
      * Process a password reset form submission
      *
-     * @param $id
+     * @param $hash
      * @param $code
+     * @return Response
      */
-    public function resetPassword($hash, $code)
+    public function resetPassword(ResetPasswordRequest $request, $hash, $code)
     {
         // Decode the hashid
         $id = $this->hashids->decode($hash)[0];
@@ -197,11 +194,8 @@ class RegistrationController extends BaseController
         // Gather input data
         $data = Input::only('password', 'password_confirmation');
 
-        // Validate Form Data
-        $this->resetPasswordForm->validate($data);
-
         // Change the user's password
-        $result = $this->userRepository->resetPassword($id, $code, $data['password']);
+        $result = $this->userRepository->resetPassword($id, $code, e($data['password']));
 
         // It worked!  Use config to determine where we should go.
         return $this->redirectViaResponse('registration_reset_complete', $result);
