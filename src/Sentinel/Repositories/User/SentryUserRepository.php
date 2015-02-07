@@ -48,7 +48,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             if (array_key_exists('activate', $data)) {
                 $activateUser = (bool)$data['activate'];
             } else {
-                $activateUser = ! $this->config->get('Sentinel::auth.require_activation', true);
+                $activateUser = ! $this->config->get('sentinel.require_activation', true);
             }
 
             //Prepare the user credentials
@@ -58,7 +58,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             ];
 
             // Are we allowed to use usernames?
-            if ($this->config->has('Sentinel::auth.allow_usernames', false)) {
+            if ($this->config->get('sentinel.allow_usernames', false)) {
                 // Make sure a username was provided with the user data
                 if (array_key_exists('username', $data)) {
                     $credentials['username'] = e($data['username']);
@@ -69,7 +69,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $user = $this->sentry->register($credentials, $activateUser, $data);
 
             // If the developer has specified additional fields for this user, update them here.
-            foreach ($this->config->get('Sentinel::auth.additional_user_fields', []) as $key => $value) {
+            foreach ($this->config->get('sentinel.additional_user_fields', []) as $key => $value) {
                 if (array_key_exists($key, $data)) {
                     $user->$key = e($data[$key]);
                 }
@@ -80,7 +80,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             if (array_key_exists('groups', $data)) {
                 $groups = $data['groups'];
             } else {
-                $groups = $this->config->get('Sentinel::auth.default_user_groups', []);
+                $groups = $this->config->get('sentinel.default_user_groups', []);
             }
 
             // Assign groups to this user
@@ -133,8 +133,8 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $user->email    = (isset($data['email']) ? e($data['email']) : $user->email);
             $user->username = (isset($data['username']) ? e($data['username']) : $user->username);
 
-            // Are there additional fields specified in the confi? If so, update them here.
-            foreach ($this->config->get('Sentinel::auth.additional_user_fields', []) as $key => $value) {
+            // Are there additional fields specified in the config? If so, update them here.
+            foreach ($this->config->get('sentinel.additional_user_fields', []) as $key => $value) {
                 $user->$key = (isset($data[$key]) ? e($data[$key]) : $user->$key);
             }
 
