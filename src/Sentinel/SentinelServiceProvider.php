@@ -3,10 +3,9 @@
 use Artisan;
 use ReflectionClass;
 use Sentinel\Commands\SentinelPublishCommand;
-use Sentinel\Managers\Session\SentrySessionManager;
-use Sentinel\Providers\EventServiceProvider;
-use Sentinel\Repositories\Group\SentryGroupRepository;
-use Sentinel\Repositories\User\SentryUserRepository;
+use Sentinel\Providers\Session\SentrySessionProvider;
+use Sentinel\Providers\Group\SentryGroupProvider;
+use Sentinel\Providers\User\SentryUserProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,12 +38,12 @@ class SentinelServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($sentinelPath.'/../config/sentry.php', 'sentry');
 
         // Establish Views Namespace
-        if (is_dir(base_path() . '/resources/views/packages/rydurham/sentinel')) {
+        if (is_dir(base_path() . '/resources/views/sentinel')) {
             // The package views have been published - use those views.
-            $this->loadViewsFrom(base_path() . '/resources/views/packages/rydurham/sentinel', 'Sentinel');
+            $this->loadViewsFrom(base_path() . '/resources/views/sentinel', 'Sentinel');
         } else {
             // The package views have not been published. Use the defaults.
-            $this->loadViewsFrom($sentinelPath . '/../views/bootstrap', 'sentinel');
+            $this->loadViewsFrom($sentinelPath . '/../views/bootstrap', 'Sentinel');
         }
 
         // Establish Translator Namespace
@@ -62,9 +61,9 @@ class SentinelServiceProvider extends ServiceProvider
             include $sentinelPath . '/../routes.php';
         }
 
-        // Boot the Event Service Provider
-        $eventProvider = new EventServiceProvider($this->app);
-        $eventProvider->boot();
+        // Set up event listeners
+        $dispatcher = $this->app->make('events');
+        $dispatcher->subscribe('Sentinel\Handlers\UserEventHandler');
     }
 
     /**
@@ -75,7 +74,7 @@ class SentinelServiceProvider extends ServiceProvider
     public function register()
     {
         // Register the Sentry Service Provider
-        $this->app->register('Sentinel\Providers\SentryServiceProvider');
+        $this->app->register('Sentinel\SentryServiceProvider');
 
         // Register the Mitch\Hashids Service Provider
         $this->app->register('Mitch\Hashids\HashidsServiceProvider');
@@ -87,8 +86,8 @@ class SentinelServiceProvider extends ServiceProvider
 
 
         // Bind the User Repository
-        $this->app->bind('Sentinel\Repositories\User\SentinelUserRepositoryInterface', function ($app) {
-            return new SentryUserRepository(
+        $this->app->bind('Sentinel\Providers\User\SentinelUserProviderInterface', function ($app) {
+            return new SentryUserProvider(
                 $app['sentry'],
                 $app['config'],
                 $app['events']
@@ -96,16 +95,16 @@ class SentinelServiceProvider extends ServiceProvider
         });
 
         // Bind the Group Repository
-        $this->app->bind('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface', function ($app) {
-            return new SentryGroupRepository(
+        $this->app->bind('Sentinel\Providers\Group\SentinelGroupProviderInterface', function ($app) {
+            return new SentryGroupProvider(
                 $app['sentry'],
                 $app['events']
             );
         });
 
         // Bind the Session Manager
-        $this->app->bind('Sentinel\Managers\Session\SentinelSessionManagerInterface', function ($app) {
-            return new SentrySessionManager(
+        $this->app->bind('Sentinel\Providers\Session\SentinelSessionProviderInterface', function ($app) {
+            return new SentrySessionProvider(
                 $app['sentry'],
                 $app->make('events')
             );
