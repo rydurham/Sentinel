@@ -2,7 +2,7 @@
 
 use App\Http\Requests\Request;
 
-class EmailFormRequest extends Request {
+class EmailRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -11,7 +11,7 @@ class EmailFormRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**
