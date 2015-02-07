@@ -1,10 +1,9 @@
 <?php namespace Sentinel\Models;
 
 use Hashids;
-use Illuminate\Auth\Reminders\RemindableInterface;
-use Illuminate\Auth\UserInterface;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
-class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserInterface, RemindableInterface {
+class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract {
 
     /**
      * Get the unique identifier for the user.
