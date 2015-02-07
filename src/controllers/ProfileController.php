@@ -19,23 +19,17 @@ class ProfileController extends BaseController {
     public function __construct(
         SentinelUserRepositoryInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
-        UserUpdateForm $userUpdateForm,
-        ChangePasswordForm $changePasswordForm,
         Hashids $hashids
     )
     {
         // DI Member assignment
         $this->userRepository = $userRepository;
         $this->groupRepository = $groupRepository;
-        $this->userUpdateForm = $userUpdateForm;
-        $this->changePasswordForm = $changePasswordForm;
         $this->hashids = $hashids;
 
-        //Check CSRF token on form submission
-        $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
+        // You must have an active session to proceed
+        $this->middleware('sentry.admin');
 
-        // Set up Auth Filters
-        $this->beforeFilter('Sentinel\auth', ['only' => ['show', 'edit', 'update']]);
     }
 
     /**
