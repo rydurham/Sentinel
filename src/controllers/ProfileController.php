@@ -19,6 +19,9 @@ class ProfileController extends BaseController
     use SentinelRedirectionTrait;
     use SentinelViewfinderTrait;
 
+    /**
+     * Constructor
+     */
     public function __construct(
         SentinelUserRepositoryInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,

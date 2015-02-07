@@ -14,15 +14,6 @@ use Sentry, View, Input, Event, Redirect, Session, Config;
 
 class RegistrationController extends BaseController
 {
-    /**
-     * Members
-     */
-    protected $user;
-    protected $group;
-    protected $registerForm;
-    protected $resendActivationForm;
-    protected $forgotPasswordForm;
-    protected $resetPasswordForm;
 
     /**
      * Traits

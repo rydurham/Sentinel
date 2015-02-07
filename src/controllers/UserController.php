@@ -9,15 +9,9 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Pagination\Paginator;
 use View, Input, Event, Redirect, Session, Config;
 
-class UserController extends BaseController {
-
-    /**
-     * Members
-     */
-    protected $user;
-    protected $group;
-    protected $changePasswordForm;
-
+class UserController extends BaseController
+{
+    
     /**
      * Traits
      */
@@ -32,9 +26,9 @@ class UserController extends BaseController {
         SentinelGroupRepositoryInterface $groupRepository,
         Hashids $hashids
     ) {
-        $this->userRepository     = $userRepository;
-        $this->groupRepository    = $groupRepository;
-        $this->hashids            = $hashids;
+        $this->userRepository  = $userRepository;
+        $this->groupRepository = $groupRepository;
+        $this->hashids         = $hashids;
 
         //Check CSRF token on form submission
         $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
@@ -132,8 +126,8 @@ class UserController extends BaseController {
         $groups = $this->groupRepository->all();
 
         return $this->viewFinder('Sentinel::users.edit', [
-           'user' => $user,
-           'groups' => $groups
+            'user' => $user,
+            'groups' => $groups
         ]);
     }
 
@@ -226,11 +220,12 @@ class UserController extends BaseController {
         $result = ($user->hasAccess('admin') ? $this->userRepository->changePasswordWithoutCheck($data) : $this->userRepository->changePassword($data));
 
         // Was the change successful?
-        if (! $result->isSuccessful())
-        {
+        if (!$result->isSuccessful()) {
             Session::flash('error', $result->getMessage());
+
             return Redirect::back();
         }
+
         return $this->redirectViaResponse('users.change.password', $result);
     }
 

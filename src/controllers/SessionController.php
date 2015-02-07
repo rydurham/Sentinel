@@ -8,12 +8,8 @@ use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Sentry, View, Input, Event, Redirect, Session, Config;
 
-class SessionController extends BaseController {
-
-    /**
-     * Members
-     */
-    protected $sessionManager;
+class SessionController extends BaseController
+{
 
     /**
      * Traits
@@ -57,23 +53,24 @@ class SessionController extends BaseController {
         $result = $this->session->store($data);
 
         // Did it work?
-        if($result->isSuccessful())
-        {
+        if ($result->isSuccessful()) {
             // Login was successful.  Determine where we should go now.
-            if (! config('sentinel.views_enabled')){
+            if (!config('sentinel.views_enabled')) {
                 // Views are disabled - return json instead
                 return Response::json('success', 200);
             }
             // Views are enabled, so go to the determined route
             $redirect_route = config('sentinel.routing.session_store');
+
             return Redirect::intended($this->generateUrl($redirect_route));
         } else {
             // There was a problem - unrelated to Form validation.
-            if (! config('sentinel.views_enabled')){
+            if (!config('sentinel.views_enabled')) {
                 // Views are disabled - return json instead
                 return Response::json($result->getMessage(), 400);
             }
             Session::flash('error', $result->getMessage());
+
             return Redirect::route('sentinel.session.create')
                 ->withInput();
         }
@@ -82,7 +79,7 @@ class SessionController extends BaseController {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy()
