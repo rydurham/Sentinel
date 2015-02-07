@@ -1,13 +1,11 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Response;
-use Sentinel\Managers\Session\SentinelSessionManagerInterface;
+use Sentinel\FormRequests\LoginRequest;
+use Sentinel\Providers\Session\SentinelSessionProviderInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use View, Input, Event, Redirect, Session, Config;
+use Sentry, View, Input, Event, Redirect, Session, Config;
 
 class SessionController extends BaseController {
 
@@ -25,7 +23,7 @@ class SessionController extends BaseController {
 	/**
 	 * Constructor
 	 */
-	public function __construct(SentinelSessionManagerInterface $sessionManager)
+	public function __construct(SentinelSessionProviderInterface $sessionManager)
 	{
 		$this->session = $sessionManager;
 	}
@@ -36,7 +34,7 @@ class SessionController extends BaseController {
 	public function create()
 	{
         // Is this user already signed in?
-        if (\Sentry::check()) {
+        if (Sentry::check()) {
             return $this->redirectTo('session_store');
         }
 
@@ -49,7 +47,7 @@ class SessionController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(LoginRequest $request)
 	{
 		// Gather the input
         $data = Input::all();

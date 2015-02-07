@@ -1,18 +1,14 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
 use Hashids\Hashids;
-use Illuminate\Http\Response;
-use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
-use Sentinel\Services\Forms\ChangePasswordForm;
-use Sentinel\Services\Forms\ForgotPasswordForm;
-use Sentinel\Services\Forms\RegisterForm;
-use Sentinel\Services\Forms\ResendActivationForm;
-use Sentinel\Services\Forms\ResetPasswordForm;
-use Sentinel\Services\Forms\UserCreateForm;
-use BaseController, View, Input, Event, Redirect, Session, Config;
+use Illuminate\Routing\Controller as BaseController;
+use Sentinel\FormRequests\RegisterRequest;
+use Sentinel\Providers\Group\SentinelGroupProviderInterface;
+use Sentinel\Providers\User\SentinelUserProviderInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
+use Sentry, View, Input, Event, Redirect, Session, Config;
+
 
 class RegistrationController extends BaseController
 {
@@ -36,20 +32,12 @@ class RegistrationController extends BaseController
      * Constructor
      */
     public function __construct(
-        SentinelUserRepositoryInterface $userRepository,
-        SentinelGroupRepositoryInterface $groupRepository,
-        RegisterForm $registerForm,
-        ResendActivationForm $resendActivationForm,
-        ForgotPasswordForm $forgotPasswordForm,
-        ResetPasswordForm $resetPasswordForm,
+        SentinelUserProviderInterface $userRepository,
+        SentinelGroupProviderInterface $groupRepository,
         Hashids $hashids
     ) {
         $this->userRepository       = $userRepository;
         $this->groupRepository      = $groupRepository;
-        $this->registerForm         = $registerForm;
-        $this->resendActivationForm = $resendActivationForm;
-        $this->forgotPasswordForm   = $forgotPasswordForm;
-        $this->resetPasswordForm    = $resetPasswordForm;
         $this->hashids              = $hashids;
 
         //Check CSRF token on POST
@@ -64,12 +52,12 @@ class RegistrationController extends BaseController
     public function registration()
     {
         // Is this user already signed in? If so redirect to the post login route
-        if (\Sentry::check()) {
+        if (Sentry::check()) {
             return $this->redirectTo('session.store');
         }
 
         //If registration is currently disabled, show a message and redirect home.
-        if ( ! Config::get('Sentinel::auth.registration', false)) {
+        if ( ! config('sentinel.registration', false)) {
             return $this->redirectTo(['route' => 'home'], ['error' => trans('Sentinel::users.inactive_reg')]);
         }
 
@@ -82,17 +70,16 @@ class RegistrationController extends BaseController
      *
      * @return Response
      */
-    public function register()
+    public function register(RegisterRequest $request)
     {
-        // Validate Form Data
+        // Gather input
         $data = Input::all();
-        $this->registerForm->validate($data);
 
         // Attempt Registration
         $result = $this->userRepository->store($data);
 
         // It worked!  Use config to determine where we should go.
-        return $this->redirectViaResponse('registration.complete', $result);
+        return $this->redirectViaResponse('registration_complete', $result);
     }
 
     /**
@@ -112,7 +99,7 @@ class RegistrationController extends BaseController
         $result = $this->userRepository->activate($id, $code);
 
         // It worked!  Use config to determine where we should go.
-        return $this->redirectViaResponse('registration.activated', $result);
+        return $this->redirectViaResponse('registration_activated', $result);
     }
 
     /**
@@ -138,7 +125,7 @@ class RegistrationController extends BaseController
         $result = $this->userRepository->resend(['email' => e(Input::get('email'))]);
 
         // It worked!  Use config to determine where we should go.
-        return $this->redirectViaResponse('registration.resend', $result);
+        return $this->redirectViaResponse('registration_resend', $result);
     }
 
     /**
@@ -165,7 +152,7 @@ class RegistrationController extends BaseController
         $result = $this->userRepository->triggerPasswordReset(Input::get('email'));
 
         // It worked!  Use config to determine where we should go.
-        return $this->redirectViaResponse('registration.reset.triggered', $result);
+        return $this->redirectViaResponse('registration_reset_triggered', $result);
 
     }
 
@@ -187,7 +174,7 @@ class RegistrationController extends BaseController
 
         if (! $result->isSuccessful())
         {
-            return $this->redirectViaResponse('registration.reset.invalid', $result);
+            return $this->redirectViaResponse('registration_reset_invalid', $result);
         }
 
         return $this->viewFinder('Sentinel::users.reset', [
@@ -217,7 +204,7 @@ class RegistrationController extends BaseController
         $result = $this->userRepository->resetPassword($id, $code, $data['password']);
 
         // It worked!  Use config to determine where we should go.
-        return $this->redirectViaResponse('registration.reset.complete', $result);
+        return $this->redirectViaResponse('registration_reset_complete', $result);
     }
 
 }

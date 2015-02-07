@@ -2,16 +2,12 @@
 
 use Hashids\Hashids;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
-use Sentinel\Services\Forms\ChangePasswordForm;
-use Sentinel\Services\Forms\ForgotPasswordForm;
-use Sentinel\Services\Forms\RegisterForm;
-use Sentinel\Services\Forms\ResendActivationForm;
-use Sentinel\Services\Forms\UserCreateForm;
-use BaseController, View, Input, Event, Redirect, Session, Config, Paginator;
-use Sentinel\Services\Forms\UserUpdateForm;
+use Sentinel\Repositories\User\SentinelUserProviderInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Pagination\Paginator;
+use View, Input, Event, Redirect, Session, Config;
 
 class UserController extends BaseController {
 
@@ -20,8 +16,6 @@ class UserController extends BaseController {
      */
     protected $user;
     protected $group;
-    protected $userCreateForm;
-    protected $userUpdateForm;
     protected $changePasswordForm;
 
     /**
@@ -34,18 +28,12 @@ class UserController extends BaseController {
      * Constructor
      */
     public function __construct(
-        SentinelUserRepositoryInterface $userRepository,
+        SentinelUserProviderInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
-        UserCreateForm $userCreateForm,
-        UserUpdateForm $userUpdateForm,
-        ChangePasswordForm $changePasswordForm,
         Hashids $hashids
     ) {
         $this->userRepository     = $userRepository;
         $this->groupRepository    = $groupRepository;
-        $this->userCreateForm     = $userCreateForm;
-        $this->userUpdateForm     = $userUpdateForm;
-        $this->changePasswordForm = $changePasswordForm;
         $this->hashids            = $hashids;
 
         //Check CSRF token on form submission
@@ -67,7 +55,7 @@ class UserController extends BaseController {
         $perPage     = 15;
         $currentPage = Input::get('page') - 1;
         $pagedData   = array_slice($users, $currentPage * $perPage, $perPage);
-        $users       = Paginator::make($pagedData, count($users), $perPage);
+        $users       = new Paginator($pagedData, $perPage, $currentPage);
 
         return $this->viewFinder('Sentinel::users.index', ['users' => $users]);
     }
@@ -76,7 +64,7 @@ class UserController extends BaseController {
     /**
      * Show the "Create new User" form
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {

@@ -5,7 +5,7 @@ use Sentinel\Services\Forms\ChangePasswordForm;
 use Sentinel\Services\Forms\UserUpdateForm;
 use Session, Input, Response, Redirect;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
+use Sentinel\Repositories\User\SentinelUserProviderInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 
@@ -18,7 +18,7 @@ class ProfileController extends \BaseController {
     use SentinelViewfinderTrait;
 
     public function __construct(
-        SentinelUserRepositoryInterface $userRepository,
+        SentinelUserProviderInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
         UserUpdateForm $userUpdateForm,
         ChangePasswordForm $changePasswordForm,
