@@ -60,7 +60,7 @@ class SessionController extends BaseController {
         if($result->isSuccessful())
         {
             // Login was successful.  Determine where we should go now.
-            if (! congfig('sentinel.views_enabled')){
+            if (! config('sentinel.views_enabled')){
                 // Views are disabled - return json instead
                 return Response::json('success', 200);
             }
