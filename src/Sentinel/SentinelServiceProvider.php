@@ -49,9 +49,6 @@ class SentinelServiceProvider extends ServiceProvider
         // Establish Translator Namespace
         $this->loadTranslationsFrom($sentinelPath . '/../lang', 'Sentinel');
 
-        // Include the Sentinel Filters
-        include $sentinelPath . '/../filters.php';
-
         // Include custom validation rules
         include $sentinelPath . '/../validators.php';
 
