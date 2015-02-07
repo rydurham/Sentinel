@@ -7,34 +7,36 @@ use Cartalyst\Sentry\Throttling\UserBannedException;
 use Cartalyst\Sentry\Throttling\UserSuspendedException;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
+use Cartalyst\Sentry\Users\LoginRequiredException;
+use Cartalyst\Sentry\Users\PasswordRequiredException;
+use Cartalyst\Sentry\Users\WrongPasswordException;
 use Sentinel\DataTransferObjects\BaseResponse;
+use Sentinel\DataTransferObjects\ExceptionResponse;
 use Sentinel\DataTransferObjects\SuccessResponse;
 use Sentinel\DataTransferObjects\FailureResponse;
 
-class SentrySessionRepository implements SentinelSessionRepositoryInterface {
+class SentrySessionRepository implements SentinelSessionRepositoryInterface
+{
 
-    protected $sentry;
-    protected $throttleProvider;
-    protected $userProvider;
-    /**
-     * @var Dispatcher
-     */
+    private $sentry;
+    private $sentryThrottleProvider;
+    private $sentryUserProvider;
     private $dispatcher;
 
     public function __construct(Sentry $sentry, Dispatcher $dispatcher)
     {
         // Sentry Singleton Object
-        $this->sentry = $sentry;
+        $this->sentry     = $sentry;
         $this->dispatcher = $dispatcher;
 
         // Get the Throttle Provider
-        $this->throttleProvider = $this->sentry->getThrottleProvider();
+        $this->sentryThrottleProvider = $this->sentry->getThrottleProvider();
 
         // Enable the Throttling Feature
-        $this->throttleProvider->enable();
+        $this->sentryThrottleProvider->enable();
 
         // Get the user provider
-        $this->userProvider = $this->sentry->getUserProvider();
+        $this->sentryUserProvider = $this->sentry->getUserProvider();
     }
 
     /**
@@ -44,48 +46,65 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface {
      */
     public function store($data)
     {
-        // Check for 'rememberMe' in POST data
-        $rememberMe = isset($data['rememberMe']);
+        try {
+            // Check for 'rememberMe' in POST data
+            $rememberMe = isset($data['rememberMe']);
 
-        // Set login credentials
-        $credentials['password'] = e($data['password']);
-        $credentials['email']    = isset($data['email']) ? e($data['email']) : '';
+            // Set login credentials
+            $credentials['password'] = e($data['password']);
+            $credentials['email']    = isset($data['email']) ? e($data['email']) : '';
 
-        // Should we check for a username?
-        if (Config::get('Sentinel::auth.allow_usernames', false) && isset($data['username']))
-        {
-            $credentials['username'] =  e($data['username']);
+            // Should we check for a username?
+            if (Config::get('Sentinel::auth.allow_usernames', false) && isset($data['username'])) {
+                $credentials['username'] = e($data['username']);
+            }
+
+            // If the email address is blank or not valid, try using the username as the primary login credential
+            if (!$this->validEmail($credentials['email'])) {
+                // Tell sentry to look for a username when attempting login
+                $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('username');
+
+                // Remove the email credential
+                unset($credentials['email']);
+
+                // Set the 'username' credential
+                $credentials['username'] = (isset($credentials['username']) ? $credentials['username'] : e($data['email']));
+            }
+
+            //Check for suspension or banned status
+            $user     = $this->sentryUserProvider->findByCredentials($credentials);
+            $throttle = $this->sentryThrottleProvider->findByUserId($user->id);
+            $throttle->check();
+            
+            // Try to authenticate the user
+            $user = $this->sentry->authenticate($credentials, $rememberMe);
+            dd($user);
+
+            // Might be unnecessary, but just in case:
+            $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('email');
+
+            // Login was successful. Fire the Sentinel.user.login event
+            $this->dispatcher->fire('sentinel.user.login', ['user' => $user]);
+
+            // Return Response Object
+            return new SuccessResponse('');
+        } catch (WrongPasswordException $e) {
+            $message = trans('Sentinel::sessions.invalid');
+            return new ExceptionResponse($message);
+        } catch (UserNotFoundException $e) {
+            $message = trans('Sentinel::sessions.invalid');
+            return new ExceptionResponse($message);
+        } catch (UserNotActivatedException $e) {
+            $url = route('sentinel.reactivate.form');
+            $message = trans('Sentinel::sessions.notactive', array('url' => $url));
+            return new ExceptionResponse($message);
+        } catch (UserSuspendedException $e) {
+            $message = trans('Sentinel::sessions.suspended');
+            return new ExceptionResponse($message);
+        } catch (UserBannedException $e) {
+            $message = trans('Sentinel::sessions.banned');
+            return new ExceptionResponse($message);
         }
-
-        // If the email address is blank or not valid, try using the username as the primary login credential
-        if ( ! $this->validEmail($credentials['email']))
-        {
-            // Tell sentry to look for a username when attempting login
-            $this->userProvider->getEmptyUser()->setLoginAttributeName('username');
-
-            // Remove the email credential
-            unset($credentials['email']);
-
-            // Set the 'username' credential
-            $credentials['username'] = (isset($credentials['username']) ? $credentials['username'] : e($data['email']));
-        }
-
-        //Check for suspension or banned status
-        $user     = $this->userProvider->findByCredentials($credentials);
-        $throttle = $this->throttleProvider->findByUserId($user->id);
-        $throttle->check();
-
-        // Try to authenticate the user
-        $user = $this->sentry->authenticate($credentials, $rememberMe);
-
-        // Might be unnecessary, but just in case:
-        $this->userProvider->getEmptyUser()->setLoginAttributeName('email');
-
-        // Login was successful. Fire the Sentinel.user.login event
-        $this->dispatcher->fire('sentinel.user.login', ['user' => $user]);
-
-        // Return Response Object
-        return new SuccessResponse('');
 
     }
 
@@ -115,8 +134,7 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface {
      */
     private function validEmail($email)
     {
-        if ( ! filter_var($email, FILTER_VALIDATE_EMAIL))
-        {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
 
