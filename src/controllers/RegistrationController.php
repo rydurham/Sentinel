@@ -53,7 +53,7 @@ class RegistrationController extends BaseController
     {
         // Is this user already signed in? If so redirect to the post login route
         if (Sentry::check()) {
-            return $this->redirectTo('session.store');
+            return $this->redirectTo('session_store');
         }
 
         //If registration is currently disabled, show a message and redirect home.
@@ -105,7 +105,7 @@ class RegistrationController extends BaseController
     /**
      * Show the 'Resend Activation' form
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     function resendActivationForm()
     {
