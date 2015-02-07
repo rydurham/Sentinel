@@ -3,8 +3,8 @@
 use Hashids\Hashids;
 use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\RegisterRequest;
-use Sentinel\Providers\Group\SentinelGroupProviderInterface;
-use Sentinel\Providers\User\SentinelUserProviderInterface;
+use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Sentry, View, Input, Event, Redirect, Session, Config;
@@ -32,8 +32,8 @@ class RegistrationController extends BaseController
      * Constructor
      */
     public function __construct(
-        SentinelUserProviderInterface $userRepository,
-        SentinelGroupProviderInterface $groupRepository,
+        SentinelUserRepositoryInterface $userRepository,
+        SentinelGroupRepositoryInterface $groupRepository,
         Hashids $hashids
     ) {
         $this->userRepository       = $userRepository;

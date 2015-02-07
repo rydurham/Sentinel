@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Providers\Session;
+<?php namespace Sentinel\Repositories\Session;
 
 use Config;
 use Illuminate\Events\Dispatcher;
@@ -11,7 +11,7 @@ use Sentinel\DataTransferObjects\BaseResponse;
 use Sentinel\DataTransferObjects\SuccessResponse;
 use Sentinel\DataTransferObjects\FailureResponse;
 
-class SentrySessionProvider implements SentinelSessionProviderInterface {
+class SentrySessionRepository implements SentinelSessionRepositoryInterface {
 
     protected $sentry;
     protected $throttleProvider;

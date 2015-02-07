@@ -2,7 +2,7 @@
 
 use Hashids\Hashids;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Repositories\User\SentinelUserProviderInterface;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Illuminate\Routing\Controller as BaseController;
@@ -28,7 +28,7 @@ class UserController extends BaseController {
      * Constructor
      */
     public function __construct(
-        SentinelUserProviderInterface $userRepository,
+        SentinelUserRepositoryInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
         Hashids $hashids
     ) {

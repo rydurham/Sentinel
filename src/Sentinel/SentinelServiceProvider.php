@@ -3,9 +3,9 @@
 use Artisan;
 use ReflectionClass;
 use Sentinel\Commands\SentinelPublishCommand;
-use Sentinel\Providers\Session\SentrySessionProvider;
-use Sentinel\Providers\Group\SentryGroupProvider;
-use Sentinel\Providers\User\SentryUserProvider;
+use Sentinel\Repositories\Session\SentrySessionRepository;
+use Sentinel\Repositories\Group\SentryGroupRepository;
+use Sentinel\Repositories\User\SentryUserRepository;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 
@@ -86,8 +86,8 @@ class SentinelServiceProvider extends ServiceProvider
 
 
         // Bind the User Repository
-        $this->app->bind('Sentinel\Providers\User\SentinelUserProviderInterface', function ($app) {
-            return new SentryUserProvider(
+        $this->app->bind('Sentinel\Repositories\User\SentinelUserRepositoryInterface', function ($app) {
+            return new SentryUserRepository(
                 $app['sentry'],
                 $app['config'],
                 $app['events']
@@ -95,18 +95,18 @@ class SentinelServiceProvider extends ServiceProvider
         });
 
         // Bind the Group Repository
-        $this->app->bind('Sentinel\Providers\Group\SentinelGroupProviderInterface', function ($app) {
-            return new SentryGroupProvider(
+        $this->app->bind('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface', function ($app) {
+            return new SentryGroupRepository(
                 $app['sentry'],
                 $app['events']
             );
         });
 
         // Bind the Session Manager
-        $this->app->bind('Sentinel\Providers\Session\SentinelSessionProviderInterface', function ($app) {
-            return new SentrySessionProvider(
+        $this->app->bind('Sentinel\Repositories\Session\SentinelSessionRepositoryInterface', function ($app) {
+            return new SentrySessionRepository(
                 $app['sentry'],
-                $app->make('events')
+                $app['events']
             );
         });
 

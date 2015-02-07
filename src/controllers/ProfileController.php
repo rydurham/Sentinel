@@ -1,15 +1,14 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
 use Hashids\Hashids;
-use Sentinel\Services\Forms\ChangePasswordForm;
-use Sentinel\Services\Forms\UserUpdateForm;
+use Illuminate\Routing\Controller as BaseController;
 use Session, Input, Response, Redirect;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Repositories\User\SentinelUserProviderInterface;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 
-class ProfileController extends \BaseController {
+class ProfileController extends BaseController {
 
     /**
      * Traits
@@ -18,7 +17,7 @@ class ProfileController extends \BaseController {
     use SentinelViewfinderTrait;
 
     public function __construct(
-        SentinelUserProviderInterface $userRepository,
+        SentinelUserRepositoryInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
         UserUpdateForm $userUpdateForm,
         ChangePasswordForm $changePasswordForm,

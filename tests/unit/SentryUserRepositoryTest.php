@@ -1,6 +1,6 @@
 <?php
 
-use Sentinel\Repositories\User\SentryUserProvider;
+use Sentinel\Repositories\User\SentryUserRepository;
 use Cartalyst\Sentry\Sentry;
 
 /**
@@ -23,7 +23,7 @@ class SentryUserRepositoryTest extends \Codeception\TestCase\Test
         $this->dispatcherMock = Mockery::mock('Illuminate\Events\Dispatcher');
         $this->configMock     = Mockery::mock('Illuminate\Config\Repository');
         $this->sentry         = $this->tester->grabService('sentry');
-        $this->repo           = new SentryUserProvider($this->sentry, $this->configMock, $this->dispatcherMock);
+        $this->repo           = new SentryUserRepository($this->sentry, $this->configMock, $this->dispatcherMock);
 
         $this->sentinelConfiguration['Sentinel::auth.activation']             = true;
         $this->sentinelConfiguration['Sentinel::auth.allow_usernames']        = true;

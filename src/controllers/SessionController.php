@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\LoginRequest;
-use Sentinel\Providers\Session\SentinelSessionProviderInterface;
+use Sentinel\Repositories\Session\SentinelSessionRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Sentry, View, Input, Event, Redirect, Session, Config;
@@ -23,7 +23,7 @@ class SessionController extends BaseController {
 	/**
 	 * Constructor
 	 */
-	public function __construct(SentinelSessionProviderInterface $sessionManager)
+	public function __construct(SentinelSessionRepositoryInterface $sessionManager)
 	{
 		$this->session = $sessionManager;
 	}

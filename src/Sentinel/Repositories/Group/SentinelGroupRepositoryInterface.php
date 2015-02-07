@@ -1,10 +1,10 @@
-<?php namespace Sentinel\Providers\Group;
+<?php namespace Sentinel\Repositories\Group;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Sentinel\Models\User;
 
-interface SentinelGroupProviderInterface {
+interface SentinelGroupRepositoryInterface {
 
 	/**
 	 * Store a newly created resource in storage.

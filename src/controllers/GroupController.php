@@ -1,12 +1,12 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-use BaseController, View, Input, Redirect, Paginator;
+
 use Hashids\Hashids;
+use Illuminate\Routing\Controller as BaseController;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Services\Forms\GroupCreateForm;
-use Sentinel\Services\Forms\GroupUpdateForm;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
+use View, Input, Redirect, Paginator;
 
 class GroupController extends BaseController {
 

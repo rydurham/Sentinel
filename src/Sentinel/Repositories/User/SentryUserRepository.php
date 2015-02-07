@@ -1,4 +1,4 @@
-<?php namespace Sentinel\Providers\User;
+<?php namespace Sentinel\Repositories\User;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserExistsException;
@@ -14,7 +14,7 @@ use Sentinel\DataTransferObjects\SuccessResponse;
 use Sentinel\DataTransferObjects\FailureResponse;
 use Sentinel\DataTransferObjects\ExceptionResponse;
 
-class SentryUserProvider implements SentinelUserProviderInterface, UserProvider
+class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvider
 {
     protected $sentry;
     protected $config;

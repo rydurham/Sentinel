@@ -1,12 +1,11 @@
-<?php namespace Sentinel\Providers\User;
+<?php namespace Sentinel\Repositories\User;
 
-use Illuminate\Auth\UserInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
-use Sentinel\Services\Responders\BaseResponse;
+use Sentinel\DataTransferObjects\BaseResponse;
 use Sentinel\Models\User;
 
-interface SentinelUserProviderInterface {
+interface SentinelUserRepositoryInterface {
 
 	/**
 	 * Store a newly created resource in storage.
