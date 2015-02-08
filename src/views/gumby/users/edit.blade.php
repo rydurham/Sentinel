@@ -17,7 +17,7 @@
         $passwordFormAction = route('sentinel.profile.password');
     } else {
         $profileFormAction =  route('sentinel.users.update', $user->hash);
-        $passwordFormAction = route('sentinel.users.memberships', $user->hash);
+        $passwordFormAction = route('sentinel.password.change', $user->hash);
     }
 ?>
 
