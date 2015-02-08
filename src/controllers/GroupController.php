@@ -1,12 +1,13 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-
 use Hashids\Hashids;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Pagination\Paginator;
+use Sentinel\FormRequests\GroupCreateRequest;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use View, Input, Redirect, Paginator;
+use View, Input, Redirect;
 
 class GroupController extends BaseController
 {
@@ -22,18 +23,13 @@ class GroupController extends BaseController
      */
     public function __construct(
         SentinelGroupRepositoryInterface $groupRepository,
-        GroupCreateForm $groupCreateForm,
-        GroupUpdateForm $groupUpdateForm,
         Hashids $hashids
     ) {
         $this->groupRepository = $groupRepository;
-        $this->groupCreateForm = $groupCreateForm;
-        $this->groupUpdateForm = $groupUpdateForm;
         $this->hashids         = $hashids;
 
-        // Establish Filters
-        $this->beforeFilter('Sentinel\hasAccess:admin');
-        $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
+        // You must have admin access to proceed
+        $this->middleware('sentry.admin');
     }
 
     /**
@@ -48,7 +44,7 @@ class GroupController extends BaseController
         $perPage     = 15;
         $currentPage = Input::get('page') - 1;
         $pagedData   = array_slice($groups, $currentPage * $perPage, $perPage);
-        $groups      = Paginator::make($pagedData, count($groups), $perPage);
+        $groups      = new Paginator($pagedData, $perPage, $currentPage);
 
         return $this->viewFinder('Sentinel::groups.index', ['groups' => $groups]);
     }
@@ -68,18 +64,15 @@ class GroupController extends BaseController
      *
      * @return Redirect
      */
-    public function store()
+    public function store(GroupCreateRequest $request)
     {
         // Gather input
         $data = Input::all();
 
-        // Form Data Validation
-        $this->groupCreateForm->validate($data);
-
         // Store the new group
         $result = $this->groupRepository->store($data);
 
-        return $this->redirectViaResponse('groups.store', $result);
+        return $this->redirectViaResponse('groups_store', $result);
     }
 
     /**
@@ -113,8 +106,7 @@ class GroupController extends BaseController
 
         return $this->viewFinder('Sentinel::groups.edit', [
             'group' => $group,
-            'permissions',
-            $group->getPermissions()
+            'permissions' => $group->getPermissions()
         ]);
     }
 
@@ -131,16 +123,10 @@ class GroupController extends BaseController
         // Decode the hashid
         $data['id'] = $this->hashids->decode($hash)[0];
 
-        // Grab the group in question for the validator
-        $group = $this->groupRepository->retrieveById($data['id']);
-
-        // Validate form data
-        $this->groupUpdateForm->validate($data, $group);
-
         // Update the group
         $result = $this->groupRepository->update($data);
 
-        return $this->redirectViaResponse('groups.update', $result);
+        return $this->redirectViaResponse('groups_update', $result);
     }
 
     /**
@@ -156,7 +142,7 @@ class GroupController extends BaseController
         // Remove the group from storage
         $result = $this->groupRepository->destroy($id);
 
-        return $this->redirectViaResponse('groups.destroy', $result);
+        return $this->redirectViaResponse('groups_destroy', $result);
     }
 
 }
