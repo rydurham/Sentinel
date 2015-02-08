@@ -1,17 +1,20 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-use Hashids\Hashids;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Pagination\Paginator;
+use Sentinel\FormRequests\ChangePasswordRequest;
+use Sentinel\FormRequests\UserCreateRequest;
+use Sentinel\FormRequests\UserUpdateRequest;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Pagination\Paginator;
+use Hashids\Hashids;
 use View, Input, Event, Redirect, Session, Config;
 
 class UserController extends BaseController
 {
-    
+
     /**
      * Traits
      */
@@ -30,11 +33,8 @@ class UserController extends BaseController
         $this->groupRepository = $groupRepository;
         $this->hashids         = $hashids;
 
-        //Check CSRF token on form submission
-        $this->beforeFilter('Sentinel\csrf', ['on' => ['post', 'put', 'delete']]);
-
-        // Set up Auth Filters
-        $this->beforeFilter('Sentinel\hasAccess:admin');
+        // You must have admin access to proceed
+        $this->middleware('sentry.admin');
     }
 
     /**
@@ -70,22 +70,16 @@ class UserController extends BaseController
      *
      * @return Redirect
      */
-    public function store()
+    public function store(UserCreateRequest $request)
     {
-        // Collect Data
-        $data = Input::all();
-
-        // Validate form data
-        $this->userCreateForm->validate($data);
-
         // Create and store the new user
-        $result = $this->userRepository->store($data);
+        $result = $this->userRepository->store(Input::all());
 
         // Determine response message based on whether or not the user was activated
         $message = ($result->getPayload()['activated'] ? trans('Sentinel::users.addedactive') : trans('Sentinel::users.added'));
 
         // Finished!
-        return $this->redirectTo('users.store', ['success' => $message]);
+        return $this->redirectTo('users_store', ['success' => $message]);
     }
 
 
@@ -94,7 +88,7 @@ class UserController extends BaseController
      *
      * @param $id
      *
-     * @return Redirect|View
+     * @return View
      */
     public function show($hash)
     {
@@ -110,7 +104,7 @@ class UserController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return Redirect
      */
@@ -134,11 +128,11 @@ class UserController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return Redirect
      */
-    public function update($hash)
+    public function update(UserUpdateRequest $request, $hash)
     {
         // Gather Input
         $data = Input::all();
@@ -146,21 +140,18 @@ class UserController extends BaseController
         // Decode the hashid
         $data['id'] = $this->hashids->decode($hash)[0];
 
-        // Validate form data
-        $this->userUpdateForm->validate($data);
-
         // Attempt to update the user
         $result = $this->userRepository->update($data);
 
         // Done!
-        return $this->redirectViaResponse('users.update', $result);
+        return $this->redirectViaResponse('users_update', $result);
     }
 
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return Redirect
      */
@@ -172,15 +163,15 @@ class UserController extends BaseController
         // Remove the user from storage
         $result = $this->userRepository->destroy($id);
 
-        return $this->redirectViaResponse('users.destroy', $result);
+        return $this->redirectViaResponse('users_destroy', $result);
     }
 
     /**
      * Change the group memberships for a given user
      *
-     * @param $id
+     * @param $hash
      *
-     * @return \Response
+     * @return Redirect
      */
     public function updateGroupMemberships($hash)
     {
@@ -194,24 +185,21 @@ class UserController extends BaseController
         $result = $this->userRepository->changeGroupMemberships($id, $groups);
 
         // Done
-        return $this->redirectViaResponse('users.change.memberships', $result);
+        return $this->redirectViaResponse('users_change_memberships', $result);
     }
 
     /**
      * Process a password change request
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return redirect
      */
-    public function changePassword($hash)
+    public function changePassword(ChangePasswordRequest $request, $hash)
     {
         // Gather input
         $data       = Input::all();
         $data['id'] = $this->hashids->decode($hash)[0];
-
-        // Validate form Data
-        $this->changePasswordForm->validate($data);
 
         // Grab the current user
         $user = $this->userRepository->getUser();
@@ -226,13 +214,13 @@ class UserController extends BaseController
             return Redirect::back();
         }
 
-        return $this->redirectViaResponse('users.change.password', $result);
+        return $this->redirectViaResponse('users_change_password', $result);
     }
 
     /**
      * Process a suspend user request
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return Redirect
      */
@@ -244,13 +232,13 @@ class UserController extends BaseController
         // Trigger the suspension
         $result = $this->userRepository->suspend($id);
 
-        return $this->redirectViaResponse('users.suspend', $result);
+        return $this->redirectViaResponse('users_suspend', $result);
     }
 
     /**
      * Unsuspend user
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return Redirect
      */
@@ -262,13 +250,13 @@ class UserController extends BaseController
         // Trigger the unsuspension
         $result = $this->userRepository->unsuspend($id);
 
-        return $this->redirectViaResponse('users.unsuspend', $result);
+        return $this->redirectViaResponse('users_unsuspend', $result);
     }
 
     /**
      * Ban a user
      *
-     * @param  int $id
+     * @param  string $hash
      *
      * @return Redirect
      */
@@ -280,13 +268,13 @@ class UserController extends BaseController
         // Ban the user
         $result = $this->userRepository->ban($id);
 
-        return $this->redirectViaResponse('users.ban', $result);
+        return $this->redirectViaResponse('users_ban', $result);
     }
 
     /**
      * Unban a user
      *
-     * @param $id
+     * @param string $hash
      *
      * @return Redirect
      */
@@ -298,7 +286,7 @@ class UserController extends BaseController
         // Unban the user
         $result = $this->userRepository->unban($id);
 
-        return $this->redirectViaResponse('users.unban', $result);
+        return $this->redirectViaResponse('users_unban', $result);
     }
 
 }

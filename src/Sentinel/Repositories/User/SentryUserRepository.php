@@ -48,12 +48,12 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             if (array_key_exists('activate', $data)) {
                 $activateUser = (bool)$data['activate'];
             } else {
-                $activateUser = ! $this->config->get('sentinel.require_activation', true);
+                $activateUser = !$this->config->get('sentinel.require_activation', true);
             }
 
             //Prepare the user credentials
             $credentials = [
-                'email'    => e($data['email']),
+                'email' => e($data['email']),
                 'password' => e($data['password'])
             ];
 
@@ -99,7 +99,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // Response Payload
             $payload = [
-                'user'      => $user,
+                'user' => $user,
                 'activated' => $activateUser
             ];
 
@@ -108,10 +108,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // Return a response
             return new SuccessResponse($message, $payload);
-        }
-        catch (UserExistsException $e)
-        {
+        } catch (UserExistsException $e) {
             $message = trans('Sentinel::users.exists');
+
             return new ExceptionResponse($message);
         }
     }
@@ -147,15 +146,13 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             }
 
             return new FailureResponse(trans('Sentinel::users.notupdated'), ['user' => $user]);
-        }
-        catch (UserExistsException $e)
-        {
+        } catch (UserExistsException $e) {
             $message = trans('Sentinel::users.exists');
+
             return new ExceptionResponse($message);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -183,10 +180,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // Unable to delete the user
             return new FailureResponse(trans('Sentinel::users.notdestroyed'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -194,7 +190,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     /**
      * Attempt activation for the specified user
      *
-     * @param  int    $id
+     * @param  int $id
      * @param  string $code
      *
      * @return bool
@@ -217,15 +213,13 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             }
 
             return new FailureResponse(trans('Sentinel::users.notactivated'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
-        }
-        catch (UserAlreadyActivatedException $e)
-        {
+        } catch (UserAlreadyActivatedException $e) {
             $message = trans('Sentinel::users.alreadyactive');
+
             return new ExceptionResponse($message);
         }
     }
@@ -244,10 +238,10 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
 
             // If the user is not currently activated resend the activation email
-            if ( ! $user->isActivated()) {
+            if (!$user->isActivated()) {
 
                 $this->dispatcher->fire('sentinel.user.resend', [
-                    'user'      => $user,
+                    'user' => $user,
                     'activated' => $user->activated,
                 ]);
 
@@ -256,13 +250,12 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // The user is already activated
             return new FailureResponse(trans('Sentinel::users.alreadyactive'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             // The user is trying to "reactivate" an account that doesn't exist.  This could be
             // a vector for determining valid existing accounts, so we will send a vague
             // response without actually sending a new activation email.
             $message = trans('Sentinel::users.emailconfirm');
+
             return new SuccessResponse($message, []);
         }
     }
@@ -285,13 +278,12 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             ]);
 
             return new SuccessResponse(trans('Sentinel::users.emailinfo'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             // The user is trying to send a password reset link to an account that doesn't
             // exist.  This could be a vector for determining valid existing accounts,
             // so we will send a vague response without actually doing anything.
             $message = trans('Sentinel::users.emailinfo');
+
             return new SuccessResponse($message, []);
         }
     }
@@ -310,16 +302,14 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         try {
             $user = $this->sentry->findUserById($id);
 
-            if (! $user->checkResetPasswordCode($code))
-            {
+            if (!$user->checkResetPasswordCode($code)) {
                 return new FailureResponse(trans('Sentinel::users.invalidreset'), ['user' => $user]);
             }
 
             return new SuccessResponse(null);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -327,7 +317,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     /**
      * Process the password reset request
      *
-     * @param  int    $id
+     * @param  int $id
      * @param  string $code
      *
      * @return Array
@@ -348,10 +338,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             }
 
             return new FailureResponse(trans('Sentinel::users.problem'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -388,10 +377,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // Password mismatch. Abort.
             return new FailureResponse(trans('Sentinel::users.oldpassword'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -421,10 +409,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // User not Saved
             return new FailureResponse(trans('Sentinel::users.passwordprob'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -443,10 +430,8 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $allGroups = $this->sentry->getGroupProvider()->findAll();
 
             // Update group memberships
-            foreach ($allGroups as $group)
-            {
-                if (isset($selections[$group->name]))
-                {
+            foreach ($allGroups as $group) {
+                if (isset($selections[$group->name])) {
                     //The user should be added to this group
                     $user->addGroup($group);
                 } else {
@@ -456,10 +441,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             }
 
             return new SuccessResponse(trans('Sentinel::users.memberships'), ['user' => $user]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -485,10 +469,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $this->dispatcher->fire('sentinel.user.suspended', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.suspended'), ['userId' => $id]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -514,10 +497,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $this->dispatcher->fire('sentinel.user.unsuspended', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.unsuspended'), ['userId' => $id]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -542,10 +524,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $this->dispatcher->fire('sentinel.user.banned', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.banned'), ['userId' => $id]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -570,10 +551,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $this->dispatcher->fire('sentinel.user.unbanned', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.unbanned'), ['userId' => $id]);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
+
             return new ExceptionResponse($message);
         }
     }
@@ -595,7 +575,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     /**
      * Retrieve a user by by their unique identifier and "remember me" token.
      *
-     * @param  mixed  $identifier
+     * @param  mixed $identifier
      * @param  string $token
      *
      * @return \Illuminate\Auth\UserInterface|null
@@ -633,9 +613,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     {
         try {
             return $this->sentry->findUserByCredentials($credentials);
-        }
-        catch (UserNotFoundException $e)
-        {
+        } catch (UserNotFoundException $e) {
             return null;
         }
     }
@@ -689,7 +667,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
      * Validate a user against the given credentials.
      *
      * @param  \Illuminate\Auth\UserInterface $user
-     * @param  array                          $credentials
+     * @param  array $credentials
      *
      * @return bool
      */
