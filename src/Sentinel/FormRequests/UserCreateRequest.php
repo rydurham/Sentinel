@@ -32,7 +32,7 @@ class UserCreateRequest extends Request {
             $rules['username'] = 'required|unique:users,username';
         }
 
-        return $this->rules;
+        return $rules;
 	}
 
 }
