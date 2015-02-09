@@ -15,7 +15,7 @@
         "illuminate/support": "5.0.*",
         "illuminate/contracts": "5.0.*",
         "cartalyst/sentry": "2.1.*",
-        "mitch/hashids": "dev-master"
+        "hashids/hashids": "~1.0"
     },
     "autoload": {
         "classmap": [
@@ -30,11 +30,5 @@
     "require-dev": {
         "codeception/codeception": "~2.0",
         "codeception/mockery-module": "0.2.*"
-    },
-    "repositories": [
-      {
-        "type": "vcs",
-        "url": "https://github.com/SRLabs-Forks/hashids.git"
-      }
-    ]
+    }
 }
