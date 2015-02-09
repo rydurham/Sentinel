@@ -193,8 +193,7 @@ class SentinelPublishCommand extends Command {
     public function publishHashidsConfig()
     {
         // Prepare file paths
-        $hashidsFilename = with(new ReflectionClass('Mitch\Hashids\HashidsServiceProvider'))->getFileName();
-        $source = dirname($hashidsFilename) . '/../../config/config.php';
+        $source      = $this->packagePath . '/../config/hashids.php';
         $destination = base_path() . '/config/hashids.php';
 
         // If there are already config files published, confirm that we want to overwrite them.
