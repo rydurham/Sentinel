@@ -112,7 +112,8 @@ class SentinelPublishCommand extends Command
         $this->publishSentryConfig();
 
         // Publish the Mitch/Hashids config files
-        $this->publishHashidsConfig();
+        //Commented out until package gets updated
+        //$this->publishHashidsConfig();
 
         // Publish the theme views
         $this->publishViews($theme);
