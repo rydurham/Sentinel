@@ -74,21 +74,13 @@ class SentinelServiceProvider extends ServiceProvider
         // Register the Sentry Service Provider
         $this->app->register('Sentinel\SentryServiceProvider');
 
-        // I would prefer to use the Mitch/Hashids package to provide the Hashids functionality,
-        // but it is not currently available for Laravel 5.  This is a stopgap measure, it will
-        // be removed if/when Mitch/Hashids is updated.
-        $this->app->bind('Hashids\Hashids', function ($app) {
-            return new Hashids(
-                config('app.key'),
-                config('hashids.length'),
-                config('hashids.alphabet')
-            );
-        });
+       // Register the Vinkla/Hashids Service Provider
+        $this->app->register('Vinkla\Hashids\HashidsServiceProvider');
 
         // Load the Sentry and Hashid Facade Aliases
         $loader = AliasLoader::getInstance();
         $loader->alias('Sentry', 'Cartalyst\Sentry\Facades\Laravel\Sentry');
-        $loader->alias('Hashids', 'Mitch\Hashids\Hashids');
+        $loader->alias('Hashids', 'Vinkla\Hashids\Facades\Hashids');
 
 
         // Bind the User Repository

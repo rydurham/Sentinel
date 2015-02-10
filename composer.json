@@ -15,7 +15,7 @@
         "illuminate/support": "5.0.*",
         "illuminate/contracts": "5.0.*",
         "cartalyst/sentry": "2.1.*",
-        "hashids/hashids": "~1.0"
+        "vinkla/hashids": "~1.0"
     },
     "autoload": {
         "classmap": [
