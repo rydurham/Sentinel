@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-use Hashids\Hashids;
+use Vinkla\Hashids\HashidsManager;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Pagination\Paginator;
 use Sentinel\FormRequests\GroupCreateRequest;
@@ -23,7 +23,7 @@ class GroupController extends BaseController
      */
     public function __construct(
         SentinelGroupRepositoryInterface $groupRepository,
-        Hashids $hashids
+        HashidsManager $hashids
     ) {
         $this->groupRepository = $groupRepository;
         $this->hashids         = $hashids;

@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-use Hashids\Hashids;
+use Vinkla\Hashids\HashidsManager;
 use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\RegisterRequest;
 use Sentinel\FormRequests\EmailRequest;
@@ -27,7 +27,7 @@ class RegistrationController extends BaseController
     public function __construct(
         SentinelUserRepositoryInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
-        Hashids $hashids
+        HashidsManager $hashids
     ) {
         $this->userRepository       = $userRepository;
         $this->groupRepository      = $groupRepository;

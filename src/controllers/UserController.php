@@ -9,7 +9,7 @@ use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use Hashids\Hashids;
+use Vinkla\Hashids\HashidsManager;
 use View, Input, Event, Redirect, Session, Config;
 
 class UserController extends BaseController
@@ -27,7 +27,7 @@ class UserController extends BaseController
     public function __construct(
         SentinelUserRepositoryInterface $userRepository,
         SentinelGroupRepositoryInterface $groupRepository,
-        Hashids $hashids
+        HashidsManager $hashids
     ) {
         $this->userRepository  = $userRepository;
         $this->groupRepository = $groupRepository;

@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers\Sentinel;
 
-use Hashids\Hashids;
 use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\ChangePasswordRequest;
 use Sentinel\FormRequests\UserUpdateRequest;
@@ -24,13 +23,11 @@ class ProfileController extends BaseController
      */
     public function __construct(
         SentinelUserRepositoryInterface $userRepository,
-        SentinelGroupRepositoryInterface $groupRepository,
-        Hashids $hashids
+        SentinelGroupRepositoryInterface $groupRepository
     ) {
         // DI Member assignment
         $this->userRepository  = $userRepository;
         $this->groupRepository = $groupRepository;
-        $this->hashids         = $hashids;
 
         // You must have an active session to proceed
         $this->middleware('sentry.auth');
