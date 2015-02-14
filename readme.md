@@ -40,13 +40,22 @@ You can specify a "theme" option to publish the views and assets for a specific 
 ```shell
 php artisan sentinel:publish --theme="foundation"
 ```
-
 Run ```php artisan sentinel:publish --list``` to see the currently available themes.
+
+**Run the Migrations**
+Be sure to set the appropriate DB connection details in your  ```.env``` file.  
+
+Note that you may want to remove the ```create_users_table``` and ```create_password_resets_table``` migrations that are provided with a new Laravel 5 application. 
+
+```shell
+php artisan migrate
+```
 
 **Seed the Database:** 
 ```shell
 php artisan db:seed --class=SentinelDatabaseSeeder
 ```
+More details about the default usernames and passwords can be [found here](https://github.com/rydurham/Sentinel/wiki/Seeds).
 
 **Set a "Home" Route.**  
 
@@ -75,10 +84,10 @@ Sentinel also provides these middlewares which you can use to [prevent unauthori
 ### Advanced Usage
 This package is intended for simple applications, but it is possible to integrate it into a large application on a deeper level:
 * Turn off the default routes (via the config) and manually specify routes that make more sense for your application
-* Create a new User model that extends the default Sentinel User Model
+* Create a new User model that extends the default Sentinel User Model ```Sentinel\Models\User```.  Be sure to publish the Sentinel and Sentry config files (using the ```sentinel:publish``` command) and change the User Model setting in the Sentry config file to point to your new user model. 
 * Inject the ```SentryUserRepository``` and/or the ```SentryGroupRepository``` classes into your controllers to have direct access to user and group manipulation.  You may also consider creating custom repositories that extend the repositories that come with Sentinel. 
 
-It is not advisable to extend the Sentinel Controller classes; you will be better off creating your own controllers from scratch. 
+It is not advisable to extend the Sentinel Controller classes; you will be better off in the long run creating your own controllers from scratch. 
 
 ### Documentation & Questions
 Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
