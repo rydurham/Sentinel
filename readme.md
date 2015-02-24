@@ -2,6 +2,11 @@
 
 This package provides an implementation of  [Sentry 2](https://github.com/cartalyst/sentry) for [Laravel 5](https://github.com/laravel/laravel). By default it uses [Bootstrap 3.0](http://getbootstrap.com), but you can make use of whatever UI you want.  It is intended to be a very simple way to get up and running with User access control very quickly.  For simple projects you shouldn't need to do much more than drop it in and dial in the configuration.
 
+Make sure you use the version most appropriate for the type of Laravel application you have: 
+
+__Laravel 4:__ Sentinel 1.x
+__Laravel 5:__ Sentinel 2.x
+
 ### Instructions
 **Install the Package Via Composer:**
 
