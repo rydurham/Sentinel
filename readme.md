@@ -1,10 +1,11 @@
-## Sentinel: Sentry Implementation for Laravel 4
+## Sentinel: Sentry Implementation for Laravel
 
 This pacakge provides an implementation of [Sentry 2](https://github.com/cartalyst/sentry) for [Laravel](https://github.com/laravel/laravel/tree/develop). By default it uses [Bootstrap 3.0](http://getbootstrap.com), but you can make use of whatever UI you want.
 
 Make sure you use the version most appropriate for the type of Laravel application you have: 
 
 __Laravel 4:__ Sentinel 1.x
+
 __Laravel 5:__ Sentinel 2.x
 
 ### Instructions
