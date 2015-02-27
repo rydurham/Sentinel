@@ -12,7 +12,7 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function getAuthIdentifier()
     {
-        // TODO: Implement getAuthIdentifier() method.
+        return $this->getKey();
     }
 
     /**
@@ -22,7 +22,7 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function getAuthPassword()
     {
-        // TODO: Implement getAuthPassword() method.
+       return $this->password;
     }
 
     /**
@@ -32,7 +32,7 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function getRememberToken()
     {
-        // TODO: Implement getRememberToken() method.
+        return $this->getPersistCode();
     }
 
     /**
@@ -44,7 +44,9 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function setRememberToken($value)
     {
-        // TODO: Implement setRememberToken() method.
+        $this->persist_code = $value;
+
+        $this->save();
     }
 
     /**
@@ -54,24 +56,8 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function getRememberTokenName()
     {
-        // TODO: Implement getRememberTokenName() method.
+        return "persist_code";
     }
 
-    /**
-     * Get the e-mail address where password reminders are sent.
-     *
-     * @return string
-     */
-    public function getReminderEmail()
-    {
-        // TODO: Implement getReminderEmail() method.
-    }
 
-    /**
-     * Set the "hash" attribute for this model dynamically
-     */
-    public function getHashAttribute()
-    {
-        return Hashids::encode($this->id);
-    }
 }
