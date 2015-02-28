@@ -59,5 +59,15 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
         return "persist_code";
     }
 
+    /**
+     * Use a mutator to derive the appropriate hash for this user
+     *
+     * @return mixed
+     */
+    public function getHashAttribute()
+    {
+        return Hashids::encode($this->attributes['id']);
+    }
+
 
 }

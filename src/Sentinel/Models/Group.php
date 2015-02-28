@@ -5,11 +5,12 @@ use Hashids;
 class Group extends \Cartalyst\Sentry\Groups\Eloquent\Group {
 
     /**
-     * Set the "hash" attribute for this model dynamically
+     * Use a mutator to derive the appropriate hash for this group
+     *
+     * @return mixed
      */
     public function getHashAttribute()
     {
-//        dd($this->attributes['id']);
-        return Hashids::encode($this->id);
+        return Hashids::encode($this->attributes['id']);
     }
 }
