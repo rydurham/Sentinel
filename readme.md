@@ -4,11 +4,13 @@ This package provides an implementation of  [Sentry 2](https://github.com/cartal
 
 Make sure you use the version most appropriate for the type of Laravel application you have: 
 
-__Laravel 4:__ Sentinel 1.x
+| Laravel Version  | Sentinel Version  | Packagist Branch |
+|---|---|---|
+| 4.2.*  | 1.4.*  | ```"rydurham/sentinel": "~2"```  |
+| 5.0.*  | 2.0.*  | ```"rydurham/sentinel": "~1.4"```  |
 
-__Laravel 5:__ Sentinel 2.x
 
-### Instructions
+### Laravel 5 Instructions
 **Install the Package Via Composer:**
 
 ```shell
