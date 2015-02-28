@@ -6,8 +6,8 @@ Make sure you use the version most appropriate for the type of Laravel applicati
 
 | Laravel Version  | Sentinel Version  | Packagist Branch |
 |---|---|---|
-| 4.2.*  | 1.4.*  | ```"rydurham/sentinel": "~2"```  |
-| 5.0.*  | 2.0.*  | ```"rydurham/sentinel": "~1.4"```  |
+| 4.2.*  | 1.4.*  | ```"rydurham/sentinel": "~1.4"``` |
+| 5.0.*  | 2.0.*  | ```"rydurham/sentinel": "~2"```   |
 
 
 ### Laravel 5 Instructions
