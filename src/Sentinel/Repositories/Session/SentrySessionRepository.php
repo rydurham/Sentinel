@@ -89,19 +89,23 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
             return new SuccessResponse('');
         } catch (WrongPasswordException $e) {
             $message = trans('Sentinel::sessions.invalid');
+            $this->recordLoginAttempt($credentials);
             return new ExceptionResponse($message);
         } catch (UserNotFoundException $e) {
             $message = trans('Sentinel::sessions.invalid');
             return new ExceptionResponse($message);
         } catch (UserNotActivatedException $e) {
             $url = route('sentinel.reactivate.form');
+            $this->recordLoginAttempt($credentials);
             $message = trans('Sentinel::sessions.notactive', array('url' => $url));
             return new ExceptionResponse($message);
         } catch (UserSuspendedException $e) {
             $message = trans('Sentinel::sessions.suspended');
+            $this->recordLoginAttempt($credentials);
             return new ExceptionResponse($message);
         } catch (UserBannedException $e) {
             $message = trans('Sentinel::sessions.banned');
+            $this->recordLoginAttempt($credentials);
             return new ExceptionResponse($message);
         }
 
@@ -124,6 +128,40 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
         $this->sentry->logout();
 
         return new SuccessResponse('');
+
+    }
+
+    /**
+     * Record a login attempt to the throttle table.  This only works if the login attempt was
+     * made against a valid user object.
+     *
+     * @param $credentials
+     */
+    private function recordLoginAttempt($credentials)
+    {
+        if (array_key_exists('email', $credentials))
+        {
+            $throttle = $this->sentry->findThrottlerByUserLogin(
+                $credentials['email'],
+                \Request::ip()
+            );
+        }
+
+        if (array_key_exists('username', $credentials))
+        {
+            $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('username');
+            $throttle = $this->sentry->findThrottlerByUserLogin(
+                $credentials['username'],
+                \Request::ip()
+            );
+        }
+
+        if (isset($throttle))
+        {
+            $throttle->ip_address = \Request::ip();
+
+            $throttle->addLoginAttempt();
+        }
 
     }
 
