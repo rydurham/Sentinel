@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Sentinel;
+<?php namespace Sentinel\Controllers;
 
 use Vinkla\Hashids\HashidsManager;
 use Illuminate\Routing\Controller as BaseController;

@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Sentinel;
+<?php namespace Sentinel\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Response;
