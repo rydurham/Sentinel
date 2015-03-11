@@ -1,8 +1,8 @@
 <?php namespace Sentinel\FormRequests;
 
-use App\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class GroupUpdateRequest extends Request {
+class GroupUpdateRequest extends FormRequest {
 
 	/**
 	 * Determine if the user is authorized to make this request.
