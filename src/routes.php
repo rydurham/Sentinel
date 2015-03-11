@@ -7,6 +7,7 @@
 */
 
 Route::group(['namespace' => 'Sentinel\Controllers'], function(){
+
     // Sentinel Session Routes
     Route::get('login', ['as' => 'sentinel.login', 'uses' => 'SessionController@create']);
     Route::get('logout', ['as' => 'sentinel.logout', 'uses' => 'SessionController@destroy']);
@@ -46,7 +47,6 @@ Route::group(['namespace' => 'Sentinel\Controllers'], function(){
     Route::get('users/{hash}/ban', ['as' => 'sentinel.users.ban', 'uses' => 'UserController@ban']);
     Route::get('users/{hash}/unban', ['as' => 'sentinel.users.unban', 'uses' => 'UserController@unban']);
 
-
     // Sentinel Groups
     Route::get('groups', ['as' => 'sentinel.groups.index', 'uses' => 'GroupController@index']);
     Route::get('groups/create', ['as' => 'sentinel.groups.create', 'uses' => 'GroupController@create']);
@@ -55,7 +55,6 @@ Route::group(['namespace' => 'Sentinel\Controllers'], function(){
     Route::get('groups/{hash}/edit', ['as' => 'sentinel.groups.edit', 'uses' => 'GroupController@edit']);
     Route::put('groups/{hash}', ['as' => 'sentinel.groups.update', 'uses' => 'GroupController@update']);
     Route::delete('groups/{hash}', ['as' => 'sentinel.groups.destroy', 'uses' => 'GroupController@destroy']);
-
 
 });
 
