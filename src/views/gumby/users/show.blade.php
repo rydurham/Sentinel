@@ -11,7 +11,7 @@
     if (($user->email == Sentry::getUser()->email)) {
         $editAction = route('sentinel.profile.edit');
     } else {
-        $editAction =  action('Sentinel\UserController@edit', [$user->hash]);
+        $editAction =  action('\\Sentinel\Controllers\UserController@edit', [$user->hash]);
     }
 ?>
 
