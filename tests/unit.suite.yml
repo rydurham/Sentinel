@@ -3,4 +3,4 @@
 # suite for unit (internal) tests.
 class_name: UnitTester
 modules:
-    enabled: [Asserts, UnitHelper, Db, Laravel4, Filesystem, Mockery ]
+    enabled: [Asserts, UnitHelper, Db, Laravel5, Filesystem, Mockery ]

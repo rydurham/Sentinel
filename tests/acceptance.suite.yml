@@ -9,7 +9,7 @@ modules:
     enabled:
         - PhpBrowser
         - AcceptanceHelper
-        - Laravel4
+        - Laravel5
         - Db
     config:
         PhpBrowser:
