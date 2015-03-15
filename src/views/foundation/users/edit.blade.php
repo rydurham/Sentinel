@@ -144,6 +144,6 @@ Edit Profile
 
         </div>
     </div>
-{{ Form::close() }}
+</form>
 
 @stop
