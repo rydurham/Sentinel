@@ -14,7 +14,7 @@ Edit Group
     <h2>Edit Group</h2>
 
     <p>
-        <input class="form-control" placeholder="Name" name="name" value="{{ (Input::old('name') ? Input::old('name') : $group->name }}" type="text">
+        <input class="form-control" placeholder="Name" name="name" value="{{ (Input::old('name') ? Input::old('name') : $group->name) }}" type="text">
         {{ ($errors->has('name') ? $errors->first('name') : '') }}
     </p>
 

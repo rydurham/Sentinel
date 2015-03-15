@@ -51,6 +51,7 @@
         </form>
     </ul>
 </div>
+@endif
         
 @if (Sentry::getUser()->hasAccess('admin') && ($user->hash != Sentry::getUser()->hash))
 <div class="row">
@@ -74,7 +75,7 @@
         </form>
     </ul>
 </div>
-
+@endif
 
 <div class="row">
     <h4>Change Password</h4>
