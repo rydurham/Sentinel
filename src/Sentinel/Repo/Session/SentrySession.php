@@ -1,6 +1,11 @@
 <?php namespace Sentinel\Repo\Session;
 
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Throttling\UserBannedException;
+use Cartalyst\Sentry\Throttling\UserSuspendedException;
+use Cartalyst\Sentry\Users\UserNotActivatedException;
+use Cartalyst\Sentry\Users\UserNotFoundException;
+use Cartalyst\Sentry\Users\WrongPasswordException;
 use Sentinel\Repo\RepoAbstract;
 use Config;
 
@@ -75,7 +80,13 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			    // Might be unnecessary, but just in case: 
 			    $userProvider->getEmptyUser()->setLoginAttributeName('email');
 			}
-			catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+            catch (WrongPasswordException $e)
+            {
+                $this->recordLoginAttempt($credentials);
+                $result['success'] = false;
+                $result['message'] = trans('Sentinel::sessions.invalid');
+            }
+			catch (UserNotFoundException $e)
 			{
 			    // Sometimes a user is found, however hashed credentials do
 			    // not match. Therefore a user technically doesn't exist
@@ -84,7 +95,7 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			    $result['success'] = false;
 			    $result['message'] = trans('Sentinel::sessions.invalid');
 			}
-			catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
+			catch (UserNotActivatedException $e)
 			{
 			    $result['success'] = false;
 			    $url = route('Sentinel\resendActivationForm');
@@ -92,15 +103,17 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 			}
 
 			// The following is only required if throttle is enabled
-			catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e)
+			catch (UserSuspendedException $e)
 			{
-			    $time = $throttle->getSuspensionTime();
+                $this->recordLoginAttempt($credentials);
+                $time = $throttle->getSuspensionTime();
 			    $result['success'] = false;
 			    $result['message'] = trans('Sentinel::sessions.suspended');
 			}
-			catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
+			catch (UserBannedException $e)
 			{
-			    $result['success'] = false;
+                $this->recordLoginAttempt($credentials);
+                $result['success'] = false;
 			    $result['message'] = trans('Sentinel::sessions.banned');
 			}
 
@@ -118,6 +131,40 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 	{
 		$this->sentry->logout();
 	}
+
+    /**
+     * Record a login attempt to the throttle table.  This only works if the login attempt was
+     * made against a valid user object.
+     *
+     * @param $credentials
+     */
+    private function recordLoginAttempt($credentials)
+    {
+        if (array_key_exists('email', $credentials))
+        {
+            $throttle = $this->sentry->findThrottlerByUserLogin(
+                $credentials['email'],
+                \Request::ip()
+            );
+        }
+
+        if (array_key_exists('username', $credentials))
+        {
+            $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('username');
+            $throttle = $this->sentry->findThrottlerByUserLogin(
+                $credentials['username'],
+                \Request::ip()
+            );
+        }
+
+        if (isset($throttle))
+        {
+            $throttle->ip_address = \Request::ip();
+
+            $throttle->addLoginAttempt();
+        }
+
+    }
 
 	/**
 	 * Validate an email address
