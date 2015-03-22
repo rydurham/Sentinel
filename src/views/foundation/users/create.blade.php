@@ -71,7 +71,4 @@ Create New User
         </div>
     </div>            
 </form>
-
-
-
 @stop
