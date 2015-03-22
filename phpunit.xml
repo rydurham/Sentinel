@@ -12,7 +12,10 @@
 >
     <testsuites>
         <testsuite name="Package Test Suite">
-            <directory suffix=".php">./tests/</directory>
+            <directory suffix=".php">./tests/unit/</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing" />
+    </php>
 </phpunit>
