@@ -69,7 +69,7 @@
 	@yield('content')
 	<!-- ./ content -->
 
-	<script src="{{ asset('packages/rydurham/sentinel/js/vendor/jquery.js') }}"></script>
+	<script src="{{ asset('packages/rydurham/sentinel/js/jquery.js') }}"></script>
 	<script src="{{ asset('packages/rydurham/sentinel/js/foundation.min.js') }}"></script>
 	<script src="{{ asset('packages/rydurham/sentinel/js/restfulizer.js') }}"></script>
 	<!-- Thanks to Zizaco for the Restfulizer script.  http://zizaco.net  -->

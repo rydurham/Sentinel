@@ -49,6 +49,4 @@ Home
 		</tbody>
 	</table>
 </div>
-
-
 @stop

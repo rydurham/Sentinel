@@ -70,7 +70,7 @@ Create New User
                        
         </div>
     </div>            
-{{ Form::close() }}
+</form>
 
 
 
