@@ -12,9 +12,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "5.0.*",
-        "illuminate/contracts": "5.0.*",
-        "cartalyst/sentry": "2.1.*",
+        "illuminate/support": "~5",
+        "illuminate/contracts": "5.0.*@dev",
+        "cartalyst/sentry": "~2.1",
         "vinkla/hashids": "~1.0"
     },
     "autoload": {
@@ -28,7 +28,8 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "codeception/codeception": "~2.0",
-        "codeception/mockery-module": "0.2.*"
+        "orchestra/testbench": "~3.0",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~4.0"
     }
 }
