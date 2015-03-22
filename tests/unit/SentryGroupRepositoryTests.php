@@ -1,31 +1,66 @@
 <?php
-use Sentinel\Repositories\Group\SentryGroupRepository;
 
-
-/**
- * Class SentryUserTest
- * Test the methods in the SentryUser repository class
- * /src/Sentinel/Repo/User/SentryUser
- */
-class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
+class SentryGroupRepositoryTests extends Orchestra\Testbench\TestCase
 {
-    protected $sentinelConfiguration = [];
-    protected $configMock;
-    protected $dispatcherMock;
-    protected $sentry;
+    /*
+     * These tests make use of the Orchestra Test Bench Package: https://github.com/orchestral/testbench
+     */
 
-    /******************************************************************************************************************
-     * Test Preparation
-     ******************************************************************************************************************/
-    protected function _before()
+    // The class being tested
+    protected $repo;
+
+    /**
+     * Setup the test environment.
+     */
+    public function setUp()
     {
-        $this->dispatcherMock = Mockery::mock('Illuminate\Events\Dispatcher');
-        $this->sentry         = $this->tester->grabService('sentry');
-        $this->repo           = new SentryGroupRepository($this->sentry, $this->dispatcherMock);
+        parent::setUp();
+
+        $this->repo = app()->make('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface');
     }
 
-    protected function _after()
+    /**
+     * Destroy the test environment
+     */
+    public function tearDown()
     {
+        parent::tearDown();
+        \Mockery::close();
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver'   => 'sqlite',
+            'database' => __DIR__ . '/../_data/db.sqlite',
+            'prefix'   => '',
+        ]);
+
+        // Prepare the sqlite database
+        // http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/
+        exec('cp ' . __DIR__ . '/../_data/prep.sqlite ' . __DIR__ . '/../_data/db.sqlite');
+    }
+
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [
+            'Sentinel\SentinelServiceProvider',
+        ];
     }
 
     /******************************************************************************************************************
@@ -46,9 +81,9 @@ class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
      */
     public function testDatabaseSeeds()
     {
-        // Double check that the test data is present and correctly seeded
-        $this->tester->seeRecord('users', array('email' => 'user@user.com'));
-        $this->tester->seeRecord('users', array('email' => 'admin@admin.com'));
+        // Check that the test data is present and correctly seeded
+        $user = \DB::table('users')->where('email', 'user@user.com')->first();
+        $this->assertEquals('user@user.com', $user->email);
     }
 
     /**
@@ -56,10 +91,6 @@ class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
      */
     public function testSavingGroup()
     {
-        // Mock the Event::fire() calls
-        $this->dispatcherMock->shouldReceive('fire')
-                             ->with('sentinel.group.created', \Mockery::hasKey('group'))->once();
-
         // This is the code we are testing
         $result = $this->repo->store([
             'name' => 'Prozorovs',
@@ -71,19 +102,15 @@ class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
         $this->assertInstanceOf('Sentinel\Models\Group', $result->getPayload()['group']);
         $this->assertArrayHasKey('family', $result->getPayload()['group']->getPermissions());
         $this->assertArrayNotHasKey('admin', $result->getPayload()['group']->getPermissions());
-        $this->tester->seeRecord('groups', array(
-            'name'   => 'Prozorovs',
-        ));
+
+        $group = \DB::table('groups')->where('name', 'Prozorovs')->first();
+        $this->assertEquals('Prozorovs', $group->name);
     }
 
     public function testUpdatingGroup()
     {
-        // Mock the Event::fire() calls
-        $this->dispatcherMock->shouldReceive('fire')
-                             ->with('sentinel.group.updated', \Mockery::hasKey('group'))->once();
-
         // Find the group we will edit
-        $group = $this->sentry->findGroupByName('Users');
+        $group = Sentry::findGroupByName('Users');
 
         // This is the code we are testing
         $result = $this->repo->update([
@@ -101,27 +128,22 @@ class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
 
     public function testDestroyGroup()
     {
-        // Mock the Event::fire() calls
-        $this->dispatcherMock->shouldReceive('fire')
-                             ->with('sentinel.group.destroyed', \Mockery::hasKey('group'))->once();
-
         // Find the group we will remove from storage
-        $group = $this->sentry->findGroupByName('Users');
+        $group = Sentry::findGroupByName('Users');
 
         // This is the code we are testing
         $result = $this->repo->destroy($group->id);
 
         // Assertions
         $this->assertTrue($result->isSuccessful());
-        $this->tester->dontSeeRecord('groups', [
-            'name' => 'Users'
-        ]);
+        $this->assertFalse(\DB::table('groups')->where('name', 'Users')->count() > 0);
+
     }
 
     public function testRetrieveGroupById()
     {
         // Find the group we will use for reference
-        $reference = $this->sentry->findGroupByName('Users');
+        $reference = Sentry::findGroupByName('Users');
 
         // This is the code we are testing
         $group = $this->repo->retrieveById($reference->id);
@@ -134,7 +156,7 @@ class SentryGroupRepositoryTest extends \Codeception\TestCase\Test
     public function testRetrieveGroupByName()
     {
         // Find the group we will use for reference
-        $reference = $this->sentry->findGroupById(1);
+        $reference = Sentry::findGroupById(1);
 
         // This is the code we are testing
         $group = $this->repo->retrieveByName($reference->name);
