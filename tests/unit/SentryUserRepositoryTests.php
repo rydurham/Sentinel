@@ -46,6 +46,7 @@ class SentryUserRepositoryTests extends Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
         $app['config']->set('mail.pretend', true);
+        $app['config']->set('mail.from', ['from' => 'noreply@example.com', 'name' => null]);
 
         // Prepare the sqlite database
         // http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/
