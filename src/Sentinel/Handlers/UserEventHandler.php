@@ -102,8 +102,11 @@ class UserEventHandler
      */
     private function sendTo($email, $subject, $view, $data = array())
     {
-        Mail::queue($view, $data, function ($message) use ($email, $subject) {
+        $from = config('mail.from');
+
+        Mail::queue($view, $data, function ($message) use ($email, $subject, $from) {
             $message->to($email)
+                ->from($from['from'], $from['name'])
                 ->subject($subject);
         });
     }
