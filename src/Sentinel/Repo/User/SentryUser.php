@@ -558,15 +558,21 @@ class SentryUser extends RepoAbstract implements UserInterface {
         $result = array();
         try
         {
+            $user = $this->sentry->getUserProvider()->findById($id);
+
             // Find the user using the user id
-            $throttle = $this->sentry->findThrottlerByUserId($id);
+            $throttle = $this->sentry->findThrottlerByUserId($user->id);
 
             // Ban the user
             $throttle->ban();
 
             $this->dispatcher->fire('sentinel.user.banned', array(
-                'userId' => $id, 
+                'userId' => $user->id,
             ));
+
+            // Let's clear the persist code for this user, just in case
+            $user->persist_code = NULL;
+            $user->save();
 
             $result['success'] = true;
             $result['message'] = trans('Sentinel::users.banned');
