@@ -514,14 +514,21 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     public function ban($id)
     {
         try {
+
+            $user = $this->sentry->getUserProvider()->findById($id);
+
             // Find the user using the user id
-            $throttle = $this->sentry->findThrottlerByUserId($id);
+            $throttle = $this->sentry->findThrottlerByUserId($user->id);
 
             // Ban the user
             $throttle->ban();
 
+            // Clear the persist code
+            $user->persist_code = NULL;
+            $user->save();
+
             // Fire the 'banned user' event
-            $this->dispatcher->fire('sentinel.user.banned', ['userId' => $id]);
+            $this->dispatcher->fire('sentinel.user.banned', ['user' => $user]);
 
             return new SuccessResponse(trans('Sentinel::users.banned'), ['userId' => $id]);
         } catch (UserNotFoundException $e) {
