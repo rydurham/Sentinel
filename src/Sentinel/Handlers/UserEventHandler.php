@@ -102,12 +102,34 @@ class UserEventHandler
      */
     private function sendTo($email, $subject, $view, $data = array())
     {
-        $from = config('mail.from');
+        $sender = $this->gatherSenderAddress();
 
-        Mail::queue($view, $data, function ($message) use ($email, $subject, $from) {
+        Mail::queue($view, $data, function ($message) use ($email, $subject, $sender) {
             $message->to($email)
-                ->from($from['from'], $from['name'])
+                ->from($sender['from'], $sender['name'])
                 ->subject($subject);
         });
+    }
+
+    /**
+     * If the application does not have a valid "from" address configured, we should stub in
+     * a temporary alternative so we have something to pass to the Mailer
+     *
+     * @return array|mixed
+     */
+    private function gatherSenderAddress()
+    {
+        $sender = config('mail.from', 'noreply@example.com');
+
+        if (!array_key_exists('from', $sender) || is_null($sender['from'])) {
+            return ['from' => 'noreply@example.com', 'name' => ''];
+        }
+
+        if (is_null($sender['name']))
+        {
+            $sender['name'] = '';
+        }
+
+        return $sender;
     }
 }
