@@ -119,10 +119,10 @@ class UserEventHandler
      */
     private function gatherSenderAddress()
     {
-        $sender = config('mail.from', 'noreply@example.com');
+        $sender = config('mail.from', []);
 
-        if (!array_key_exists('from', $sender) || is_null($sender['from'])) {
-            return ['from' => 'noreply@example.com', 'name' => ''];
+        if (!array_key_exists('address', $sender) || is_null($sender['address'])) {
+            return ['address' => 'noreply@example.com', 'name' => ''];
         }
 
         if (is_null($sender['name']))
