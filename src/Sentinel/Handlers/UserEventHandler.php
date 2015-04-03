@@ -106,7 +106,7 @@ class UserEventHandler
 
         Mail::queue($view, $data, function ($message) use ($email, $subject, $sender) {
             $message->to($email)
-                ->from($sender['from'], $sender['name'])
+                ->from($sender['address'], $sender['name'])
                 ->subject($subject);
         });
     }
