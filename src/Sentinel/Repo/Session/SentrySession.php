@@ -150,8 +150,8 @@ class SentrySession extends RepoAbstract implements SessionInterface {
 
         if (array_key_exists('username', $credentials))
         {
-            $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('username');
-            $throttle = $this->sentry->findThrottlerByUserLogin(
+	        $this->sentry->getUserProvider()->getEmptyUser()->setLoginAttributeName('username');
+	        $throttle = $this->sentry->findThrottlerByUserLogin(
                 $credentials['username'],
                 \Request::ip()
             );
