@@ -28,7 +28,6 @@ Resend Activation
             <div class="row">
                 <div class="small-10 small-offset-2 columns">
                     <input class="btn btn-primary" value="Resend" type="submit">
-                    {{ Form::submit('Resend', array('class' => 'button')) }}
                 </div>
             </div>
         

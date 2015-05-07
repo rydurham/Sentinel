@@ -24,7 +24,7 @@ Edit Group
             </div>
     
             <div class="row">
-                {{ Form::label('edit_memberships', 'Permissions') }}  
+                <label class="right inline">Permissions</label>
                 <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
                 @foreach ($defaultPermissions as $permission)
                     <div class="small-10 small-offset-2 columns">

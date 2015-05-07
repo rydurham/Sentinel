@@ -42,7 +42,7 @@ Log In
         <div class="row">
             <div class="small-10 small-offset-2 columns">
                 <input name="_token" value="{{ csrf_token() }}" type="hidden">
-                <input class="btn btn-primary" value="Sign In" type="submit">
+                <input class="button primary" value="Sign In" type="submit">
                 <a class="button secondary" href="{{ route('sentinel.forgot.form') }}">Forgot Password</a>
             </div>
         </div>
