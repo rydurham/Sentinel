@@ -491,14 +491,33 @@ class UserController extends BaseController {
             Event::fire('sentinel.user.passwordchange', array(
                 'userId' => $id, 
             ));
-
-            // Success!
+            
             Session::flash('success', $result['message']);
+            if (\Request::ajax()) {
+                return $this->response(
+                    array('url'=> '/logout')
+                );
+            }
+            // Success!
             return Redirect::route('home');
         } 
         else 
         {
-            Session::flash('error', $result['message']);
+            Session::flash('error', $result['message']); 
+            if (\Request::ajax()) {
+                $error = array();
+                if (empty($this->changePasswordForm->errors())) {
+                    $error = $result['message'];
+                } else {
+                     $error = '<strong>Validation Errors: </strong>'
+                        . '<ul><li>'
+                        . implode('</li><li>', $this->changePasswordForm->errors()->all())
+                        . '</li></ul>';
+                }
+                return $this->response(
+                    array('error'=> $error)
+                );
+            }
             return Redirect::action('Sentinel\UserController@edit', array($id))
                 ->withInput()
                 ->withErrors( $this->changePasswordForm->errors() );
