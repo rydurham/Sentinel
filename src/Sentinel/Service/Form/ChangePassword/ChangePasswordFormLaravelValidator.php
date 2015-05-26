@@ -3,15 +3,15 @@
 use Sentinel\Service\Validation\AbstractLaravelValidator;
 
 class ChangePasswordFormLaravelValidator extends AbstractLaravelValidator {
-	
+
 	/**
 	 * Validation rules
 	 *
-	 * @var Array 
+	 * @var Array
 	 */
 	protected $rules = array(
 		'oldPassword' => 'required|between:8,30',
-        'newPassword' => 'required|between:8,30|confirmed',
+        'newPassword' => 'required|between:8,30|confirmed|different:oldPassword',
         'newPassword_confirmation' => 'required'
 	);
 
