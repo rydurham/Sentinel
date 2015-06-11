@@ -1,6 +1,7 @@
 <?php namespace Sentinel\Middleware;
 
 use Closure, Session, Sentry;
+use Illuminate\Contracts\Routing\Middleware;
 
 class SentryAdminAccess
 {
