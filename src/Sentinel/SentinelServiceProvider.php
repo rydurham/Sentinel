@@ -61,7 +61,7 @@ class SentinelServiceProvider extends ServiceProvider
 
         // Set up event listeners
         $dispatcher = $this->app->make('events');
-        $dispatcher->subscribe('Sentinel\Handlers\UserEventHandler');
+        $dispatcher->subscribe('Sentinel\Listeners\UserEventListener');
     }
 
     /**

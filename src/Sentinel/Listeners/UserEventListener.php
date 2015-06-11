@@ -1,10 +1,10 @@
-<?php namespace Sentinel\Handlers;
+<?php namespace Sentinel\Listeners;
 
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Config\Repository;
 
-class UserEventHandler
+class UserEventListener
 {
 
     public function __construct(Store $session, Repository $config)
@@ -21,11 +21,11 @@ class UserEventHandler
      */
     public function subscribe($events)
     {
-        $events->listen('sentinel.user.login', 'Sentinel\Handlers\UserEventHandler@onUserLogin', 10);
-        $events->listen('sentinel.user.logout', 'Sentinel\Handlers\UserEventHandler@onUserLogout', 10);
-        $events->listen('sentinel.user.registered', 'Sentinel\Handlers\UserEventHandler@welcome', 10);
-        $events->listen('sentinel.user.resend', 'Sentinel\Handlers\UserEventHandler@welcome', 10);
-        $events->listen('sentinel.user.reset', 'Sentinel\Handlers\UserEventHandler@passwordReset', 10);
+        $events->listen('sentinel.user.login', 'Sentinel\Listeners\UserEventListener@onUserLogin', 10);
+        $events->listen('sentinel.user.logout', 'Sentinel\Listeners\UserEventListener@onUserLogout', 10);
+        $events->listen('sentinel.user.registered', 'Sentinel\Listeners\UserEventListener@welcome', 10);
+        $events->listen('sentinel.user.resend', 'Sentinel\Listeners\UserEventListener@welcome', 10);
+        $events->listen('sentinel.user.reset', 'Sentinel\Listeners\UserEventListener@passwordReset', 10);
     }
 
     /**
