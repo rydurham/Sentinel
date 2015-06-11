@@ -1,6 +1,6 @@
 <?php namespace Sentinel\Middleware;
 
-use Closure, Sentry;
+use Closure, Sentry, Session;
 
 class SentryMember
 {
