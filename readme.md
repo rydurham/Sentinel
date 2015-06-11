@@ -12,7 +12,7 @@ Make sure you use the version most appropriate for the type of Laravel applicati
 |---|---|---|
 | 4.2.*  | 1.4.*  | ```"rydurham/sentinel": "~1.4"``` |
 | 5.0.*  | 2.0.*  | ```"rydurham/sentinel": "~2"```   |
-
+| 5.1.*  | 2.1.*  | ```"rydurham/sentinel": "~2.1"``` |
 
 ### Laravel 5 Instructions
 **Install the Package Via Composer:**
@@ -40,6 +40,7 @@ protected $routeMiddleware = [
     // ..
     'sentry.auth' => 'Sentinel\Middleware\SentryAuth',
     'sentry.admin' => 'Sentinel\Middleware\SentryAdminAccess',
+    'sentry.member' => 'Sentinel\Middleware\SentryMember',
 ];
 ```	
 
@@ -92,14 +93,23 @@ Sentinel also provides these middlewares which you can use to [prevent unauthori
 
 * ```Sentinel\Middleware\SentryAuth``` - Require users to have an active session
 * ```Sentinel\Middleware\SentryAdminAccess``` - Block access for everyone except users who have the 'admin' permission.  
+* ```Sentinel\Middleware\SentryMember``` - Limit access to members of a certain group. The group name is case sensitive.  For example:
+
+```php
+// app\Http\Controllers\ExampleController.php
+public function __construct()
+{
+    $this->middleware('sentry.member:Admins');
+}
+```
 
 ### Advanced Usage
-This package is intended for simple applications, but it is possible to integrate it into a large application on a deeper level:
+This package is intended for simple sites but it is possible to integrate into a larger application on a deeper level:
 * Turn off the default routes (via the config) and manually specify routes that make more sense for your application
 * Create a new User model that extends the default Sentinel User Model ```Sentinel\Models\User```.  Be sure to publish the Sentinel and Sentry config files (using the ```sentinel:publish``` command) and change the User Model setting in the Sentry config file to point to your new user model. 
 * Inject the ```SentryUserRepository``` and/or the ```SentryGroupRepository``` classes into your controllers to have direct access to user and group manipulation.  You may also consider creating custom repositories that extend the repositories that come with Sentinel. 
 
-It is not advisable to extend the Sentinel Controller classes; you will be better off in the long run creating your own controllers from scratch. 
+It is not advisable to extend the Sentinel controller classes; you will be better off in the long run creating your own controllers from scratch. 
 
 ### Documentation & Questions
 Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
@@ -112,11 +122,3 @@ Any questions about this package should be posted [on the package website](http:
 
 ### Localization
 Sentinel has been translated into several other languages, and new translations are always welcome! Check out the [Sentinel Page](https://crowdin.com/project/sentinel) on CrowdIn for more details.
-
-### Tests
-Tests are powered by Codeception.  Currently they must be run within a Laravel application environment.   To run the tests: 
-* Pull in the require-dev dependencies via composer. 
-* Navigate to the Sentinel folder
-* Run ```vendor/bin/codecept run```
-
-I would recommend turning on "Mail Pretend" in your testing mail config file.
