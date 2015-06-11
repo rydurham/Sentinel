@@ -1,9 +1,8 @@
 <?php namespace Sentinel\Middleware;
 
 use Closure, Sentry;
-use Illuminate\Contracts\Routing\Middleware;
 
-class SentryAuth implements Middleware
+class SentryAuth
 {
 
     /**
