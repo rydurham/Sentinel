@@ -1,21 +1,7 @@
 <?php
 
-use Sentinel\Managers\Session\SentrySessionManager;
-
-/**
- * Class SentryUserTest
- * Test the methods in the SentryUser repository class
- * /src/Sentinel/Repo/User/SentryUser
- */
-class SentrySessionTests extends Orchestra\Testbench\TestCase
+class SentrySessionTests extends SentinelTestCase
 {
-    /*
-     * These tests make use of the Orchestra Test Bench Package: https://github.com/orchestral/testbench
-     */
-
-    // The class being tested
-    protected $repo;
-
     /**
      * Setup the test environment.
      */
@@ -25,54 +11,6 @@ class SentrySessionTests extends Orchestra\Testbench\TestCase
 
         $this->repo = app()->make('Sentinel\Repositories\Session\SentinelSessionRepositoryInterface');
     }
-
-    /**
-     * Destroy the test environment
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        \Mockery::close();
-    }
-
-    /**
-     * Define environment setup.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app)
-    {
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
-            'database' => __DIR__ . '/../_data/db.sqlite',
-            'prefix'   => '',
-        ]);
-
-        // Prepare the sqlite database
-        // http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/
-        exec('cp ' . __DIR__ . '/../_data/prep.sqlite ' . __DIR__ . '/../_data/db.sqlite');
-    }
-
-    /**
-     * Get package providers.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return array
-     */
-    protected function getPackageProviders($app)
-    {
-        return [
-            'Sentinel\SentinelServiceProvider',
-        ];
-    }
-
-    /******************************************************************************************************************
-     * Tests
-     ******************************************************************************************************************/
 
     /**
      * Test the instantiation of the Sentinel SentryUser repository
