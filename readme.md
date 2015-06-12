@@ -12,7 +12,7 @@ Make sure you use the version most appropriate for the type of Laravel applicati
 |---|---|---|
 | 4.2.*  | 1.4.*  | ```"rydurham/sentinel": "~1.4"``` |
 | 5.0.*  | 2.0.*  | ```"rydurham/sentinel": "~2"```   |
-| 5.1.*  | 2.1.*  | ```"rydurham/sentinel": "~2.1"``` |
+| 5.1.*  | 2.2.*  | ```"rydurham/sentinel": "~2.2"``` |
 
 ### Laravel 5 Instructions
 **Install the Package Via Composer:**
