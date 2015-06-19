@@ -45,5 +45,5 @@ Edit Group
 
         </div>
     </div>
-{{ Form::close() }}
+</form>
 @stop
