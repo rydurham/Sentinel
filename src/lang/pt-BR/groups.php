@@ -8,20 +8,20 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'created' 		=> "Grupo Criado.",
+	'created' 		=> "Group Created.",	
 
-	'loginreq' 		=> "O campo Login é obrigatório.",
+	'loginreq' 		=> "Login field required.",
 
-	'userexists' 	=> "Usuário já existe.",
+	'userexists' 	=> "User already exists.",
 
-	'updated' 		=> "O Grupo foi atualizado.",
+	'updated' 		=> "Group has been updated.",
 
-	'updateproblem' => "Ocorreu um problema ao atualizar o grupo.",
+	'updateproblem' => "There was a problem updating the group.",
 
-	'namereq' 		=> "Você deve informar um nome para o grupo.",
+	'namereq' 		=> "You must provide a group name.",
 
-	'groupexists' 	=> "Este grupo já existe.",
+	'groupexists' 	=> "That group already exists.",
 
-	'notfound' 		=> "Grupo não encontrado.",
+	'notfound' 		=> "Group not found.",
 
 );

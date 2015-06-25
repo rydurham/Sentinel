@@ -8,12 +8,12 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	"invalid"   => "Usuário ou Senha inválidos.",
+	"invalid"   => "Invalid username or password.",
 
-	"notactive" =>  "Você ainda não ativou sua conta. <a href=':url' class='alert-link'>Reenviar Email de Ativação?</a>",
+	"notactive" =>  "You have not yet activated this account. <a href=':url' class='alert-link'>Resend Activation Email?</a>",
 
-	"suspended" => "Sua conta foi suspensa temporariamente.",
+	"suspended" => "Your account has been temporarily suspended.",
 
-	"banned" 	=> "Você está banido.",
+	"banned" 	=> "You have been banned.",
 
 );

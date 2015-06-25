@@ -8,54 +8,54 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'created' 		=>  "Sua conta foi criada. Verifique seu e-mail para o link de confirmação.",
+	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",	
 
-	'createdactive' =>  "Sua conta foi criada. Agora você pode entrar.",
+	'createdactive' =>  "Your account has been created. You can now login.",
 
-	'added'			=>  "Novo usuário acrescentou. Verifique a conta de e-mail para o link de confirmação.",
+	'added'			=>  "New user added. Check the email account for the confirmation link.",
 
-	'addedactive'	=>  "Novo usuário acrescentou.",
+	'addedactive'	=>  "New user added.",
 
-	'loginreq' 		=>	"Campo Login é obrigatório.",
+	'loginreq' 		=>	"Login field required.",
 
-	'exists'		=>	"Usuário já existente.",
+	'exists'		=>	"User already exists.",
 
-	'notfound'		=>	"Usuário não encontrado",
+	'notfound'		=>	"User not found",
 
-	'noaccess'		=>	"Você não tem permissão.",
+	'noaccess'		=>	"You are not allowed to do that.",
 
-	'updated'		=>	"Perfil Atualizado",
+	'updated'		=>	"Profile updated",
 
-	'notupdated'	=>	"Não foi possível atualizar o perfil",
+	'notupdated'	=>	"Unable to update profile",
 
-	'activated'		=>	"Ativação completa. <a href=':url' class='alert-link'>Agora você pode acessar</a>",
+	'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
 
-	'notactivated'	=>	"A ativação não pode ser completada.",
+	'notactivated'	=>	"Activation could not be completed.",
 
-	'alreadyactive'	=>	"Está conta já está ativada.",
+	'alreadyactive'	=>	"That account has already been activated.",
 
-	'emailconfirm'	=>	"Verifique seu email pelo link de confirmação.",
+	'emailconfirm'	=>	"Check your email for the confirmation link.",
 
-	'emailinfo'		=>	"Verifique seu email para maiores instruções.",
+	'emailinfo'		=>	"Check your email for instructions.",
 
-	'emailpassword'	=>	"Sua senha foi alterada. Verifique seu email para otber a nova senha.",
+	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
 
-	'problem'		=>	"Ocorreu um problema. Por favor contate o administrador do sistema.",
+	'problem'		=>	"There was a problem. Please contact the system administrator.",
 
-	'passwordchg'	=> 	"Sua senha foi alterada.",
+	'passwordchg'	=> 	"Your password has been changed.",
 
-	'passwordprob'	=>	"Não foi possível alterar a sua senha.",
+	'passwordprob'	=>	"Your password could not be changed.",
 
-	'oldpassword'	=>	"Você não informou a senha original correta.",
+	'oldpassword'	=>	"You did not provide the correct original password.",
 
-	'suspended'		=>	"Usuário foi suspenso por 15 minutos.",
+	'suspended'		=>	"User has been suspended for :minutes minutes.",
 
-	'unsuspended'	=>	"Suspensão removida.",
+	'unsuspended'	=>	"Suspension removed.",
 
-	'banned'		=>	"Usuário foi banido.",
+	'banned'		=>	"User has been banned.",
 
-	'unbanned'		=>	"Usuário foi rehabilitado.",
+	'unbanned'		=>	"User has been unbanned.",
 
-	'inactive_reg' 	=>  "Registro não disponível neste momento."
+	'inactive_reg' 	=>  "Registration is not available at this time."
 
 );

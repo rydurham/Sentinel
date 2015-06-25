@@ -8,59 +8,58 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'flashsuccess'		=> 'Sucesso',
+	'flashsuccess'	=> 'Success',
 
-	'flasherror'		=> 'Erro',
+	'flasherror'	=> 'Error',
 
-	'flashwarning'		=> 'Atenção',
+	'flashwarning'	=> 'Warning',
 
-	'flashinfo'		=> 'Obs.:',
+	'flashinfo'		=> 'FYI',
 
-	'register'		=> 'Registrar',
+	'register'		=> 'Register',
 
-	'login'			=> "Acessar",
+	'login'			=> "Login",
 
-	'logout'		=> "Sair",
+	'logout'		=> "Logout",
 
 	'home'			=> "Home",
 
-	'users' 		=> 'Usuário|Usuários',
+	'users' 		=> 'User|Users'
 
-	'groups'		=> "Grupos",
+	'groups'		=> "Groups",
 
-	'helloworld'		=> "Olá Mundo!",
+	'helloworld'	=> "Hello World!",
 
-	'description'		=> "Este é um exemplo do <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> rodando com <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> e <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-	'loginstatus'		=> "Você está logado.",
+	'loginstatus'	=> "You are currently logged in.",
 
-	'sessiondata'		=> "Dados da Sessão",
+	'sessiondata'	=> "Session Data",
 
-	'currentusers'		=> "Usuários Atuais",
+	'currentusers'	=> "Current Users",
 
-	'options'		=> 'Opções',
+	'options'		=> 'Options',
 
 	'status'		=> "Status",
 
-	'active'		=> "Ativar",
+	'active'		=> "Active",
 
-	'notactive'		=> "Não Ativar",
+	'notactive'		=> "Not Active",
 
-	'suspended'		=> "Suspenso",
+	'suspended'		=> "Suspended",
 
-	'banned'		=> "Banir",
+	'banned'		=> "Banned",
 
-	'actionedit'	 	=> "Editar",
+	'actionedit'	=> "Edit",
 
-	'actionsuspend'	 	=> "Suspender",
+	'actionsuspend'	=> "Suspend",
 
-	'actionunsuspend' 	=> "Reativar",
+	'actionunsuspend' => "Un-Suspend",
 
-	'actionban'		=> "Banir",
+	'actionban'		=> "Ban",
 
-	'actionunban'		=> "Reabilitar",
+	'actionunban'	=> "Un-Ban",
 
-	'actiondelete'		=> "Deletar",
-
+	'actiondelete'	=> "Delete",
 
 );
