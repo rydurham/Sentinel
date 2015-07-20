@@ -146,6 +146,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Guest Middleware Redirection
+    |--------------------------------------------------------------------------
+    |
+    | The SentryGuest middleware will redirect users with active sessions to
+    | the route you specify here.  If left blank, the user will be taken
+    | to the home route.
+    |
+    */
+
+    'redirect_if_authenticated' => 'home',
+
+    /*
+    |--------------------------------------------------------------------------
     | Enable HTML Views
     |--------------------------------------------------------------------------
     |

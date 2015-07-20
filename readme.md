@@ -41,6 +41,7 @@ protected $routeMiddleware = [
     'sentry.auth' => Sentinel\Middleware\SentryAuth::class,
     'sentry.admin' => Sentinel\Middleware\SentryAdminAccess::class,
     'sentry.member' => Sentinel\Middleware\SentryMember::class,
+    'sentry.guest' => Sentinel\Middleware\SentryGuest::class,
 ];
 ```	
 
@@ -102,6 +103,8 @@ public function __construct()
     $this->middleware('sentry.member:Admins');
 }
 ```
+
+* ```Sentinel\Middleware\SentryGuest``` - Redirect users who have an active session
 
 ### Advanced Usage
 This package is intended for simple sites but it is possible to integrate into a larger application on a deeper level:
