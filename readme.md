@@ -28,7 +28,7 @@ Make sure you have configured your application's Database and Mail settings.
 ```php
 'providers' => array(
     ...
-    'Sentinel\SentinelServiceProvider', 
+    Sentinel\SentinelServiceProvider::class, 
     ...
 )
 ```  
@@ -38,9 +38,9 @@ Make sure you have configured your application's Database and Mail settings.
 ```php
 protected $routeMiddleware = [
     // ..
-    'sentry.auth' => 'Sentinel\Middleware\SentryAuth',
-    'sentry.admin' => 'Sentinel\Middleware\SentryAdminAccess',
-    'sentry.member' => 'Sentinel\Middleware\SentryMember',
+    'sentry.auth' => Sentinel\Middleware\SentryAuth::class,
+    'sentry.admin' => Sentinel\Middleware\SentryAdminAccess::class,
+    'sentry.member' => Sentinel\Middleware\SentryMember::class,
 ];
 ```	
 
