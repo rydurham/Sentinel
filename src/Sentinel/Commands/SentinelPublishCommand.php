@@ -157,7 +157,7 @@ class SentinelPublishCommand extends Command
 
         // If this file has already been published, confirm that we want to overwrite.
         if ($this->file->isFile($destination)) {
-            $answer = $this->confirm('Sentinel config has already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Sentinel config has already been published. Do you want to overwrite?');
 
             if (!$answer) {
                 return;
@@ -182,7 +182,7 @@ class SentinelPublishCommand extends Command
 
         // If this file has already been published, confirm that we want to overwrite.
         if ($this->file->isFile($destination)) {
-            $answer = $this->confirm('Sentry config has already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Sentry config has already been published. Do you want to overwrite?');
 
             if (!$answer) {
                 return;
@@ -208,7 +208,7 @@ class SentinelPublishCommand extends Command
 
         // If there are already config files published, confirm that we want to overwrite them.
         if ($this->file->isFile($destination)) {
-            $answer = $this->confirm('Hashid Config file has already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Hashid Config file has already been published. Do you want to overwrite?');
 
             if (!$answer) {
                 return;
@@ -234,7 +234,7 @@ class SentinelPublishCommand extends Command
 
         // If there are already views published, confirm that we want to overwrite them.
         if ($this->file->isDirectory($destination)) {
-            $answer = $this->confirm('Views have already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Views have already been published. Do you want to overwrite?');
 
             if (!$answer) {
                 return;
@@ -260,7 +260,7 @@ class SentinelPublishCommand extends Command
 
         // If there are already assets published, confirm that we want to overwrite.
         if ($this->file->isDirectory($destination)) {
-            $answer = $this->confirm('Theme assets have already been published. Do you want to overwrite? (y/n)');
+            $answer = $this->confirm('Theme assets have already been published. Do you want to overwrite?');
 
             if (!$answer) {
                 return;
@@ -279,18 +279,47 @@ class SentinelPublishCommand extends Command
      */
     private function publishMigrations()
     {
-        if ($this->confirm('Would you like to publish the migration files? (y/n)')) {
-            // Prepare file paths
-            $source      = $this->packagePath . '/../migrations';
-            $destination = $this->appPath . '/../database/migrations';
+        if ($this->confirm('Would you like to publish the migration files?')) {
 
-            // Copy the migration files
-            $this->file->copyDirectory($source, $destination);
+            $migrations = [
+                'migration_cartalyst_sentry_install_groups',
+                'migration_cartalyst_sentry_install_throttle',
+                'migration_cartalyst_sentry_install_users',
+                'migration_cartalyst_sentry_install_users_groups_pivot',
+                'migration_sentinel_add_username'
+            ];
+
+            foreach ($migrations as $name){
+                $filePath = $this->createMigration($name);
+                file_put_contents($filePath, $this->getMigrationStub($name));
+            }
 
             // Notify action completion
-            $this->info('Sentinel migration files have been published.');
+            $this->info('Migration files have been published.');
 
         }
+    }
+
+    /**
+     * Create a base migration file for the reminders.  Borrowed from Laravel/Cashier
+     *
+     * @return string
+     */
+    private function createMigration($name)
+    {
+        $path = $this->laravel['path.database'].'/migrations';
+        return $this->laravel['migration.creator']->create($name, $path);
+    }
+
+    /**
+     * Get the contents of the reminder migration stub.  Borrowed from Laravel/Cashier
+     *
+     * @param $name
+     * @return string
+     */
+    private function getMigrationStub($name)
+    {
+        return file_get_contents(__DIR__.'/../../migrations/' . $name . '.stub');
     }
 
 
