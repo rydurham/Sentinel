@@ -20,7 +20,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationCartalystSentryInstallGroups extends Migration {
+class CartalystSentryInstallUsersGroupsPivot extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -29,17 +29,15 @@ class MigrationCartalystSentryInstallGroups extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('groups', function($table)
+		Schema::create('users_groups', function($table)
 		{
-			$table->increments('id');
-			$table->string('name');
-			$table->text('permissions')->nullable();
-			$table->timestamps();
+			$table->integer('user_id')->unsigned();
+			$table->integer('group_id')->unsigned();
 
 			// We'll need to ensure that MySQL uses the InnoDB engine to
 			// support the indexes, other engines aren't affected.
 			$table->engine = 'InnoDB';
-			$table->unique('name');
+			$table->primary(array('user_id', 'group_id'));
 		});
 	}
 
@@ -50,7 +48,7 @@ class MigrationCartalystSentryInstallGroups extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('groups');
+		Schema::drop('users_groups');
 	}
 
 }

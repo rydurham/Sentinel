@@ -20,7 +20,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationCartalystSentryInstallUsers extends Migration {
+class CartalystSentryInstallUsers extends Migration {
 
 	/**
 	 * Run the migrations.

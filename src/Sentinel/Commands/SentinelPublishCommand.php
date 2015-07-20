@@ -281,46 +281,17 @@ class SentinelPublishCommand extends Command
     {
         if ($this->confirm('Would you like to publish the migration files?')) {
 
-            $migrations = [
-                'migration_cartalyst_sentry_install_groups',
-                'migration_cartalyst_sentry_install_throttle',
-                'migration_cartalyst_sentry_install_users',
-                'migration_cartalyst_sentry_install_users_groups_pivot',
-                'migration_sentinel_add_username'
-            ];
+            // Prepare for copying files
+            $source      = $this->packagePath . '/../../migrations/';
+            $destination = $this->appPath . '/../database/migrations';
 
-            foreach ($migrations as $name){
-                $filePath = $this->createMigration($name);
-                file_put_contents($filePath, $this->getMigrationStub($name));
-            }
+            // Copy the asset files for the selected theme
+            $this->file->copyDirectory($source, $destination);
 
             // Notify action completion
             $this->info('Migration files have been published.');
 
         }
     }
-
-    /**
-     * Create a base migration file for the reminders.  Borrowed from Laravel/Cashier
-     *
-     * @return string
-     */
-    private function createMigration($name)
-    {
-        $path = $this->laravel['path.database'].'/migrations';
-        return $this->laravel['migration.creator']->create($name, $path);
-    }
-
-    /**
-     * Get the contents of the reminder migration stub.  Borrowed from Laravel/Cashier
-     *
-     * @param $name
-     * @return string
-     */
-    private function getMigrationStub($name)
-    {
-        return file_get_contents(__DIR__.'/../../../migrations/' . $name . '.stub');
-    }
-
 
 }
