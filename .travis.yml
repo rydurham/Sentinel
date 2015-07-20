@@ -10,3 +10,5 @@ before_script:
   - php composer.phar install --prefer-dist
 
 script: phpunit
+
+sudo: false
