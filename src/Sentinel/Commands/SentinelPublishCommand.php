@@ -319,7 +319,7 @@ class SentinelPublishCommand extends Command
      */
     private function getMigrationStub($name)
     {
-        return file_get_contents(__DIR__.'/../../migrations/' . $name . '.stub');
+        return file_get_contents(__DIR__.'/../../../migrations/' . $name . '.stub');
     }
 
 
