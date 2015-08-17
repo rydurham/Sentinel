@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Listeners;
+<?php
+
+namespace Sentinel\Listeners;
 
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Mail;
@@ -6,7 +8,6 @@ use Illuminate\Contracts\Config\Repository;
 
 class UserEventListener
 {
-
     public function __construct(Store $session, Repository $config)
     {
         $this->session = $session;
@@ -64,11 +65,9 @@ class UserEventListener
         $data['code'] = $user->getActivationCode();
         $data['email'] = $user->email;
 
-        if (! $activated)
-        {
-            $this->sendTo( $user->email, $subject, $view, $data );
+        if (! $activated) {
+            $this->sendTo($user->email, $subject, $view, $data);
         }
-
     }
 
     /**
@@ -89,7 +88,7 @@ class UserEventListener
         $data['code'] = $code;
         $data['email'] = $user->email;
 
-        $this->sendTo($user->email, $subject, $view, $data );
+        $this->sendTo($user->email, $subject, $view, $data);
     }
 
     /**
@@ -125,8 +124,7 @@ class UserEventListener
             return ['address' => 'noreply@example.com', 'name' => ''];
         }
 
-        if (is_null($sender['name']))
-        {
+        if (is_null($sender['name'])) {
             $sender['name'] = '';
         }
 

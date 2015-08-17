@@ -1,10 +1,12 @@
-<?php namespace Sentinel\Middleware;
+<?php
 
-use Closure, Sentry;
+namespace Sentinel\Middleware;
+
+use Closure;
+use Sentry;
 
 class SentryAuth
 {
-
     /**
      * Handle an incoming request.
      *
@@ -24,5 +26,4 @@ class SentryAuth
 
         return $next($request);
     }
-
 }

@@ -1,10 +1,14 @@
-<?php namespace Sentinel\Traits;
+<?php
 
-use Redirect, Response, Session;
+namespace Sentinel\Traits;
+
+use Redirect;
+use Response;
+use Session;
 use Sentinel\DataTransferObjects\BaseResponse;
 
-trait SentinelRedirectionTrait {
-
+trait SentinelRedirectionTrait
+{
     /**
      * Use a ResponseObject to generate a browser redirect, based on config options
      *
@@ -15,12 +19,9 @@ trait SentinelRedirectionTrait {
      */
     public function redirectViaResponse($key, BaseResponse $response)
     {
-        if ($response->isSuccessful())
-        {
+        if ($response->isSuccessful()) {
             $message = ['success' => $response->getMessage()];
-        }
-        else
-        {
+        } else {
             $message = ['error' => $response->getMessage()];
         }
 
@@ -60,11 +61,10 @@ trait SentinelRedirectionTrait {
         }
 
         // Do we need to flash any session data?
-        if ($message)
-        {
+        if ($message) {
             $status = key($message);
             $text   = current($message);
-            Session::flash($status,$text);
+            Session::flash($status, $text);
         }
 
         // Redirect to the intended url
@@ -88,11 +88,10 @@ trait SentinelRedirectionTrait {
         }
 
         // Do we need to flash any session data?
-        if ($message)
-        {
+        if ($message) {
             $status = key($message);
             $text   = current($message);
-            Session::flash($status,$text);
+            Session::flash($status, $text);
         }
 
         // Go back
@@ -117,8 +116,7 @@ trait SentinelRedirectionTrait {
         $location = current($direction);
 
         // If no URL target was specified we can't do anything.
-        if (is_null($location))
-        {
+        if (is_null($location)) {
             return null;
         }
 
@@ -137,10 +135,8 @@ trait SentinelRedirectionTrait {
     {
         $parameters = [];
 
-        foreach($specifications as $name => $member)
-        {
-            if (isset($payload[$name]))
-            {
+        foreach ($specifications as $name => $member) {
+            if (isset($payload[$name])) {
                 $parameters[] = $payload[$name]->$member;
             }
         }

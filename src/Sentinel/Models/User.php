@@ -1,10 +1,12 @@
-<?php namespace Sentinel\Models;
+<?php
+
+namespace Sentinel\Models;
 
 use Hashids;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
-class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract {
-
+class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
+{
     /**
      * Set the Sentry User Model Hasher to be the same as the configured Sentry Hasher
      */
@@ -31,7 +33,7 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function getAuthPassword()
     {
-       return $this->password;
+        return $this->password;
     }
 
     /**
@@ -77,6 +79,4 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
     {
         return Hashids::encode($this->attributes['id']);
     }
-
-
 }

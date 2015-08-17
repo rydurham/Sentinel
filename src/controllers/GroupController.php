@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Controllers;
+<?php
+
+namespace Sentinel\Controllers;
 
 use Vinkla\Hashids\HashidsManager;
 use Illuminate\Routing\Controller as BaseController;
@@ -7,11 +9,12 @@ use Sentinel\FormRequests\GroupCreateRequest;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use View, Input, Redirect;
+use View;
+use Input;
+use Redirect;
 
 class GroupController extends BaseController
 {
-
     /**
      * Traits
      */
@@ -144,5 +147,4 @@ class GroupController extends BaseController
 
         return $this->redirectViaResponse('groups_destroy', $result);
     }
-
 }

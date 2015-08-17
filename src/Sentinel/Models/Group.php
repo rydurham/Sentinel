@@ -1,9 +1,11 @@
-<?php namespace Sentinel\Models;
+<?php
+
+namespace Sentinel\Models;
 
 use Hashids;
 
-class Group extends \Cartalyst\Sentry\Groups\Eloquent\Group {
-
+class Group extends \Cartalyst\Sentry\Groups\Eloquent\Group
+{
     /**
      * Use a mutator to derive the appropriate hash for this group
      *

@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Controllers;
+<?php
+
+namespace Sentinel\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Pagination\Paginator;
@@ -10,11 +12,15 @@ use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Vinkla\Hashids\HashidsManager;
-use View, Input, Event, Redirect, Session, Config;
+use View;
+use Input;
+use Event;
+use Redirect;
+use Session;
+use Config;
 
 class UserController extends BaseController
 {
-
     /**
      * Traits
      */
@@ -86,7 +92,7 @@ class UserController extends BaseController
     /**
      * Show the profile of a specific user account
      *
-     * @param $id
+     * @param $hash
      *
      * @return View
      */
@@ -288,7 +294,4 @@ class UserController extends BaseController
 
         return $this->redirectViaResponse('users_unban', $result);
     }
-
 }
-
-

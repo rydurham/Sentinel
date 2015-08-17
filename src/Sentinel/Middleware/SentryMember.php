@@ -1,10 +1,13 @@
-<?php namespace Sentinel\Middleware;
+<?php
 
-use Closure, Sentry, Session;
+namespace Sentinel\Middleware;
+
+use Closure;
+use Sentry;
+use Session;
 
 class SentryMember
 {
-
     /**
      * Handle an incoming request.
      *
@@ -39,5 +42,4 @@ class SentryMember
 
         return $next($request);
     }
-
 }

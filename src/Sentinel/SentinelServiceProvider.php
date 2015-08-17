@@ -1,4 +1,6 @@
-<?php namespace Sentinel;
+<?php
+
+namespace Sentinel;
 
 use Artisan;
 use Hashids\Hashids;
@@ -12,7 +14,6 @@ use Illuminate\Support\ServiceProvider;
 
 class SentinelServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -55,7 +56,6 @@ class SentinelServiceProvider extends ServiceProvider
 
         // Should we register the default routes?
         if (config('sentinel.routes_enabled')) {
-
             include $sentinelPath . '/../routes.php';
         }
 
@@ -107,7 +107,6 @@ class SentinelServiceProvider extends ServiceProvider
                 $app['events']
             );
         });
-
     }
 
     /**
@@ -133,5 +132,4 @@ class SentinelServiceProvider extends ServiceProvider
 
         $this->commands('sentinel.publisher');
     }
-
 }

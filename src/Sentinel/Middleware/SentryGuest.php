@@ -1,10 +1,12 @@
-<?php namespace Sentinel\Middleware;
+<?php
 
-use Closure, Sentry;
+namespace Sentinel\Middleware;
+
+use Closure;
+use Sentry;
 
 class SentryGuest
 {
-
     /**
      * Handle an incoming request.
      *
@@ -14,13 +16,11 @@ class SentryGuest
      */
     public function handle($request, Closure $next)
     {
-        if (Sentry::check())
-        {
+        if (Sentry::check()) {
             $destination = config('sentinel.redirect_if_authenticated', 'home');
             return redirect()->route($destination);
         }
 
         return $next($request);
     }
-
 }

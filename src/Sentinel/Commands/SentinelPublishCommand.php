@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Commands;
+<?php
+
+namespace Sentinel\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -9,7 +11,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class SentinelPublishCommand extends Command
 {
-
     /**
      * The console command name.
      *
@@ -290,8 +291,6 @@ class SentinelPublishCommand extends Command
 
             // Notify action completion
             $this->info('Migration files have been published.');
-
         }
     }
-
 }

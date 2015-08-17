@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Controllers;
+<?php
+
+namespace Sentinel\Controllers;
 
 use Vinkla\Hashids\HashidsManager;
 use Illuminate\Routing\Controller as BaseController;
@@ -9,12 +11,16 @@ use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use Sentry, View, Input, Event, Redirect, Session, Config;
-
+use Sentry;
+use View;
+use Input;
+use Event;
+use Redirect;
+use Session;
+use Config;
 
 class RegistrationController extends BaseController
 {
-
     /**
      * Traits
      */
@@ -50,7 +56,7 @@ class RegistrationController extends BaseController
         }
 
         //If registration is currently disabled, show a message and redirect home.
-        if ( ! config('sentinel.registration', false)) {
+        if (! config('sentinel.registration', false)) {
             return $this->redirectTo(['route' => 'home'], ['error' => trans('Sentinel::users.inactive_reg')]);
         }
 
@@ -100,7 +106,7 @@ class RegistrationController extends BaseController
      *
      * @return View
      */
-    function resendActivationForm()
+    public function resendActivationForm()
     {
         return $this->viewFinder('Sentinel::users.resend');
     }
@@ -140,7 +146,6 @@ class RegistrationController extends BaseController
 
         // It worked!  Use config to determine where we should go.
         return $this->redirectViaResponse('registration_reset_triggered', $result);
-
     }
 
     /**
@@ -159,8 +164,7 @@ class RegistrationController extends BaseController
         // Validate Reset Code
         $result = $this->userRepository->validateResetCode($id, $code);
 
-        if (! $result->isSuccessful())
-        {
+        if (! $result->isSuccessful()) {
             return $this->redirectViaResponse('registration_reset_invalid', $result);
         }
 
@@ -191,7 +195,4 @@ class RegistrationController extends BaseController
         // It worked!  Use config to determine where we should go.
         return $this->redirectViaResponse('registration_reset_complete', $result);
     }
-
 }
-
-

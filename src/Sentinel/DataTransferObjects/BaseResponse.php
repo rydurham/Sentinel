@@ -1,4 +1,6 @@
-<?php namespace Sentinel\DataTransferObjects;
+<?php
+
+namespace Sentinel\DataTransferObjects;
 
 /**
  * Class ManagerResponse
@@ -8,15 +10,14 @@
  * @package Sentinel\Services\Responders
  */
 
-class BaseResponse {
-
+class BaseResponse
+{
     protected $payload;
     protected $message;
     protected $success;
     protected $error = false;
 
     /**
-     * @param       $success
      * @param       $message
      * @param array $payload
      */
@@ -57,6 +58,4 @@ class BaseResponse {
     {
         return $this->error;
     }
-
-
 }

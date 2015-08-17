@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Repositories\Group;
+<?php
+
+namespace Sentinel\Repositories\Group;
 
 use Cartalyst\Sentry\Sentry;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,7 +16,6 @@ use Sentinel\DataTransferObjects\ExceptionResponse;
 
 class SentryGroupRepository implements SentinelGroupRepositoryInterface
 {
-
     protected $sentry;
 
     /**

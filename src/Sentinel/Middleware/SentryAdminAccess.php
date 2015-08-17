@@ -1,11 +1,14 @@
-<?php namespace Sentinel\Middleware;
+<?php
 
-use Closure, Session, Sentry;
+namespace Sentinel\Middleware;
+
+use Closure;
+use Session;
+use Sentry;
 use Illuminate\Contracts\Routing\Middleware;
 
 class SentryAdminAccess
 {
-
     /**
      * Handle an incoming request.
      *
@@ -38,5 +41,4 @@ class SentryAdminAccess
         // All clear - we are good to move forward
         return $next($request);
     }
-
 }

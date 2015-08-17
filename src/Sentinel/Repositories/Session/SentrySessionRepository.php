@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Repositories\Session;
+<?php
+
+namespace Sentinel\Repositories\Session;
 
 use Config;
 use Illuminate\Events\Dispatcher;
@@ -17,7 +19,6 @@ use Sentinel\DataTransferObjects\FailureResponse;
 
 class SentrySessionRepository implements SentinelSessionRepositoryInterface
 {
-
     private $sentry;
     private $sentryThrottleProvider;
     private $sentryUserProvider;
@@ -108,7 +109,6 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
             $this->recordLoginAttempt($credentials);
             return new ExceptionResponse($message);
         }
-
     }
 
     /**
@@ -128,7 +128,6 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
         $this->sentry->logout();
 
         return new SuccessResponse('');
-
     }
 
     /**
@@ -139,16 +138,14 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
      */
     private function recordLoginAttempt($credentials)
     {
-        if (array_key_exists('email', $credentials))
-        {
+        if (array_key_exists('email', $credentials)) {
             $throttle = $this->sentry->findThrottlerByUserLogin(
                 $credentials['email'],
                 \Request::ip()
             );
         }
 
-        if (array_key_exists('username', $credentials))
-        {
+        if (array_key_exists('username', $credentials)) {
             $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('username');
             $throttle = $this->sentry->findThrottlerByUserLogin(
                 $credentials['username'],
@@ -156,13 +153,11 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
             );
         }
 
-        if (isset($throttle))
-        {
+        if (isset($throttle)) {
             $throttle->ip_address = \Request::ip();
 
             $throttle->addLoginAttempt();
         }
-
     }
 
     /**
@@ -177,6 +172,4 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
 
         return true;
     }
-
-
 }

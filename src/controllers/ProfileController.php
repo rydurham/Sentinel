@@ -1,9 +1,14 @@
-<?php namespace Sentinel\Controllers;
+<?php
+
+namespace Sentinel\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\ChangePasswordRequest;
 use Sentinel\FormRequests\UserUpdateRequest;
-use Session, Input, Response, Redirect;
+use Session;
+use Input;
+use Response;
+use Redirect;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
@@ -11,7 +16,6 @@ use Sentinel\Traits\SentinelViewfinderTrait;
 
 class ProfileController extends BaseController
 {
-
     /**
      * Traits
      */
@@ -112,5 +116,4 @@ class ProfileController extends BaseController
 
         return $this->redirectViaResponse('profile_change_password', $result);
     }
-
 }

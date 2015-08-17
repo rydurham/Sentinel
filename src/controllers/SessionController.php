@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Controllers;
+<?php
+
+namespace Sentinel\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Response;
@@ -6,11 +8,16 @@ use Sentinel\FormRequests\LoginRequest;
 use Sentinel\Repositories\Session\SentinelSessionRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use Sentry, View, Input, Event, Redirect, Session, Config;
+use Sentry;
+use View;
+use Input;
+use Event;
+use Redirect;
+use Session;
+use Config;
 
 class SessionController extends BaseController
 {
-
     /**
      * Traits
      */
@@ -79,7 +86,6 @@ class SessionController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
      * @return Response
      */
     public function destroy()
@@ -88,5 +94,4 @@ class SessionController extends BaseController
 
         return $this->redirectTo('session_destroy');
     }
-
 }

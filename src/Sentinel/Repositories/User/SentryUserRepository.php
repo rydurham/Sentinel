@@ -1,4 +1,6 @@
-<?php namespace Sentinel\Repositories\User;
+<?php
+
+namespace Sentinel\Repositories\User;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserExistsException;
@@ -239,7 +241,6 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // If the user is not currently activated resend the activation email
             if (!$user->isActivated()) {
-
                 $this->dispatcher->fire('sentinel.user.resend', [
                     'user' => $user,
                     'activated' => $user->activated,
@@ -514,7 +515,6 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
     public function ban($id)
     {
         try {
-
             $user = $this->sentry->getUserProvider()->findById($id);
 
             // Find the user using the user id
@@ -524,7 +524,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $throttle->ban();
 
             // Clear the persist code
-            $user->persist_code = NULL;
+            $user->persist_code = null;
             $user->save();
 
             // Fire the 'banned user' event

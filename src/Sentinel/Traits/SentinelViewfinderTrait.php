@@ -1,14 +1,18 @@
-<?php namespace Sentinel\Traits;
+<?php
 
-use Redirect, Response, View;
+namespace Sentinel\Traits;
 
-trait SentinelViewfinderTrait {
+use Redirect;
+use Response;
+use View;
 
+trait SentinelViewfinderTrait
+{
     /**
      * Before returning an HTML view, we need to make sure the developer has not
      * specified that we only use JSON responses.
      *
-     * @param       $theme
+     * @param       $view
      * @param array $payload
      *
      * @return Response
@@ -17,13 +21,10 @@ trait SentinelViewfinderTrait {
     {
 
         // Check the config for enabled views
-        if (config('sentinel.views_enabled'))
-        {
+        if (config('sentinel.views_enabled')) {
             // Views are enabled.
             return View::make($view)->with($payload);
-        }
-        else
-        {
+        } else {
             // Check the payload for paginator instances.
             foreach ($payload as $name => $item) {
                 if ($item instanceof \Illuminate\Pagination\Paginator) {
