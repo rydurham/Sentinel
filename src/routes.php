@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
-Route::group(['namespace' => 'Sentinel\Controllers'], function(){
+Route::group(['namespace' => 'Sentinel\Controllers'], function () {
 
     // Sentinel Session Routes
     Route::get('login', ['as' => 'sentinel.login', 'uses' => 'SessionController@create']);
@@ -57,5 +57,3 @@ Route::group(['namespace' => 'Sentinel\Controllers'], function(){
     Route::delete('groups/{hash}', ['as' => 'sentinel.groups.destroy', 'uses' => 'GroupController@destroy']);
 
 });
-
-

@@ -15,7 +15,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
     /**
      * Test the instantiation of the Sentinel SentryUser repository
      */
-    function testRepoInstantiation()
+    public function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
         $this->assertInstanceOf('Sentinel\Repositories\Group\SentryGroupRepository', $this->repo);
@@ -82,7 +82,6 @@ class SentryGroupRepositoryTests extends SentinelTestCase
         // Assertions
         $this->assertTrue($result->isSuccessful());
         $this->assertFalse(\DB::table('groups')->where('name', 'Users')->count() > 0);
-
     }
 
     public function testRetrieveGroupById()
@@ -120,5 +119,4 @@ class SentryGroupRepositoryTests extends SentinelTestCase
         $this->assertTrue(is_array($groups));
         $this->assertEquals(2, count($groups));
     }
-
 }

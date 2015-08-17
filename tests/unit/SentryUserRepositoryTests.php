@@ -17,7 +17,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     /**
      * Test the instantiation of the Sentinel SentryUser repository
      */
-    function testRepoInstantiation()
+    public function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
         $this->assertInstanceOf('Sentinel\Repositories\User\SentryUserRepository', $this->repo);
@@ -36,7 +36,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     /**
      * Test the creation of a user using the default configuration options
      */
-    function testSavingUser()
+    public function testSavingUser()
     {
         // Explicitly set the allow usernames config option to true
         app()['config']->set('sentinel.allow_usernames', true);
@@ -64,8 +64,8 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $testUser = DB::table('users')
             ->where('username', 'theviolinist')
             ->where('email', 'andrei@prozorov.net')
-            ->where('first_name', NULL)
-            ->where('last_name', NULL)
+            ->where('first_name', null)
+            ->where('last_name', null)
             ->first();
         $this->assertEquals('andrei@prozorov.net', $testUser->email);
     }
@@ -73,7 +73,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     /**
      * Test the creation of a user that should be activated upon creation
      */
-    function testSavingActivatedUser()
+    public function testSavingActivatedUser()
     {
         // This is the code we are testing
         $result = $this->repo->store([
@@ -102,7 +102,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     /**
      * Test the creation of a user without the use of a username
      */
-    function testSavingUserWithoutUsername()
+    public function testSavingUserWithoutUsername()
     {
         // Explicitly set the 'allow usernames' config option to false
         app()['config']->set('sentinel.allow_usernames', false);
@@ -130,7 +130,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     /**
      * Test the creation of users with additional user fields
      */
-    function testSavingUserWithAdditionalData()
+    public function testSavingUserWithAdditionalData()
     {
         // Explicitly set the 'allow usernames' config option to false
         app()['config']->set('sentinel.allow_usernames', false);
@@ -223,8 +223,8 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $this->assertTrue($result->isSuccessful());
         $testUser = DB::table('users')
             ->where('id', $user->id)
-            ->where('first_name', NULL)
-            ->where('last_name', NULL)
+            ->where('first_name', null)
+            ->where('last_name', null)
             ->where('username', '')
             ->where('email', 'irina@prozorov.net')
             ->first();
@@ -457,5 +457,4 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $this->assertTrue(is_array($users));
         $this->assertEquals(2, count($users));
     }
-
 }
