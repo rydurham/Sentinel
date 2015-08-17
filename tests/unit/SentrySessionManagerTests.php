@@ -15,7 +15,7 @@ class SentrySessionTests extends SentinelTestCase
     /**
      * Test the instantiation of the Sentinel SentryUser repository
      */
-    function testRepoInstantiation()
+    public function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
         $this->assertInstanceOf('Sentinel\Repositories\Session\SentrySessionRepository', $this->repo);
@@ -45,7 +45,4 @@ class SentrySessionTests extends SentinelTestCase
         // Assertions
         $this->assertTrue($result->isSuccessful());
     }
-
-
-
 }
