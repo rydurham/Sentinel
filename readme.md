@@ -38,10 +38,10 @@ Make sure you have configured your application's Database and Mail settings.
 ```php
 protected $routeMiddleware = [
     // ..
-    'sentry.auth' => Sentinel\Middleware\SentryAuth::class,
-    'sentry.admin' => Sentinel\Middleware\SentryAdminAccess::class,
-    'sentry.member' => Sentinel\Middleware\SentryMember::class,
-    'sentry.guest' => Sentinel\Middleware\SentryGuest::class,
+    'sentry.auth' => \Sentinel\Middleware\SentryAuth::class,
+    'sentry.admin' => \Sentinel\Middleware\SentryAdminAccess::class,
+    'sentry.member' => \Sentinel\Middleware\SentryMember::class,
+    'sentry.guest' => \Sentinel\Middleware\SentryGuest::class,
 ];
 ```	
 

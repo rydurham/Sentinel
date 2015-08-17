@@ -15,7 +15,7 @@
         "illuminate/support": "5.1.*@dev",
         "illuminate/contracts": "5.1.*@dev",
         "cartalyst/sentry": "2.1.*",
-        "vinkla/hashids": "~1.1"
+        "vinkla/hashids": "~2.0"
     },
     "require-dev": {
         "orchestra/testbench": "3.1.x@dev",
