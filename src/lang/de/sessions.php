@@ -2,18 +2,18 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Session Repository Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Session Repository Messages
+    |--------------------------------------------------------------------------
+    */
 
-	"invalid"   => "Invalid username or password.",
+    "invalid"   => "Falscher Benutzername oder Passwort.",
 
-	"notactive" =>  "You have not yet activated this account. <a href=':url' class='alert-link'>Resend Activation Email?</a>",
+    "notactive" =>  "Sie haben dieses Benutzerkonto noch nicht aktiviert. <a href=':url' class='alert-link'>Aktivierungs-Mail nochmal versenden?</a>",
 
-	"suspended" => "Your account has been temporarily suspended.",
+    "suspended" => "Ihr Benutzerkonto ruht vorübergehend.",
 
-	"banned" 	=> "You have been banned.",
+    "banned"    => "Sie wurden gesperrt.",
 
 );

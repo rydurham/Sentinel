@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Successo',
+    'flashsuccess'    => 'Successo',
 
-	'flasherror'	=> 'Errore',
+    'flasherror'    => 'Errore',
 
-	'flashwarning'	=> 'Attenzione',
+    'flashwarning'    => 'Attenzione',
 
-	'flashinfo'		=> 'Info',
+    'flashinfo'        => 'Info',
 
-	'register'		=> 'Registrati',
+    'register'        => 'Registrati',
 
-	'login'			=> "Login",
+    'login'            => "Login",
 
-	'logout'		=> "Logout",
+    'logout'        => "Logout",
 
-	'home'			=> "Home",
+    'home'            => "Home",
 
-	'users'			=> "Utenti|Utente",
+    'users'        => 'User|Users',
 
-	'groups'		=> "Gruppi",
+    'groups'        => "Groups",
 
-	'helloworld'	=> "Hello World!",
+    'helloworld'    => "Hello World!",
 
-	'description'	=> "Questo è un esempio di come <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> funziona con <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> e <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+    'description'    => "Questo è un esempio di come <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> funziona con <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> e <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "Sei loggato.",
+    'loginstatus'    => "Sei loggato.",
 
-	'sessiondata'	=> "Dati di Sessione",
+    'sessiondata'    => "Dati di Sessione",
 
-	'currentusers'	=> "Utente Attuale",
+    'currentusers'    => "Utente Attuale",
 
-	'options'		=> 'Opzioni',
+    'options'        => 'Opzioni',
 
-	'status'		=> "Stato",
+    'status'        => "Stato",
 
-	'active'		=> "Attivo",
+    'active'        => "Attivo",
 
-	'notactive'		=> "Non Attivo",
+    'notactive'        => "Non Attivo",
 
-	'suspended'		=> "Sospeso",
+    'suspended'        => "Sospeso",
 
-	'banned'		=> "Bannato",
+    'banned'        => "Bannato",
 
-	'actionedit'	=> "Modifica",
+    'actionedit'    => "Modifica",
 
-	'actionsuspend'	=> "Sospendi",
+    'actionsuspend'    => "Sospendi",
 
-	'actionunsuspend' => "Riattiva",
+    'actionunsuspend' => "Riattiva",
 
-	'actionban'		=> "Banna",
+    'actionban'        => "Banna",
 
-	'actionunban'	=> "Togli Ban",
+    'actionunban'    => "Togli Ban",
 
-	'actiondelete'	=> "Elimina",
+    'actiondelete'    => "Elimina",
 
 );

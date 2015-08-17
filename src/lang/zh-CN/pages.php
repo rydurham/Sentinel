@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Success',
+    'flashsuccess'    => '成功',
 
-	'flasherror'	=> 'Error',
+    'flasherror'    => '错误',
 
-	'flashwarning'	=> 'Warning',
+    'flashwarning'    => '警告',
 
-	'flashinfo'		=> 'FYI',
+    'flashinfo'        => '仅供参考',
 
-	'register'		=> 'Register',
+    'register'        => '注册',
 
-	'login'			=> "Login",
+    'login'            => "登录",
 
-	'logout'		=> "Logout",
+    'logout'        => "注销",
 
-	'home'			=> "Home",
+    'home'            => "首页",
 
-	'users' 		=> 'User|Users'
+    'users'        => 'User|用户',
 
-	'groups'		=> "Groups",
+    'groups'        => "组",
 
-	'helloworld'	=> "Hello World!",
+    'helloworld'    => "世界你好！",
 
-	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+    'description'    => "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "You are currently logged in.",
+    'loginstatus'    => "您当前已登录",
 
-	'sessiondata'	=> "Session Data",
+    'sessiondata'    => "会话数据",
 
-	'currentusers'	=> "Current Users",
+    'currentusers'    => "当前用户",
 
-	'options'		=> 'Options',
+    'options'        => '选项',
 
-	'status'		=> "Status",
+    'status'        => "状态",
 
-	'active'		=> "Active",
+    'active'        => "激活",
 
-	'notactive'		=> "Not Active",
+    'notactive'        => "未激活",
 
-	'suspended'		=> "Suspended",
+    'suspended'        => "停用",
 
-	'banned'		=> "Banned",
+    'banned'        => "禁止",
 
-	'actionedit'	=> "Edit",
+    'actionedit'    => "编辑",
 
-	'actionsuspend'	=> "Suspend",
+    'actionsuspend'    => "停用",
 
-	'actionunsuspend' => "Un-Suspend",
+    'actionunsuspend' => "取消停用",
 
-	'actionban'		=> "Ban",
+    'actionban'        => "屏蔽",
 
-	'actionunban'	=> "Un-Ban",
+    'actionunban'    => "取消屏蔽",
 
-	'actiondelete'	=> "Delete",
+    'actiondelete'    => "删除",
 
 );

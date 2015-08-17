@@ -8,27 +8,27 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'flashsuccess'	=> 'Éxito',
+	'flashsuccess'	=> 'نجاح',
 
-	'flasherror'	=> 'Error',
+	'flasherror'	=> 'خطأ',
 
-	'flashwarning'	=> 'Advertencia',
+	'flashwarning'	=> 'تحذير',
 
-	'flashinfo'		=> 'Información',
+	'flashinfo'		=> 'FYI',
 
-	'register'		=> 'Registro',
+	'register'		=> 'تسجيل عضوية',
 
-	'login'			=> "Iniciar Sesión",
+	'login'			=> "تسجيل الدخول",
 
-	'logout'		=> "Cerrar Sesión",
+	'logout'		=> "تسجيل الخروج",
 
-	'home'			=> "Inicio",
+	'home'			=> "الرئيسية",
 
-	'users' 		=> 'Usuario|Usuarios',
+	'users' 		=> 'مستخدم | مستخدمون',
 
-	'groups'		=> "Grupo|Grupos",
+	'groups'		=> "مجموعات",
 
-	'helloworld'	=> "Hola Mundo!",
+	'helloworld'	=> "مرحباً بالعالم!",
 
 	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 

@@ -2,18 +2,18 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Session Repository Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Session Repository Messages
+    |--------------------------------------------------------------------------
+    */
 
-	"invalid"   => "Invalid username or password.",
+    "invalid"   => "Neplatné uživatelské jméno nebo heslo.",
 
-	"notactive" =>  "You have not yet activated this account. <a href=':url' class='alert-link'>Resend Activation Email?</a>",
+    "notactive" =>  "Ještě jste neaktivovali tento účet. <a href=':url' class='alert-link'> znovu poslat aktivační E-mail?</a>",
 
-	"suspended" => "Your account has been temporarily suspended.",
+    "suspended" => "Váš účet byl dočasně zablokován.",
 
-	"banned" 	=> "You have been banned.",
+    "banned"    => "Byl jste zabanován.",
 
 );

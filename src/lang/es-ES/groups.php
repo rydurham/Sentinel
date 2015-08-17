@@ -2,26 +2,26 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Group Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Group Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=> "Group Created.",	
+    'created'        => "Grupo Creado.",
 
-	'loginreq' 		=> "Login field required.",
+    'loginreq'        => "Campo de inicio de sesión requerido.",
 
-	'userexists' 	=> "User already exists.",
+    'userexists'    => "El usuario ya existe.",
 
-	'updated' 		=> "Group has been updated.",
+    'updated'        => "El grupo ha sido actualizado.",
 
-	'updateproblem' => "There was a problem updating the group.",
+    'updateproblem' => "Ocurrió un problema al actualizar el grupo.",
 
-	'namereq' 		=> "You must provide a group name.",
+    'namereq'        => "Debe proporcionar un nombre de grupo.",
 
-	'groupexists' 	=> "That group already exists.",
+    'groupexists'    => "Ese grupo ya existe.",
 
-	'notfound' 		=> "Group not found.",
+    'notfound'        => "Grupo no encontrado.",
 
 );

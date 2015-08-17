@@ -2,26 +2,26 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Group Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Group Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=> "Group Created.",	
+    'created'        => "创建组",
 
-	'loginreq' 		=> "Login field required.",
+    'loginreq'        => "必填字段",
 
-	'userexists' 	=> "User already exists.",
+    'userexists'    => "用户已经存在!",
 
-	'updated' 		=> "Group has been updated.",
+    'updated'        => "组已被更新",
 
-	'updateproblem' => "There was a problem updating the group.",
+    'updateproblem' => "更新组时出错",
 
-	'namereq' 		=> "You must provide a group name.",
+    'namereq'        => "您必须提供一个组名称",
 
-	'groupexists' 	=> "That group already exists.",
+    'groupexists'    => "该组已存在",
 
-	'notfound' 		=> "Group not found.",
+    'notfound'        => "找不到该组",
 
 );

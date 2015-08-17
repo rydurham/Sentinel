@@ -2,26 +2,26 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Group Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Group Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=> "Gruppe opprettet.",	
+    'created'        => "Gruppe opprettet.",
 
-	'loginreq' 		=> "Innloggsfelt påkrevd.",
+    'loginreq'        => "Innloggsfelt påkrevd.",
 
-	'userexists' 	=> "Bruker eksisterer allerede.",
+    'userexists'    => "Bruker eksisterer allerede.",
 
-	'updated' 		=> "Gruppen har blitt oppdatert.",
+    'updated'        => "Gruppen har blitt oppdatert.",
 
-	'updateproblem' => "Det oppstod et problem under oppdatering av gruppen.",
+    'updateproblem' => "Det oppstod et problem under oppdatering av gruppen.",
 
-	'namereq' 		=> "Du må oppgi et gruppenavn.",
+    'namereq'        => "Du må oppgi et gruppenavn.",
 
-	'groupexists' 	=> "Den gruppen eksisterer allerede.",
+    'groupexists'    => "Den gruppen eksisterer allerede.",
 
-	'notfound' 		=> "Gruppen er ikke funnet.",
+    'notfound'        => "Gruppen er ikke funnet.",
 
 );

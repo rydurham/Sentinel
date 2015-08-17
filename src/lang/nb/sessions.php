@@ -2,18 +2,18 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Session Repository Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Session Repository Messages
+    |--------------------------------------------------------------------------
+    */
 
-	"invalid"   => "Ugyldig brukernavn eller passord.",
+    "invalid"   => "Ugyldig brukernavn eller passord.",
 
-	"notactive" =>  "Du har ikke akitvert denne kontoen. <a href=':url' class='alert-link'>Send aktivasjons-mail på nytt?</a>",
+    "notactive" =>  "Du har ikke akitvert denne kontoen. <a href=':url' class='alert-link'>Send aktivasjons-mail på nytt?</a>",
 
-	"suspended" => "Din konto har blitt midlertidlig suspendert.",
+    "suspended" => "Din konto har blitt midlertidlig suspendert.",
 
-	"banned" 	=> "Du har blitt utestengt.",
+    "banned"    => "Du har blitt utestengt.",
 
 );

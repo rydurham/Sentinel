@@ -2,18 +2,18 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Session Repository Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Session Repository Messages
+    |--------------------------------------------------------------------------
+    */
 
-	"invalid"   => "Invalid username or password.",
+    "invalid"   => "无效的用户名或密码",
 
-	"notactive" =>  "You have not yet activated this account. <a href=':url' class='alert-link'>Resend Activation Email?</a>",
+    "notactive" =>  "你还未激活此帐户。<a href=':url' class='alert-link'> 重新发送激活电子邮件？</a>",
 
-	"suspended" => "Your account has been temporarily suspended.",
+    "suspended" => "您的帐户已被暂停使用。",
 
-	"banned" 	=> "You have been banned.",
+    "banned"    => "你已被禁止。",
 
 );

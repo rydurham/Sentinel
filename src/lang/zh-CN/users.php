@@ -2,60 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| User Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | User Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",	
+    'created'        =>  "您的帐户已创建。请检查您的收件箱确认点击注册链接的。",
 
-	'createdactive' =>  "Your account has been created. You can now login.",
+    'createdactive' =>  "您的帐户已激活。您现在可以登录。",
 
-	'added'			=>  "New user added. Check the email account for the confirmation link.",
+    'added'            =>  "添加新用户。请检查确认链接的电子邮件帐户。",
 
-	'addedactive'	=>  "New user added.",
+    'addedactive'    =>  "添加新用户",
 
-	'loginreq' 		=>	"Login field required.",
+    'loginreq'        =>    "必填字段",
 
-	'exists'		=>	"User already exists.",
+    'exists'        =>    "用户已经存在",
 
-	'notfound'		=>	"User not found",
+    'notfound'        =>    "未找到用户",
 
-	'noaccess'		=>	"You are not allowed to do that.",
+    'noaccess'        =>    "不允许这样操作",
 
-	'updated'		=>	"Profile updated",
+    'updated'        =>    "个人资料已更新",
 
-	'notupdated'	=>	"Unable to update profile",
+    'notupdated'    =>    "无法更新配置文件",
 
-	'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+    'activated'        =>    "激活完成。<a href=':url' class='alert-link'> 你现在可以登录</a>",
 
-	'notactivated'	=>	"Activation could not be completed.",
+    'notactivated'    =>    "无法完成激活",
 
-	'alreadyactive'	=>	"That account has already been activated.",
+    'alreadyactive'    =>    "此帐户已被启用",
 
-	'emailconfirm'	=>	"Check your email for the confirmation link.",
+    'emailconfirm'    =>    "请检查您的确认链接的电子邮件",
 
-	'emailinfo'		=>	"Check your email for instructions.",
+    'emailinfo'        =>    "请检查您的电子邮件的说明",
 
-	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
+    'emailpassword'    =>    "您的密码已更改。请检查您的新密码的电子邮件。",
 
-	'problem'		=>	"There was a problem. Please contact the system administrator.",
+    'problem'        =>    "发生错误，请与系统管理员联系。",
 
-	'passwordchg'	=> 	"Your password has been changed.",
+    'passwordchg'    =>    "您的密码已更改",
 
-	'passwordprob'	=>	"Your password could not be changed.",
+    'passwordprob'    =>    "您的密码无法变更",
 
-	'oldpassword'	=>	"You did not provide the correct original password.",
+    'oldpassword'    =>    "你没有提供正确的原始密码",
 
-	'suspended'		=>	"User has been suspended for :minutes minutes.",
+    'suspended'        =>    "用户被暂停使用 15 分钟",
 
-	'unsuspended'	=>	"Suspension removed.",
+    'unsuspended'    =>    "暂停状态已取消",
 
-	'banned'		=>	"User has been banned.",
+    'banned'        =>    "用户已被禁止",
 
-	'unbanned'		=>	"User has been unbanned.",
+    'unbanned'        =>    "用户已解禁",
 
-	'inactive_reg' 	=>  "Registration is not available at this time."
+    'inactive_reg'    =>  "暂停新用户注册",
+
+    'destroyed'     =>  "用户已被删除",
+
+    'notdestroyed'  =>  "无法删除用户"
 
 );

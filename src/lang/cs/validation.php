@@ -2,173 +2,173 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Validation Language Lines
-	|--------------------------------------------------------------------------
-	|
-	| The following language lines contain the default error messages used by
-	| the validator class. Some of these rules have multiple versions such
-	| such as the size rules. Feel free to tweak each of these messages.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines contain the default error messages used by
+    | the validator class. Some of these rules have multiple versions such
+    | such as the size rules. Feel free to tweak each of these messages.
+    |
+    */
 
-	"accepted"         => "The :attribute must be accepted.",
-	
-	"active_url"       => "The :attribute is not a valid URL.",
-	
-	"after"            => "The :attribute must be a date after :date.",
-	
-	"alpha"            => "The :attribute may only contain letters.",
-	
-	"alpha_dash"       => "The :attribute may only contain letters, numbers, and dashes.",
-	
-	"alpha_num"        => "The :attribute may only contain letters and numbers.",
+    "accepted"         => "Je potřeba potvrdit :attribute.",
+    
+    "active_url"       => ":attribute není platná adresa URL.",
+    
+    "after"            => ":attribute nemůže být dříve než :date.",
+    
+    "alpha"            => ":attribute může obsahovat pouze písmena.",
+    
+    "alpha_dash"       => ":attribute může obsahovat pouze písmena, čísla, a pomlčky.",
+    
+    "alpha_num"        => ":attribute může obsahovat pouze písmena čísla.",
 
-	"alpha_spaces"     => "The :attribute may only contain letters and spaces.",
-	
-	"before"           => "The :attribute must be a date before :date.",
-	
-	"between"          => array(
-	
-		"numeric" => "The :attribute must be between :min - :max.",
-	
-		"file"    => "The :attribute must be between :min - :max kilobytes.",
-	
-		"string"  => "The :attribute must be between :min - :max characters.",
-	
-	),
-	
-	"confirmed"        => "The :attribute confirmation does not match.",
-	
-	"date"             => "The :attribute is not a valid date.",
-	
-	"date_format"      => "The :attribute does not match the format :format.",
-	
-	"different"        => "The :attribute and :other must be different.",
-	
-	"digits"           => "The :attribute must be :digits digits.",
-	
-	"digits_between"   => "The :attribute must be between :min and :max digits.",
-	
-	"email"            => "The :attribute format is invalid.",
-	
-	"exists"           => "The selected :attribute is invalid.",
-	
-	"image"            => "The :attribute must be an image.",
-	
-	"in"               => "The selected :attribute is invalid.",
-	
-	"integer"          => "The :attribute must be an integer.",
-	
-	"ip"               => "The :attribute must be a valid IP address.",
-	
-	"max"              => array(
-	
-		"numeric" => "The :attribute may not be greater than :max.",
-	
-		"file"    => "The :attribute may not be greater than :max kilobytes.",
-	
-		"string"  => "The :attribute may not be greater than :max characters.",
-	
-	),
-	
-	"mimes"            => "The :attribute must be a file of type: :values.",
-	
-	"min"              => array(
-	
-		"numeric" => "The :attribute must be at least :min.",
-	
-		"file"    => "The :attribute must be at least :min kilobytes.",
-	
-		"string"  => "The :attribute must be at least :min characters.",
-	
-	),
-	
-	"not_in"           => "The selected :attribute is invalid.",
-	
-	"numeric"          => "The :attribute must be a number.",
-	
-	"regex"            => "The :attribute format is invalid.",
-	
-	"required"         => "The :attribute field is required.",
-	
-	"required_with"    => "The :attribute field is required when :values is present.",
-	
-	"required_without" => "The :attribute field is required when :values is not present.",
-	
-	"same"             => "The :attribute and :other must match.",
-	
-	"size"             => array(
-	
-		"numeric" => "The :attribute must be :size.",
-	
-		"file"    => "The :attribute must be :size kilobytes.",
-	
-		"string"  => "The :attribute must be :size characters.",
-	
-	),
-	
-	"unique"           => "The :attribute has already been taken.",
-	
-	"url"              => "The :attribute format is invalid.",
+    "alpha_spaces"     => ":attribute může obsahovat pouze písmena a mezery.",
+    
+    "before"           => ":attribute nemůže být později než :date.",
+    
+    "between"          => array(
+    
+        "numeric" => ":attribute musí být mezi :min - :max.",
+    
+        "file"    => ":attribute musí být mezi :min - :max kilobajtů.",
+    
+        "string"  => ":attribute musí být v rozmezí :min - :max znaků.",
+    
+    ),
+    
+    "confirmed"        => "Potvrzení :attribute se neshoduje.",
+    
+    "date"             => ":attribute není platné datum.",
+    
+    "date_format"      => ":attribute se neshoduje se správným formátem :format.",
+    
+    "different"        => ":attribute a: :other se musí lišit.",
+    
+    "digits"           => ":attribute musí obsahovat :digits číslic.",
+    
+    "digits_between"   => ":attribute musí být v rozmezí :min a: max číslic.",
+    
+    "email"            => "Formát :attribute je neplatný.",
+    
+    "exists"           => ":attribute je neplatný.",
+    
+    "image"            => ":attribute musí být obrázek.",
+    
+    "in"               => ":attribute je neplatný.",
+    
+    "integer"          => ":attribute musí být číslo.",
+    
+    "ip"               => ":attribute musí být platnou adresu IP.",
+    
+    "max"              => array(
+    
+        "numeric" => ":attribute nesmí být vyšší než :max.",
+    
+        "file"    => ":attribute nesmí být vyšší než :max kilobajtů.",
+    
+        "string"  => ":attribute nesmí být vyšší než :max znaků.",
+    
+    ),
+    
+    "mimes"            => ":attribute musí být soubor typu: :values.",
+    
+    "min"              => array(
+    
+        "numeric" => ":attribute musí být alespoň :min.",
+    
+        "file"    => ":attribute musí být alespoň :min kilobajtů.",
+    
+        "string"  => ":attribute musí mít alespoň :min znaků.",
+    
+    ),
+    
+    "not_in"           => ":attribute je neplatný.",
+    
+    "numeric"          => ":attribute musí být číslo.",
+    
+    "regex"            => "Formát :attribute je neplatný.",
+    
+    "required"         => "Pole :attribute je požadováno.",
+    
+    "required_with"    => "Pole :attribute je požadováno když :values je k dispozici.",
+    
+    "required_without" => "Pole :attribute je požadováno když :values není k dispozici.",
+    
+    "same"             => ":attribute a: :other se musí shodovat.",
+    
+    "size"             => array(
+    
+        "numeric" => ":attribute musí být :size.",
+    
+        "file"    => ":attribute musí mít velikost :size KB.",
+    
+        "string"  => ":attribute musí mít :size znaků.",
+    
+    ),
+    
+    "unique"           => ":attribute již byl zabrán.",
+    
+    "url"              => "Formát :attribute je neplatný.",
 
-	/*
-	|--------------------------------------------------------------------------
-	| Custom Validation Language Lines
-	|--------------------------------------------------------------------------
-	|
-	| Here you may specify custom validation messages for attributes using the
-	| convention "attribute.rule" to name the lines. This makes it quick to
-	| specify a specific custom language line for a given attribute rule.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify custom validation messages for attributes using the
+    | convention "attribute.rule" to name the lines. This makes it quick to
+    | specify a specific custom language line for a given attribute rule.
+    |
+    */
 
-	'custom' => array(
+    'custom' => array(
     
         'oldPassword' => array(
     
-            'required' => 'You must enter your old password.',
+            'required' => 'Musíte zadat staré heslo.',
     
-            'min' => 'Your old password must be at least 6 characters long.',
+            'min' => 'Heslo musí být alespoň 6 znaků dlouhé.',
     
         ),
     
         'newPassword' => array(
     
-            'required' => 'You must enter a new password.',
+            'required' => 'Je třeba zadat nové heslo.',
     
-            'min' => 'Your new password must be at least 6 characters long.',
+            'min' => 'Heslo musí být alespoň 6 znaků dlouhé.',
     
         ),
     
         'newPassword_confirmation' => array(
     
-            'required' => 'You must confirm your new password.',
+            'required' => 'Musíte potvrdit vaše nové heslo.',
     
         ),
     
         'minutes' => array(
     
-            'numeric' => 'Minutes must be a number',
+            'numeric' => 'Minuty musí být číslo',
     
-            'required' => 'You must specify suspension length in minutes',
+            'required' => 'Je nutné zadat délku pozastavení v minutách',
     
         ),
     
     ),
 
-	/*
-	|--------------------------------------------------------------------------
-	| Custom Validation Attributes
-	|--------------------------------------------------------------------------
-	|
-	| The following language lines are used to swap attribute place-holders
-	| with something more reader friendly such as E-Mail Address instead
-	| of "email". This simply helps us make messages a little cleaner.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used to swap attribute place-holders
+    | with something more reader friendly such as E-Mail Address instead
+    | of "email". This simply helps us make messages a little cleaner.
+    |
+    */
 
-	'attributes' => array(),
+    'attributes' => array(),
 
 );

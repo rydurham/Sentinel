@@ -2,60 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| User Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | User Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",	
+    'created'        =>  "Konto zostało utworzone. Na podany adres e-mail został wysłany link aktywacyjny.",
 
-	'createdactive' =>  "Your account has been created. You can now login.",
+    'createdactive' =>  "Twoje konto zostało utworzone. Możesz się teraz zalogować.",
 
-	'added'			=>  "New user added. Check the email account for the confirmation link.",
+    'added'            =>  "Nowy użytkownik został dodany. Na podany adres e-mail został wysłany link aktywacyjny.",
 
-	'addedactive'	=>  "New user added.",
+    'addedactive'    =>  "Nowy użytkownik został dodany.",
 
-	'loginreq' 		=>	"Login field required.",
+    'loginreq'        =>    "Pole 'Login' jest wymagane.",
 
-	'exists'		=>	"User already exists.",
+    'exists'        =>    "Taki użytkownik już istnieje.",
 
-	'notfound'		=>	"User not found",
+    'notfound'        =>    "Nie znaleziono użytkownika",
 
-	'noaccess'		=>	"You are not allowed to do that.",
+    'noaccess'        =>    "Nie masz uprawnień do tej akcji.",
 
-	'updated'		=>	"Profile updated",
+    'updated'        =>    "Profil zaktualizowany",
 
-	'notupdated'	=>	"Unable to update profile",
+    'notupdated'    =>    "Nie można zaktualizować profilu",
 
-	'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+    'activated'        =>    "Aktywacja zakończona. <a href=':url' class='alert-link'>Możesz się teraz zalogować</a>",
 
-	'notactivated'	=>	"Activation could not be completed.",
+    'notactivated'    =>    "Aktywacja nie powiodła się.",
 
-	'alreadyactive'	=>	"That account has already been activated.",
+    'alreadyactive'    =>    "To konto zostało już aktywowane.",
 
-	'emailconfirm'	=>	"Check your email for the confirmation link.",
+    'emailconfirm'    =>    "Na podany adres e-mail został wysłany link aktywacyjny.",
 
-	'emailinfo'		=>	"Check your email for instructions.",
+    'emailinfo'        =>    "Sprawdź pocztę, aby otrzymać dalsze instrukcje.",
 
-	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
+    'emailpassword'    =>    "Twoje hasło zostało zmienione. Sprawdź pocztę, aby ustalić nowe.",
 
-	'problem'		=>	"There was a problem. Please contact the system administrator.",
+    'problem'        =>    "Wystpił problem. Skontaktuj się z administratorem systemu.",
 
-	'passwordchg'	=> 	"Your password has been changed.",
+    'passwordchg'    =>    "Twoje hasło zostało zmienione.",
 
-	'passwordprob'	=>	"Your password could not be changed.",
+    'passwordprob'    =>    "Nie udało się zmienić hasła.",
 
-	'oldpassword'	=>	"You did not provide the correct original password.",
+    'oldpassword'    =>    "Nie podałeś poprawnego hasła oryginalnego.",
 
-	'suspended'		=>	"User has been suspended for :minutes minutes.",
+    'suspended'        =>    "Użytkownik został zawieszony na 15 minut.",
 
-	'unsuspended'	=>	"Suspension removed.",
+    'unsuspended'    =>    "Zawieszenie usunięte.",
 
-	'banned'		=>	"User has been banned.",
+    'banned'        =>    "Użytkownik został zablokowany.",
 
-	'unbanned'		=>	"User has been unbanned.",
+    'unbanned'        =>    "Użytkownik został odblokowany.",
 
-	'inactive_reg' 	=>  "Registration is not available at this time."
+    'inactive_reg'    =>  "Rejestracja nie jest w tej chwili dostępna.",
+
+    'destroyed'     =>  "Użytkownik został usunięty.",
+
+    'notdestroyed'  =>  "Nie można usunąć użytkownika."
 
 );

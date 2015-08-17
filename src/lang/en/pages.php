@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Success',
+    'flashsuccess'    => 'Success',
 
-	'flasherror'	=> 'Error',
+    'flasherror'    => 'Error',
 
-	'flashwarning'	=> 'Warning',
+    'flashwarning'    => 'Warning',
 
-	'flashinfo'		=> 'FYI',
+    'flashinfo'        => 'FYI',
 
-	'register'		=> 'Register',
+    'register'        => 'Register',
 
-	'login'			=> "Login",
+    'login'            => "Login",
 
-	'logout'		=> "Logout",
+    'logout'        => "Logout",
 
-	'home'			=> "Home",
+    'home'            => "Home",
 
-	'users' 		=> 'User|Users',
+    'users'        => 'User|Users',
 
-	'groups'		=> "Groups",
+    'groups'        => "Groups",
 
-	'helloworld'	=> "Hello World!",
+    'helloworld'    => "Hello World!",
 
-	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+    'description'    => "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "You are currently logged in.",
+    'loginstatus'    => "You are currently logged in.",
 
-	'sessiondata'	=> "Session Data",
+    'sessiondata'    => "Session Data",
 
-	'currentusers'	=> "Current Users",
+    'currentusers'    => "Current Users",
 
-	'options'		=> 'Options',
+    'options'        => 'Options',
 
-	'status'		=> "Status",
+    'status'        => "Status",
 
-	'active'		=> "Active",
+    'active'        => "Active",
 
-	'notactive'		=> "Not Active",
+    'notactive'        => "Not Active",
 
-	'suspended'		=> "Suspended",
+    'suspended'        => "Suspended",
 
-	'banned'		=> "Banned",
+    'banned'        => "Banned",
 
-	'actionedit'	=> "Edit",
+    'actionedit'    => "Edit",
 
-	'actionsuspend'	=> "Suspend",
+    'actionsuspend'    => "Suspend",
 
-	'actionunsuspend' => "Un-Suspend",
+    'actionunsuspend' => "Un-Suspend",
 
-	'actionban'		=> "Ban",
+    'actionban'        => "Ban",
 
-	'actionunban'	=> "Un-Ban",
+    'actionunban'    => "Un-Ban",
 
-	'actiondelete'	=> "Delete",
+    'actiondelete'    => "Delete",
 
 );

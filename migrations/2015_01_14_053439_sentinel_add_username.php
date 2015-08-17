@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class SentinelAddUsername extends Migration {
-
+class SentinelAddUsername extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -13,8 +13,7 @@ class SentinelAddUsername extends Migration {
     public function up()
     {
         // Add the username to the users table
-        Schema::table('users', function($table)
-        {
+        Schema::table('users', function ($table) {
             $table->string('username')->nullable()->unique();
         });
     }
@@ -27,10 +26,8 @@ class SentinelAddUsername extends Migration {
     public function down()
     {
         // Remove username from the users table
-        Schema::table('users', function($table)
-        {
+        Schema::table('users', function ($table) {
             $table->dropColumn('username');
         });
     }
-
 }

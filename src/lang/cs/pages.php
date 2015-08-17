@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Success',
+    'flashsuccess'    => 'Hotovo',
 
-	'flasherror'	=> 'Error',
+    'flasherror'    => 'Došlo k chybě',
 
-	'flashwarning'	=> 'Warning',
+    'flashwarning'    => 'Varování',
 
-	'flashinfo'		=> 'FYI',
+    'flashinfo'        => 'pro vaší informaci',
 
-	'register'		=> 'Register',
+    'register'        => 'Registrovat se',
 
-	'login'			=> "Login",
+    'login'            => "Přihlásit",
 
-	'logout'		=> "Logout",
+    'logout'        => "Odhlásit se",
 
-	'home'			=> "Home",
+    'home'            => "Domů",
 
-	'users' 		=> 'User|Users'
+    'users'        => 'Uživatel| Uživatelé',
 
-	'groups'		=> "Groups",
+    'groups'        => "Skupiny",
 
-	'helloworld'	=> "Hello World!",
+    'helloworld'    => "Hello World!",
 
-	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+    'description'    => "To je příklad <a href=\"https://github.com/laravel/laravel\"> Laravel 5.1</a> systému s modulem <a href=\"https://github.com/cartalyst/sentry\"> Sentry 2.0</a> a <a href=\"http://getbootstrap.com/\"> Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "You are currently logged in.",
+    'loginstatus'    => "Aktuálně jste přihlášeni.",
 
-	'sessiondata'	=> "Session Data",
+    'sessiondata'    => "Data relace",
 
-	'currentusers'	=> "Current Users",
+    'currentusers'    => "Aktuální uživatelé",
 
-	'options'		=> 'Options',
+    'options'        => 'Nastavení',
 
-	'status'		=> "Status",
+    'status'        => "Stav",
 
-	'active'		=> "Active",
+    'active'        => "Aktivní",
 
-	'notactive'		=> "Not Active",
+    'notactive'        => "Neaktivní",
 
-	'suspended'		=> "Suspended",
+    'suspended'        => "Zablokován",
 
-	'banned'		=> "Banned",
+    'banned'        => "Zabanován",
 
-	'actionedit'	=> "Edit",
+    'actionedit'    => "Upravit",
 
-	'actionsuspend'	=> "Suspend",
+    'actionsuspend'    => "Zablokovat",
 
-	'actionunsuspend' => "Un-Suspend",
+    'actionunsuspend' => "Odblokovat",
 
-	'actionban'		=> "Ban",
+    'actionban'        => "Zabanovat",
 
-	'actionunban'	=> "Un-Ban",
+    'actionunban'    => "Odbanovat",
 
-	'actiondelete'	=> "Delete",
+    'actiondelete'    => "Smazat",
 
 );

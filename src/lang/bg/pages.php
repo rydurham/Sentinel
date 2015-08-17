@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Успех',
+    'flashsuccess'    => 'Успех',
 
-	'flasherror'	=> 'Грешка',
+    'flasherror'    => 'Грешка',
 
-	'flashwarning'	=> 'Предупреждение',
+    'flashwarning'    => 'Предупреждение',
 
-	'flashinfo'		=> 'Разбери защо',
+    'flashinfo'        => 'Разбери защо',
 
-	'register'		=> 'Регистрирай',
+    'register'        => 'Регистрирай',
 
-	'login'			=> "Вход",
+    'login'            => "Вход",
 
-	'logout'		=> "Изход",
+    'logout'        => "Изход",
 
-	'home'			=> "Начало",
+    'home'            => "Начало",
 
-	'users'			=> "Потребител|Потребители",
+    'users'        => 'User|Users',
 
-	'groups'		=> "Групи",
+    'groups'        => "Groups",
 
-	'helloworld'	=> "Здравейте",
+    'helloworld'    => "Здравейте",
 
-	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+    'description'    => "Това е пример за <a href=\"https://github.com/laravel/laravel\"> Laravel 4.1</a> с <a href=\"https://github.com/cartalyst/sentry\"> караула 2.0</a> и <a href=\"http://getbootstrap.com/\"> Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "Вие сте влезли в системата.",
+    'loginstatus'    => "Вие сте влезли в системата.",
 
-	'sessiondata'	=> "Информация за сесията",
+    'sessiondata'    => "Информация за сесията",
 
-	'currentusers'	=> "Потребители",
+    'currentusers'    => "Потребители",
 
-	'options'		=> 'Настройки',
+    'options'        => 'Настройки',
 
-	'status'		=> "Статус",
+    'status'        => "Статус",
 
-	'active'		=> "Ативен",
+    'active'        => "Ативен",
 
-	'notactive'		=> "Не активен",
+    'notactive'        => "Не активен",
 
-	'suspended'		=> "Изключен",
+    'suspended'        => "Изключен",
 
-	'banned'		=> "Забранен",
+    'banned'        => "Забранен",
 
-	'actionedit'	=> "Промени",
+    'actionedit'    => "Промени",
 
-	'actionsuspend'	=> "Изключи",
+    'actionsuspend'    => "Изключи",
 
-	'actionunsuspend' => "Включи",
+    'actionunsuspend' => "Включи",
 
-	'actionban'		=> "Забрани",
+    'actionban'        => "Забрани",
 
-	'actionunban'	=> "Разреши",
+    'actionunban'    => "Разреши",
 
-	'actiondelete'	=> "Изтрий",
+    'actiondelete'    => "Изтрий",
 
 );

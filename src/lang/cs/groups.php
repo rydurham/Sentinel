@@ -2,26 +2,26 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Group Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Group Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=> "Group Created.",	
+    'created'        => "Skupina byla vytvořena.",
 
-	'loginreq' 		=> "Login field required.",
+    'loginreq'        => "Pole požadováno.",
 
-	'userexists' 	=> "User already exists.",
+    'userexists'    => "Tento uživatel již existuje.",
 
-	'updated' 		=> "Group has been updated.",
+    'updated'        => "Skupina byla aktualizována.",
 
-	'updateproblem' => "There was a problem updating the group.",
+    'updateproblem' => "Došlo k potížím při aktualizaci skupiny.",
 
-	'namereq' 		=> "You must provide a group name.",
+    'namereq'        => "Je třeba zadat název skupiny.",
 
-	'groupexists' 	=> "That group already exists.",
+    'groupexists'    => "Tato skupina již existuje.",
 
-	'notfound' 		=> "Group not found.",
+    'notfound'        => "Skupina nenalezena.",
 
 );

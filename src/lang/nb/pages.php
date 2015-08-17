@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Suksess',
+    'flashsuccess'    => 'Suksess',
 
-	'flasherror'	=> 'Feil',
+    'flasherror'    => 'Feil',
 
-	'flashwarning'	=> 'Advarsel',
+    'flashwarning'    => 'Advarsel',
 
-	'flashinfo'		=> 'for din informasjon',
+    'flashinfo'        => 'for din informasjon',
 
-	'register'		=> 'Registrer',
+    'register'        => 'Registrer',
 
-	'login'			=> "Logg inn",
+    'login'            => "Logg inn",
 
-	'logout'		=> "Logg ut",
+    'logout'        => "Logg ut",
 
-	'home'			=> "Hjem",
+    'home'            => "Hjem",
 
-	'users' 		=> 'Bruker|Brukere'
+    'users'        => 'User|Users',
 
-	'groups'		=> "Grupper",
+    'groups'        => "Groups",
 
-	'helloworld'	=> "Hello World!",
+    'helloworld'    => "Hello World!",
 
-	'description'	=> "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+    'description'    => "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "Du er logget inn.",
+    'loginstatus'    => "Du er logget inn.",
 
-	'sessiondata'	=> "Session Data",
+    'sessiondata'    => "Session Data",
 
-	'currentusers'	=> "Nåværende brukere",
+    'currentusers'    => "Nåværende brukere",
 
-	'options'		=> 'Alternativer',
+    'options'        => 'Alternativer',
 
-	'status'		=> "Status",
+    'status'        => "Status",
 
-	'active'		=> "Aktiv",
+    'active'        => "Aktiv",
 
-	'notactive'		=> "Ikke Aktiv",
+    'notactive'        => "Ikke Aktiv",
 
-	'suspended'		=> "Suspendert",
+    'suspended'        => "Suspendert",
 
-	'banned'		=> "Utestengt",
+    'banned'        => "Utestengt",
 
-	'actionedit'	=> "Rediger",
+    'actionedit'    => "Rediger",
 
-	'actionsuspend'	=> "Suspendere",
+    'actionsuspend'    => "Suspendere",
 
-	'actionunsuspend' => "Av-suspendere",
+    'actionunsuspend' => "Av-suspendere",
 
-	'actionban'		=> "Utesteng",
+    'actionban'        => "Utesteng",
 
-	'actionunban'	=> "Av-utesteng",
+    'actionunban'    => "Av-utesteng",
 
-	'actiondelete'	=> "Slett",
+    'actiondelete'    => "Slett",
 
 );

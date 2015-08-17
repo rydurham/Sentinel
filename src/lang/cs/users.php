@@ -2,60 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| User Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | User Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",	
+    'created'        =>  "Váš účet byl vytvořen. Zkontrolujte svůj e-mail pro potvrzení.",
 
-	'createdactive' =>  "Your account has been created. You can now login.",
+    'createdactive' =>  "Váš účet byl vytvořen. Nyní můžete přihlásit.",
 
-	'added'			=>  "New user added. Check the email account for the confirmation link.",
+    'added'            =>  "Nový uživatel přidán. Zkontrolujte svůj e-mail pro potvrzení.",
 
-	'addedactive'	=>  "New user added.",
+    'addedactive'    =>  "Nový uživatel přidán.",
 
-	'loginreq' 		=>	"Login field required.",
+    'loginreq'        =>    "Pole požadováno.",
 
-	'exists'		=>	"User already exists.",
+    'exists'        =>    "Tento uživatel již existuje.",
 
-	'notfound'		=>	"User not found",
+    'notfound'        =>    "Uživatel nenalezen",
 
-	'noaccess'		=>	"You are not allowed to do that.",
+    'noaccess'        =>    "Nemáte práva.",
 
-	'updated'		=>	"Profile updated",
+    'updated'        =>    "Profil aktualizován",
 
-	'notupdated'	=>	"Unable to update profile",
+    'notupdated'    =>    "Nelze aktualizovat profil",
 
-	'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+    'activated'        =>    "Aktivace je dokončena. <a href=':url' class='alert-link'> nyní se můžete přihlásit</a>",
 
-	'notactivated'	=>	"Activation could not be completed.",
+    'notactivated'    =>    "Aktivaci nelze dokončit.",
 
-	'alreadyactive'	=>	"That account has already been activated.",
+    'alreadyactive'    =>    "Tento účet byl již aktivován.",
 
-	'emailconfirm'	=>	"Check your email for the confirmation link.",
+    'emailconfirm'    =>    "Zkontrolujte svůj e-mail pro potvrzení.",
 
-	'emailinfo'		=>	"Check your email for instructions.",
+    'emailinfo'        =>    "Zkontrolujte svůj e-mail pro další kroky.",
 
-	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
+    'emailpassword'    =>    "Vaše heslo bylo změněno. Zkontrolujte svůj e-mail.",
 
-	'problem'		=>	"There was a problem. Please contact the system administrator.",
+    'problem'        =>    "Došlo k potížím. Obraťte se na správce systému.",
 
-	'passwordchg'	=> 	"Your password has been changed.",
+    'passwordchg'    =>    "Vaše heslo bylo změněno.",
 
-	'passwordprob'	=>	"Your password could not be changed.",
+    'passwordprob'    =>    "Nelze změnit vaše heslo.",
 
-	'oldpassword'	=>	"You did not provide the correct original password.",
+    'oldpassword'    =>    "Neposkytli jste správné původní heslo.",
 
-	'suspended'		=>	"User has been suspended for :minutes minutes.",
+    'suspended'        =>    "Uživatel byl zablokován na 15 minut.",
 
-	'unsuspended'	=>	"Suspension removed.",
+    'unsuspended'    =>    "Blokace uživatele odstraněna.",
 
-	'banned'		=>	"User has been banned.",
+    'banned'        =>    "Uživatel byl zabanován.",
 
-	'unbanned'		=>	"User has been unbanned.",
+    'unbanned'        =>    "Uživatel byl odbanován.",
 
-	'inactive_reg' 	=>  "Registration is not available at this time."
+    'inactive_reg'    =>  "Registrace nyní není k dispozici.",
+
+    'destroyed'     =>  "Uživatel byl odstraněn.",
+
+    'notdestroyed'  =>  "Nelze odstranit uživatele."
 
 );

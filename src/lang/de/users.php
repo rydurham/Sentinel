@@ -2,60 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| User Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | User Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=>  "Your account has been created. Check your email for the confirmation link.",	
+    'created'        =>  "Ihr Benutzerkonto wurde erstellt. Überprüfen Sie ihre E-Mails für den Aktivierungs-Link.",
 
-	'createdactive' =>  "Your account has been created. You can now login.",
+    'createdactive' =>  "Ihr Benutzerkonto wurde erstellt. Sie können sich nun anmelden.",
 
-	'added'			=>  "New user added. Check the email account for the confirmation link.",
+    'added'            =>  "Neuer Benutzer hinzugefügt. Überprüfen Sie ihre E-Mails für den Aktivierungs-Link.",
 
-	'addedactive'	=>  "New user added.",
+    'addedactive'    =>  "Neuer Benutzer hinzugefügt.",
 
-	'loginreq' 		=>	"Login field required.",
+    'loginreq'        =>    "Anmeldefeld benötigt.",
 
-	'exists'		=>	"User already exists.",
+    'exists'        =>    "Dieser Benutzer existiert bereits.",
 
-	'notfound'		=>	"User not found",
+    'notfound'        =>    "Benutzer nicht gefunden",
 
-	'noaccess'		=>	"You are not allowed to do that.",
+    'noaccess'        =>    "Sie haben keine Berechtigung, um das zu tun.",
 
-	'updated'		=>	"Profile updated",
+    'updated'        =>    "Benutzerprofil aktualisiert",
 
-	'notupdated'	=>	"Unable to update profile",
+    'notupdated'    =>    "Ihr Benutzerprofil kann nicht aktualisiert werden",
 
-	'activated'		=>	"Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+    'activated'        =>    "Aktivierung abgeschlossen. <a href=':url' class='alert-link'>Sie können sich nun anmelden</a>",
 
-	'notactivated'	=>	"Activation could not be completed.",
+    'notactivated'    =>    "Aktivierung konnte nicht abgeschlossen werden.",
 
-	'alreadyactive'	=>	"That account has already been activated.",
+    'alreadyactive'    =>    "Dieses Benutzerkonto wurde bereits aktiviert.",
 
-	'emailconfirm'	=>	"Check your email for the confirmation link.",
+    'emailconfirm'    =>    "Überprüfen Sie ihre E-Mails für den Aktivierungs-Link.",
 
-	'emailinfo'		=>	"Check your email for instructions.",
+    'emailinfo'        =>    "Überprüfen Sie ihre E-Mails für eine Anleitung.",
 
-	'emailpassword'	=>	"Your password has been changed. Check your email for the new password.",
+    'emailpassword'    =>    "Ihr Passwort wurde geändert. Überprüfen Sie ihre E-Mails für das neue Passwort.",
 
-	'problem'		=>	"There was a problem. Please contact the system administrator.",
+    'problem'        =>    "Ein Problem ist aufgetreten. Bitte wenden Sie sich an den Administrator.",
 
-	'passwordchg'	=> 	"Your password has been changed.",
+    'passwordchg'    =>    "Ihr Passwort wurde geändert.",
 
-	'passwordprob'	=>	"Your password could not be changed.",
+    'passwordprob'    =>    "Ihr Passwort konnte nicht geändert werden.",
 
-	'oldpassword'	=>	"You did not provide the correct original password.",
+    'oldpassword'    =>    "Sie haben das falsche Original-Passwort eingegeben.",
 
-	'suspended'		=>	"User has been suspended for :minutes minutes.",
+    'suspended'        =>    "Dieser Benutzer wurde für 15 Minuten gesperrt.",
 
-	'unsuspended'	=>	"Suspension removed.",
+    'unsuspended'    =>    "Der Benutzer reaktiviert.",
 
-	'banned'		=>	"User has been banned.",
+    'banned'        =>    "Der Benutzer wurde gesperrt.",
 
-	'unbanned'		=>	"User has been unbanned.",
+    'unbanned'        =>    "Der Benutzer wurde entsperrt.",
 
-	'inactive_reg' 	=>  "Registration is not available at this time."
+    'inactive_reg'    =>  "Die Registrierung ist zu diesem Zeitpunkt nicht möglich.",
+
+    'destroyed'     =>  "Dieser Benutzer wurde entfernt.",
+
+    'notdestroyed'  =>  "Benutzer kann nicht entfernt werden."
 
 );
