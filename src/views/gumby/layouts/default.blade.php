@@ -33,14 +33,14 @@
 
 		        <ul class="eight columns">
 		           @if ( ! Sentry::check() )
-       					<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ route('sentinel.login') }}">Log In</a></li>
-       					<li {{ (Request::is('register') ? 'class="active"' : '') }}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
+       					<li {!! (Request::is('login') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.login') }}">Log In</a></li>
+       					<li {!! (Request::is('register') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
        				@else 
        					@if (Sentry::getUser()->hasAccess('admin'))
-       						<li {{ (Request::is('users*') ? 'class="active"' : '') }}><a href="{{ action('\\Sentinel\Controllers\UserController@index') }}">Users</a></li>
-       						<li {{ (Request::is('groups*') ? 'class="active"' : '') }}><a href="{{ action('\\Sentinel\Controllers\GroupController@index') }}">Groups</a></li>
+       						<li {!! (Request::is('users*') ? 'class="active"' : '') !!}><a href="{{ action('\\Sentinel\Controllers\UserController@index') }}">Users</a></li>
+       						<li {!! (Request::is('groups*') ? 'class="active"' : '') !!}><a href="{{ action('\\Sentinel\Controllers\GroupController@index') }}">Groups</a></li>
        					@endif
-       					<li {{ (Request::is('profile') ? 'class="active"' : '') }}><a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a></li>
+       					<li {!! (Request::is('profile') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a></li>
        					<li><a href="{{ route('sentinel.logout') }}">Logout</a></li>
        				@endif 
 		        </ul>
