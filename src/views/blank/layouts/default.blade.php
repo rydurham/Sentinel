@@ -32,15 +32,15 @@
 		        </div>
 		        <ul id="sentinel-navbar-right">
 		           	@if (Sentry::check() && Sentry::getUser()->hasAccess('admin'))
-						<li {{ (Request::is('users*') ? 'class="active"' : '') }}><a href="{{ URL::to('/users') }}">Users</a></li>
-						<li {{ (Request::is('groups*') ? 'class="active"' : '') }}><a href="{{ URL::to('/groups') }}">Groups</a></li>
+						<li {!! (Request::is('users*') ? 'class="active"' : '') !!}><a href="{{ URL::to('/users') }}">Users</a></li>
+						<li {!! (Request::is('groups*') ? 'class="active"' : '') !!}><a href="{{ URL::to('/groups') }}">Groups</a></li>
 					@endif
 		            @if (Sentry::check())
-    				<li {{ (Request::is('profile') ? 'class="active"' : '') }}><a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a></li>
+    				<li {!! (Request::is('profile') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a></li>
     				<li><a href="{{ route('sentinel.logout') }}">Logout</a></li>
     				@else
-    				<li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ route('sentinel.login') }}">Login</a></li>
-    				<li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
+    				<li {!! (Request::is('login') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.login') }}">Login</a></li>
+    				<li {!! (Request::is('users/create') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
     				@endif
 		        </ul>
 			</nav>

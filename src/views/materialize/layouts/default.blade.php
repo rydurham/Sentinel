@@ -16,17 +16,17 @@
             <div class="nav-wrapper"><a id="logo-container" href="{{ route('home') }}" class="brand-logo">Sentinel</a>
                 <ul id="nav-mobile" class="right side-nav">
                     @if (Sentry::check() && Sentry::getUser()->hasAccess('admin'))
-                        <li {{ (Request::is('users*') ? 'class="active"' : '') }}><a href="{{ route('sentinel.users.index') }}">Users</a></li>
-                        <li {{ (Request::is('groups*') ? 'class="active"' : '') }}><a href="{{ route('sentinel.groups.index') }}">Groups</a></li>
+                        <li {!! (Request::is('users*') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.users.index') }}">Users</a></li>
+                        <li {!! (Request::is('groups*') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.groups.index') }}">Groups</a></li>
                     @endif
                     @if (Sentry::check())
-                        <li {{ (Request::is('profile') ? 'class="active"' : '') }}>
+                        <li {!! (Request::is('profile') ? 'class="active"' : '') !!}>
                             <a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a>
                         </li>
                         <li><a href="{{ route('sentinel.logout') }}">Logout</a></li>
                     @else
-                        <li {{ (Request::is('login') ? 'class="active"' : '') }}><a href="{{ route('sentinel.login') }}">Login</a></li>
-                        <li {{ (Request::is('users/create') ? 'class="active"' : '') }}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
+                        <li {!! (Request::is('login') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.login') }}">Login</a></li>
+                        <li {!! (Request::is('users/create') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.register.form') }}">Register</a></li>
                     @endif
                 </ul>
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
