@@ -2,15 +2,13 @@
 
 namespace Sentinel\Listeners;
 
-use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Config\Repository;
 
 class UserEventListener
 {
-    public function __construct(Store $session, Repository $config)
+    public function __construct(Repository $config)
     {
-        $this->session = $session;
         $this->config = $config;
     }
 
@@ -34,8 +32,6 @@ class UserEventListener
      */
     public function onUserLogin($user)
     {
-        $this->session->put('userId', $user->id);
-        $this->session->put('email', $user->email);
     }
 
     /**
@@ -43,7 +39,6 @@ class UserEventListener
      */
     public function onUserLogout()
     {
-        $this->session->flush();
     }
 
     /**
