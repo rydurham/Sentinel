@@ -58,6 +58,8 @@ return array(
 
 	'unbanned'		=>	"User has been unbanned.",
 
-	'inactive_reg' 	=>  "Registration is not available at this time."
+	'inactive_reg' 	=>  "Registration is not available at this time.",
+    
+        'activationcodeexpired' => "Sorry. Your link has expired.",
 
 );
