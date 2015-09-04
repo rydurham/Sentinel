@@ -265,6 +265,28 @@ class UserController extends BaseController {
             return \App::abort(404);
             // @codeCoverageIgnoreEnd
         }
+        
+        /*ADD - mortillan - 09-03-2015*/
+        try
+        {
+            $user = \Sentry::findUserById($id);
+            
+            $now = new \DateTime();
+            $expiration_time = Config::get('Sentinel::config.activation_link_expire', 24);
+            $code_timestamp  = date_create($user->activation_code_created_at);
+            $code_validity = $code_timestamp->modify("+{$expiration_time} hours");
+
+            if ($now >= $code_validity){
+                Session::flash('error',trans('Sentinel::users.activationcodeexpired'));
+                return Redirect::route('home');
+            }
+        }
+        catch(Exception $e)
+        {
+            Session::flash('error',trans('Sentinel::users.notfound'));
+            return Redirect::route('home');
+        }
+        /*ADD - mortillan - 09-03-2015*/
 
 		$result = $this->user->activate($id, $code);
 
