@@ -238,6 +238,9 @@ class SentryUser extends RepoAbstract implements UserInterface {
 #                    $this->send_code_attempt($throttle);
 #                }
                     //success!
+                $user->activation_code_created_at = DB::raw('CURRENT_TIMESTAMP');
+                $user->save();
+                
                 $result['success'] = true;
                 $result['message'] = trans('Sentinel::users.emailconfirm');
                 $result['mailData']['activationCode'] = $user->GetActivationCode();
