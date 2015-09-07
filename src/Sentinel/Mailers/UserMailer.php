@@ -15,6 +15,7 @@ class UserMailer extends Mailer {
 		$events->listen('sentinel.user.resend', 		'Sentinel\Mailers\UserMailer@welcome', 10);
 		$events->listen('sentinel.user.forgot',      'Sentinel\Mailers\UserMailer@forgotPassword', 10);
 		#$events->listen('sentinel.user.newpassword', 'Sentinel\Mailers\UserMailer@newPassword', 10);
+                $events->listen('sentinel.user.activated',      'Sentinel\Mailers\UserMailer@activated', 10);
 	}
 
 	/**
@@ -70,6 +71,13 @@ class UserMailer extends Mailer {
 		return $this->sendTo($email, $subject, $view, $data );
 	}
 
+        public function activated($email)
+        {
+                $subject = Config::get('Sentinel::config.activated');
+		$view = 'Sentinel::emails.activated';
+		$data['username'] = $email;
 
+		return $this->sendTo($email, $subject, $view, $data );
+        }
 
 }

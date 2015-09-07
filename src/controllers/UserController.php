@@ -289,10 +289,14 @@ class UserController extends BaseController {
 
         if( $result['success'] )
         {
-            Event::fire('sentinel.user.activated', array(
+            /*Event::fire('sentinel.user.activated', array(
                 'userId' => $id, 
+            ));*/
+            
+            Event::fire('sentinel.user.activated', array(
+                'email' => $user->email, 
             ));
-
+            
             // Success!
             Session::flash('success', $result['message']);
             $user = \Sentry::findUserById($id);
