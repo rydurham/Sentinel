@@ -34,7 +34,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 		$result = array();
 		try {
 			//Attempt to register the user. 
-			$user = $this->sentry->register(array('email' => e($data['email']), 'password' => e($data['password'])));
+			$user = $this->sentry->register(array('email' => e($data['email']), 'password' => e($data['password']), 'activation_code_created_at' => date('Y-m-d H:i:s')));
 
 			// Add the new user to the specified default group(s).
 			$defaultUserGroups = Config::get('Sentinel::config.default_user_groups');
@@ -238,7 +238,7 @@ class SentryUser extends RepoAbstract implements UserInterface {
 #                    $this->send_code_attempt($throttle);
 #                }
                     //success!
-                $user->activation_code_created_at = DB::raw('CURRENT_TIMESTAMP');
+                $user->activation_code_created_at = date('Y-m-d H:i:s');
                 $user->save();
                 
                 $result['success'] = true;
