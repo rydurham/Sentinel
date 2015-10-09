@@ -293,9 +293,9 @@ class UserController extends BaseController {
                 'userId' => $id, 
             ));*/
             
-            Event::fire('sentinel.user.activated', array(
+            /*Event::fire('sentinel.user.activated', array(
                 'email' => $user->email, 
-            ));
+            ));*/
             
             // Success!
             Session::flash('success', $result['message']);
