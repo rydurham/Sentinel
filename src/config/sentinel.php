@@ -182,4 +182,20 @@ return [
 
     'layout' => 'Sentinel::layouts.default',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email Views
+    |--------------------------------------------------------------------------
+    |
+    | String or array of views to use for emails
+    |
+    */
+
+    'emails' => [
+        'views' => [
+            'welcome' => 'Sentinel::emails.welcome',
+            'reset' => 'Sentinel::emails.reset'
+        ]
+    ]
+
 ];
