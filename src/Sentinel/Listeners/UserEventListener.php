@@ -55,7 +55,7 @@ class UserEventListener
     public function welcome($user, $activated)
     {
         $subject = $this->config->get('sentinel.subjects.welcome');
-        $view = 'Sentinel::emails.welcome';
+        $view = $this->config->get('sentinel.email.views.welcome', 'Sentinel::emails.welcome');
         $data['hash'] = $user->hash;
         $data['code'] = $user->getActivationCode();
         $data['email'] = $user->email;
@@ -78,7 +78,7 @@ class UserEventListener
     public function passwordReset($user, $code)
     {
         $subject = $this->config->get('sentinel.subjects.reset_password');
-        $view = 'Sentinel::emails.reset';
+        $view = $this->config->get('sentinel.email.views.reset', 'Sentinel::emails.reset');
         $data['hash'] = $user->hash;
         $data['code'] = $code;
         $data['email'] = $user->email;
