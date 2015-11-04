@@ -17,17 +17,17 @@ Forgot Password
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="newPassword" name="newPassword" type="password" class="validate">
-                    <label for="newPassword">New Password</label>
-                    {{ ($errors->has('newPassword') ? '<br />' . $errors->first('newPassword') : '') }}
+                    <input id="password" name="password" type="password" class="validate">
+                    <label for="password">New Password</label>
+                    {{ ($errors->has('password') ? '<br />' . $errors->first('password') : '') }}
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="newPassword_confirmation" name="newPassword_confirmation" type="password" class="validate">
-                    <label for="newPassword_confirmation">New Password</label>
-                    {{ ($errors->has('newPassword_confirmation') ? '<br />' . $errors->first('newPassword_confirmation') : '') }}
+                    <input id="password_confirmation" name="password_confirmation" type="password" class="validate">
+                    <label for="password_confirmation">New Password</label>
+                    {{ ($errors->has('password_confirmation') ? '<br />' . $errors->first('password_confirmation') : '') }}
                 </div>
             </div>
 
