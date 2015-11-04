@@ -2,129 +2,129 @@
 
 return array(
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | such as the size rules. Feel free to tweak each of these messages.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Validation Language Lines
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines contain the default error messages used by
+	| the validator class. Some of these rules have multiple versions such
+	| such as the size rules. Feel free to tweak each of these messages.
+	|
+	*/
 
-    "accepted"         => "Условие пункта :attribute должны быть приняты.",
-    
-    "active_url"       => ":attribute является некорректным URL.",
-    
-    "after"            => ":attribute должены быть датой после :date.",
-    
-    "alpha"            => "Поле :attribute должно содержать только буквы.",
-    
-    "alpha_dash"       => ":attribute может содержать только латинские буквы, цифры и дефис.",
-    
-    "alpha_num"        => ":attribute может содержать только латинские буквы, цифры.",
+	"accepted"         => "Условие пункта :attribute должны быть приняты.",
+	
+	"active_url"       => ":attribute является некорректным URL.",
+	
+	"after"            => ":attribute должен быть датой после :date.",
+	
+	"alpha"            => "Поле :attribute должно содержать только буквы.",
+	
+	"alpha_dash"       => ":attribute может содержать только латинские буквы, цифры и дефис.",
+	
+	"alpha_num"        => ":attribute может содержать только латинские буквы, цифры.",
 
-    "alpha_spaces"     => ":attribute может содержать только латинские буквы и пробелы.",
-    
-    "before"           => ":attribute дата должна быть до :date.",
-    
-    "between"          => array(
-    
-        "numeric" => ":attribute должен быть между :min - :max.",
-    
-        "file"    => ": attribute должен быть между  :min - :max килобайт.",
-    
-        "string"  => ":attribute должен быть между :min - :max символов.",
-    
-    ),
-    
-    "confirmed"        => "Подтверждение :attribute не совпадает.",
-    
-    "date"             => ":attribute не является допустимой датой.",
-    
-    "date_format"      => ":attribute не соответствует формату :format.",
-    
-    "different"        => ":attribute и  :other должны быть разными.",
-    
-    "digits"           => ":attribute должен быть :digits цифры.",
-    
-    "digits_between"   => ":attribute должен быть между  :min и :max цифр.",
-    
-    "email"            => "The :attribute format is invalid.",
-    
-    "exists"           => "The selected :attribute is invalid.",
-    
-    "image"            => "The :attribute must be an image.",
-    
-    "in"               => "The selected :attribute is invalid.",
-    
-    "integer"          => "The :attribute must be an integer.",
-    
-    "ip"               => "The :attribute must be a valid IP address.",
-    
-    "max"              => array(
-    
-        "numeric" => "The :attribute may not be greater than :max.",
-    
-        "file"    => "The :attribute may not be greater than :max kilobytes.",
-    
-        "string"  => "The :attribute may not be greater than :max characters.",
-    
-    ),
-    
-    "mimes"            => "The :attribute must be a file of type: :values.",
-    
-    "min"              => array(
-    
-        "numeric" => "The :attribute must be at least :min.",
-    
-        "file"    => "The :attribute must be at least :min kilobytes.",
-    
-        "string"  => "The :attribute must be at least :min characters.",
-    
-    ),
-    
-    "not_in"           => "The selected :attribute is invalid.",
-    
-    "numeric"          => "The :attribute must be a number.",
-    
-    "regex"            => "The :attribute format is invalid.",
-    
-    "required"         => "The :attribute field is required.",
-    
-    "required_with"    => "The :attribute field is required when :values is present.",
-    
-    "required_without" => "The :attribute field is required when :values is not present.",
-    
-    "same"             => "The :attribute and :other must match.",
-    
-    "size"             => array(
-    
-        "numeric" => "The :attribute must be :size.",
-    
-        "file"    => "The :attribute must be :size kilobytes.",
-    
-        "string"  => "The :attribute must be :size characters.",
-    
-    ),
-    
-    "unique"           => "The :attribute has already been taken.",
-    
-    "url"              => "The :attribute format is invalid.",
+	"alpha_spaces"     => ":attribute может содержать только латинские буквы и пробелы.",
+	
+	"before"           => ":attribute дата должна быть до :date.",
+	
+	"between"          => array(
+	
+		"numeric" => ":attribute должен быть между :min - :max.",
+	
+		"file"    => ": attribute должен быть между  :min - :max килобайт.",
+	
+		"string"  => ":attribute должен быть между :min - :max символов.",
+	
+	),
+	
+	"confirmed"        => "Подтверждение :attribute не совпадает.",
+	
+	"date"             => ":attribute не является допустимой датой.",
+	
+	"date_format"      => ":attribute не соответствует формату :format.",
+	
+	"different"        => ":attribute и  :other должны быть разными.",
+	
+	"digits"           => ":attribute должен быть :digits цифры.",
+	
+	"digits_between"   => ":attribute должен быть между  :min и :max цифр.",
+	
+	"email"            => "Не правильный формат :attribute.",
+	
+	"exists"           => "Выбранный :attribute не верен.",
+	
+	"image"            => ":attribute должен быть изображением.",
+	
+	"in"               => "Выбранный :attribute не верный.",
+	
+	"integer"          => ":attribute должен быть числом.",
+	
+	"ip"               => ":attribute должно быть IP-адресом.",
+	
+	"max"              => array(
+	
+		"numeric" => ":attribute не должно быть больше чем :max.",
+	
+		"file"    => ":attribute не должен превышать :max килобайт.",
+	
+		"string"  => ":attribute не должно превышать :max символов.",
+	
+	),
+	
+	"mimes"            => "Тип файла :attribute должен быть: :values.",
+	
+	"min"              => array(
+	
+		"numeric" => ":attribute должно быть не менее :min.",
+	
+		"file"    => ":attribute должно быть не менее :min килобайт.",
+	
+		"string"  => ":attribute должно быть не менее :min символов.",
+	
+	),
+	
+	"not_in"           => "Выбранный :attribute не верный.",
+	
+	"numeric"          => ":attribute должен быть числом.",
+	
+	"regex"            => "Не правильный формат :attribute.",
+	
+	"required"         => ":attribute обязательное поле.",
+	
+	"required_with"    => ":attribute обязательное поле, когда присутствует :values.",
+	
+	"required_without" => ":attribute обязательное поле, когда отсутствует :values.",
+	
+	"same"             => ":attribute и :other должны совпадать.",
+	
+	"size"             => array(
+	
+		"numeric" => ":attribute должен быть :size.",
+	
+		"file"    => ":attribute должен весить :size килобайт.",
+	
+		"string"  => ":attribute должен состоять из :size символов.",
+	
+	),
+	
+	"unique"           => ":attribute уже занят.",
+	
+	"url"              => "Не правильный формат :attribute.",
 
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify custom validation messages for attributes using the
-    | convention "attribute.rule" to name the lines. This makes it quick to
-    | specify a specific custom language line for a given attribute rule.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Custom Validation Language Lines
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify custom validation messages for attributes using the
+	| convention "attribute.rule" to name the lines. This makes it quick to
+	| specify a specific custom language line for a given attribute rule.
+	|
+	*/
 
-    'custom' => array(
+	'custom' => array(
     
         'oldPassword' => array(
     
@@ -150,25 +150,25 @@ return array(
     
         'minutes' => array(
     
-            'numeric' => 'Minutes must be a number',
+            'numeric' => 'Минуты должны быть числом',
     
-            'required' => 'You must specify suspension length in minutes',
+            'required' => 'Вы должны указать длину блокировки в минутах',
     
         ),
     
     ),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Attributes
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used to swap attribute place-holders
-    | with something more reader friendly such as E-Mail Address instead
-    | of "email". This simply helps us make messages a little cleaner.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Custom Validation Attributes
+	|--------------------------------------------------------------------------
+	|
+	| The following language lines are used to swap attribute place-holders
+	| with something more reader friendly such as E-Mail Address instead
+	| of "email". This simply helps us make messages a little cleaner.
+	|
+	*/
 
-    'attributes' => array(),
+	'attributes' => array(),
 
 );

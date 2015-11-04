@@ -2,64 +2,65 @@
 
 return array(
 
-    /*
-    |--------------------------------------------------------------------------
-    | Language strings for views
-    |--------------------------------------------------------------------------
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Language strings for views
+	|--------------------------------------------------------------------------
+	*/
 
-    'flashsuccess'    => 'نجاح',
+	'flashsuccess'	=> 'نجاح',
 
-    'flasherror'    => 'خطأ',
+	'flasherror'	=> 'خطأ',
 
-    'flashwarning'    => 'تحذير',
+	'flashwarning'	=> 'تحذير',
 
-    'flashinfo'        => 'FYI',
+	'flashinfo'		=> 'لمعلوماتك',
 
-    'register'        => 'تسجيل عضوية',
+	'register'		=> 'تسجيل عضوية',
 
-    'login'            => "تسجيل الدخول",
+	'login'			=> "تسجيل الدخول",
 
-    'logout'        => "تسجيل الخروج",
+	'logout'		=> "تسجيل الخروج",
 
-    'home'            => "الرئيسية",
+	'home'			=> "الرئيسية",
 
-    'users'        => 'مستخدم | مستخدمون',
+	'users' 		=> 'مستخدم | مستخدمون',
 
-    'groups'        => "مجموعات",
+	'groups'		=> "مجموعات",
 
-    'helloworld'    => "مرحباً بالعالم!",
+	'helloworld'	=> "مرحباً بالعالم!",
 
-    'description'    => "This is an example of <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> running with <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+	'description'	=> "هذا مثال عن
+<a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> مع الإضافات<a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-    'loginstatus'    => "You are currently logged in.",
+	'loginstatus'	=> "أنت متصل حاليا.",
 
-    'sessiondata'    => "Session Data",
+	'sessiondata'	=> "بيانات Session",
 
-    'currentusers'    => "Current Users",
+	'currentusers'	=> "الأعضاء المتصلون",
 
-    'options'        => 'Options',
+	'options'		=> 'الخيارات',
 
-    'status'        => "Status",
+	'status'		=> "الحالة",
 
-    'active'        => "Active",
+	'active'		=> "مفعل",
 
-    'notactive'        => "Not Active",
+	'notactive'		=> "غير مفعل",
 
-    'suspended'        => "Suspended",
+	'suspended'		=> "معلق",
 
-    'banned'        => "Banned",
+	'banned'		=> "محظور",
 
-    'actionedit'    => "Edit",
+	'actionedit'	=> "تعديل",
 
-    'actionsuspend'    => "Suspend",
+	'actionsuspend'	=> "تعليق",
 
-    'actionunsuspend' => "Un-Suspend",
+	'actionunsuspend' => "رفع الحظر",
 
-    'actionban'        => "Ban",
+	'actionban'		=> "حظر",
 
-    'actionunban'    => "Un-Ban",
+	'actionunban'	=> "رفع الحظر",
 
-    'actiondelete'    => "Delete",
+	'actiondelete'	=> "حذف",
 
 );

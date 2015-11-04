@@ -2,64 +2,64 @@
 
 return array(
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Repositiory Messages
-    |--------------------------------------------------------------------------
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| User Repositiory Messages
+	|--------------------------------------------------------------------------
+	*/
 
-    'created'        =>  "Your account has been created. Check your email for the confirmation link.",
+	'created' 		=>  "تم إنشاء حسابك. تحقق من البريد الإلكتروني الخاص بك لتأكيد التسجيل.",	
 
-    'createdactive' =>  "Your account has been created. You can now login.",
+	'createdactive' =>  "تم إنشاء حسابك. يمكنك الدخول الآن.",
 
-    'added'            =>  "New user added. Check the email account for the confirmation link.",
+	'added'			=>  "تم إضافة عضو جديد. تحقق من البريد الإلكتروني لتأكيد التسجيل.",
 
-    'addedactive'    =>  "New user added.",
+	'addedactive'	=>  "تم إضافة عضو جديد.",
 
-    'loginreq'        =>    "Login field required.",
+	'loginreq' 		=>	"حقل التسجيل مطلوب.",
 
-    'exists'        =>    "User already exists.",
+	'exists'		=>	"عضو سبق له التسجيل.",
 
-    'notfound'        =>    "User not found",
+	'notfound'		=>	"عضو غير موجود",
 
-    'noaccess'        =>    "You are not allowed to do that.",
+	'noaccess'		=>	"لا يسمح لك بهذا الأمر.",
 
-    'updated'        =>    "Profile updated",
+	'updated'		=>	"تم تحديث البيانات",
 
-    'notupdated'    =>    "Unable to update profile",
+	'notupdated'	=>	"لا يمكن تحديث البيانات",
 
-    'activated'        =>    "Activation complete. <a href=':url' class='alert-link'>You may now login</a>",
+	'activated'		=>	"تم تفعيل حسابك <a href=':url' class='alert-link'>يمكنك الدخول الآن</a>",
 
-    'notactivated'    =>    "Activation could not be completed.",
+	'notactivated'	=>	"تعذر إكمال التفعيل.",
 
-    'alreadyactive'    =>    "That account has already been activated.",
+	'alreadyactive'	=>	"سبق تفعيل حسابك.",
 
-    'emailconfirm'    =>    "Check your email for the confirmation link.",
+	'emailconfirm'	=>	"تحقق من بريدك الإلكتروني لتفعيل حسابك.",
 
-    'emailinfo'        =>    "Check your email for instructions.",
+	'emailinfo'		=>	"تحقتحقق من بريدك الإلكتروني لأجل التعليمات.",
 
-    'emailpassword'    =>    "Your password has been changed. Check your email for the new password.",
+	'emailpassword'	=>	"تم تغيير كلمة السر. تحقق من بريدك الإلكتروني لأجل كلمة السر الجديدة.",
 
-    'problem'        =>    "There was a problem. Please contact the system administrator.",
+	'problem'		=>	"هناك خطأ ما. الرجاء الإتصال بالمشرف على الموقع.",
 
-    'passwordchg'    =>    "Your password has been changed.",
+	'passwordchg'	=> 	"تم تغيير كلمة السر الخاصة بك.",
 
-    'passwordprob'    =>    "Your password could not be changed.",
+	'passwordprob'	=>	"لا يمكن تغيير كلمة السر الخاصة بك.",
 
-    'oldpassword'    =>    "You did not provide the correct original password.",
+	'oldpassword'	=>	"لم تقدم كلمة السر الأصلية الصحيحة.",
 
-    'suspended'        =>    "User has been suspended for 15 minutes.",
+	'suspended'		=>	"تم تعليق العضوية لمدة 15 دقيقة.",
 
-    'unsuspended'    =>    "Suspension removed.",
+	'unsuspended'	=>	"تم إزالة تعليق العضوية.",
 
-    'banned'        =>    "User has been banned.",
+	'banned'		=>	"تم حظر العضو.",
 
-    'unbanned'        =>    "User has been unbanned.",
+	'unbanned'		=>	"تم رفع حظر العضو.",
 
-    'inactive_reg'    =>  "Registration is not available at this time.",
+	'inactive_reg' 	=>  "لا يمكن التسجيل حاليا.",
 
-    'destroyed'     =>  "User has been removed.",
+	'destroyed'     =>  "تم حذف العضو.",
 
-    'notdestroyed'  =>  "Unable to remove user."
+	'notdestroyed'  =>  "لا يمكن حذف العضو."
 
 );
