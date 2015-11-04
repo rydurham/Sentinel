@@ -2,15 +2,13 @@
 
 namespace Sentinel\Listeners;
 
-use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Config\Repository;
 
 class UserEventListener
 {
-    public function __construct(Store $session, Repository $config)
+    public function __construct(Repository $config)
     {
-        $this->session = $session;
         $this->config = $config;
     }
 
@@ -34,8 +32,6 @@ class UserEventListener
      */
     public function onUserLogin($user)
     {
-        $this->session->put('userId', $user->id);
-        $this->session->put('email', $user->email);
     }
 
     /**
@@ -43,7 +39,6 @@ class UserEventListener
      */
     public function onUserLogout()
     {
-        $this->session->flush();
     }
 
     /**
@@ -60,7 +55,7 @@ class UserEventListener
     public function welcome($user, $activated)
     {
         $subject = $this->config->get('sentinel.subjects.welcome');
-        $view = 'Sentinel::emails.welcome';
+        $view = $this->config->get('sentinel.email.views.welcome', 'Sentinel::emails.welcome');
         $data['hash'] = $user->hash;
         $data['code'] = $user->getActivationCode();
         $data['email'] = $user->email;
@@ -83,7 +78,7 @@ class UserEventListener
     public function passwordReset($user, $code)
     {
         $subject = $this->config->get('sentinel.subjects.reset_password');
-        $view = 'Sentinel::emails.reset';
+        $view = $this->config->get('sentinel.email.views.reset', 'Sentinel::emails.reset');
         $data['hash'] = $user->hash;
         $data['code'] = $code;
         $data['email'] = $user->email;

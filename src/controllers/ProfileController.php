@@ -45,8 +45,8 @@ class ProfileController extends BaseController
      */
     public function show()
     {
-        // Get the user
-        $user = $this->userRepository->retrieveById(Session::get('userId'));
+        // Grab the current user
+        $user = $this->userRepository->getUser();
 
         return $this->viewFinder('Sentinel::users.show', ['user' => $user]);
     }
@@ -59,8 +59,8 @@ class ProfileController extends BaseController
      */
     public function edit()
     {
-        // Get the user
-        $user = $this->userRepository->retrieveById(Session::get('userId'));
+        // Grab the current user
+        $user = $this->userRepository->getUser();
 
         // Get all available groups
         $groups = $this->groupRepository->all();
@@ -81,7 +81,7 @@ class ProfileController extends BaseController
     {
         // Gather Input
         $data       = Input::all();
-        $data['id'] = Session::get('userId');
+        $data['id'] = $this->userRepository->getUser()->id;
 
         // Attempt to update the user
         $result = $this->userRepository->update($data);
@@ -97,12 +97,12 @@ class ProfileController extends BaseController
      */
     public function changePassword(ChangePasswordRequest $request)
     {
-        // Gather input
-        $data       = Input::all();
-        $data['id'] = Session::get('userId');
-
         // Grab the current user
         $user = $this->userRepository->getUser();
+
+        // Gather input
+        $data       = Input::all();
+        $data['id'] = $user->id;
 
         // Change the User's password
         $result = ($user->hasAccess('admin') ? $this->userRepository->changePasswordWithoutCheck($data) : $this->userRepository->changePassword($data));

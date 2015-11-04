@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Succès',
+    'flashsuccess'    => 'Succès',
 
-	'flasherror'	=> 'Erreur',
+    'flasherror'    => 'Erreur',
 
-	'flashwarning'	=> 'Avertissement',
+    'flashwarning'    => 'Avertissement',
 
-	'flashinfo'		=> 'POUR INFO',
+    'flashinfo'        => 'POUR INFO',
 
-	'register'		=> 'S\'inscrire',
+    'register'        => 'S\'inscrire',
 
-	'login'			=> "Se connecter",
+    'login'            => "Se connecter",
 
-	'logout'		=> "Se déconnecter",
+    'logout'        => "Se déconnecter",
 
-	'home'			=> "Accueil",
+    'home'            => "Accueil",
 
-	'users' 		=> 'Utilisateur| Utilisateurs',
+    'users'        => 'Utilisateur| Utilisateurs',
 
-	'groups'		=> "Groupes",
+    'groups'        => "Groupes",
 
-	'helloworld'	=> "Bonjour le monde!",
+    'helloworld'    => "Bonjour le monde!",
 
-	'description'	=> "Il s'agit d'un exemple de <a href=\"https://github.com/laravel/laravel\"> Laravel 4.1</a> fonctionneavec <a href=\"https://github.com/cartalyst/sentry\"> Sentry 2.0</a> et <a href=\"http://getbootstrap.com/\"> Bootstrap 3.0</a>.",
+    'description'    => "Il s'agit d'un exemple de <a href=\"https://github.com/laravel/laravel\"> Laravel 4.1</a> fonctionneavec <a href=\"https://github.com/cartalyst/sentry\"> Sentry 2.0</a> et <a href=\"http://getbootstrap.com/\"> Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "Vous êtes actuellement connecté.",
+    'loginstatus'    => "Vous êtes actuellement connecté.",
 
-	'sessiondata'	=> "Données de session",
+    'sessiondata'    => "Données de session",
 
-	'currentusers'	=> "Utilisateurs actuels",
+    'currentusers'    => "Utilisateurs actuels",
 
-	'options'		=> 'Options',
+    'options'        => 'Options',
 
-	'status'		=> "État",
+    'status'        => "État",
 
-	'active'		=> "Actif",
+    'active'        => "Actif",
 
-	'notactive'		=> "Inactif",
+    'notactive'        => "Inactif",
 
-	'suspended'		=> "Suspendu",
+    'suspended'        => "Suspendu",
 
-	'banned'		=> "Banni",
+    'banned'        => "Banni",
 
-	'actionedit'	=> "Modifier",
+    'actionedit'    => "Modifier",
 
-	'actionsuspend'	=> "Suspendre",
+    'actionsuspend'    => "Suspendre",
 
-	'actionunsuspend' => "Supprimer la supsension",
+    'actionunsuspend' => "Supprimer la supsension",
 
-	'actionban'		=> "Bannir",
+    'actionban'        => "Bannir",
 
-	'actionunban'	=> "Débannir",
+    'actionunban'    => "Débannir",
 
-	'actiondelete'	=> "Supprimer",
+    'actiondelete'    => "Supprimer",
 
 );

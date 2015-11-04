@@ -22,11 +22,11 @@ Log In
                 <input class="form-control" placeholder="Password" name="password" value="" type="password">
                 {{ ($errors->has('password') ?  $errors->first('password') : '') }}
             </div>
-
-            <label class="checkbox">
-                <input name="rememberMe" value="rememberMe" type="checkbox"> Remember Me
-            </label>
-
+            <div class="checkbox">
+                <label>
+                    <input name="rememberMe" value="rememberMe" type="checkbox"> Remember Me
+                </label>
+            </div>
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
             <input class="btn btn-primary" value="Sign In" type="submit">
             <a class="btn btn-link" href="{{ route('sentinel.forgot.form') }}">Forgot Password</a>

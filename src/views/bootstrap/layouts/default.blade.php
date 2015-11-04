@@ -57,7 +57,7 @@
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	            @if (Sentry::check())
-				<li {!! (Request::is('profile') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a>
+				<li {!! (Request::is('profile') ? 'class="active"' : '') !!}><a href="{{ route('sentinel.profile.show') }}">{{ Sentry::getUser()->email }}</a>
 				</li>
 				<li>
 					<a href="{{ route('sentinel.logout') }}">Logout</a>

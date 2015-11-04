@@ -21,7 +21,7 @@
                     @endif
                     @if (Sentry::check())
                         <li {!! (Request::is('profile') ? 'class="active"' : '') !!}>
-                            <a href="{{ route('sentinel.profile.show') }}">{{ Session::get('email') }}</a>
+                            <a href="{{ route('sentinel.profile.show') }}">{{ Sentry::getUser()->email }}</a>
                         </li>
                         <li><a href="{{ route('sentinel.logout') }}">Logout</a></li>
                     @else
