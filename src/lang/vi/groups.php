@@ -2,26 +2,26 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Group Repositiory Messages
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Group Repositiory Messages
+    |--------------------------------------------------------------------------
+    */
 
-	'created' 		=> "Tạo nhóm.",	
+    'created'        => "Tạo nhóm.",
 
-	'loginreq' 		=> "Mục đăng nhập được yêu cầu.",
+    'loginreq'        => "Mục đăng nhập được yêu cầu.",
 
-	'userexists' 	=> "Tài khoản đã tồn tại.",
+    'userexists'    => "Tài khoản đã tồn tại.",
 
-	'updated' 		=> "Cập nhật nhóm đã thành công.",
+    'updated'        => "Cập nhật nhóm đã thành công.",
 
-	'updateproblem' => "Có vấn đề khi đang cập nhật nhóm.",
+    'updateproblem' => "Có vấn đề khi đang cập nhật nhóm.",
 
-	'namereq' 		=> "Bạn phải cung cấp tên nhóm.",
+    'namereq'        => "Bạn phải cung cấp tên nhóm.",
 
-	'groupexists' 	=> "Nhóm đó đã tồn tại.",
+    'groupexists'    => "Nhóm đó đã tồn tại.",
 
-	'notfound' 		=> "Nhóm không tìm thấy.",
+    'notfound'        => "Nhóm không tìm thấy.",
 
 );

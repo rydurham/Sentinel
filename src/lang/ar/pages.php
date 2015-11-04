@@ -2,65 +2,65 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'نجاح',
+    'flashsuccess'    => 'نجاح',
 
-	'flasherror'	=> 'خطأ',
+    'flasherror'    => 'خطأ',
 
-	'flashwarning'	=> 'تحذير',
+    'flashwarning'    => 'تحذير',
 
-	'flashinfo'		=> 'لمعلوماتك',
+    'flashinfo'        => 'لمعلوماتك',
 
-	'register'		=> 'تسجيل عضوية',
+    'register'        => 'تسجيل عضوية',
 
-	'login'			=> "تسجيل الدخول",
+    'login'            => "تسجيل الدخول",
 
-	'logout'		=> "تسجيل الخروج",
+    'logout'        => "تسجيل الخروج",
 
-	'home'			=> "الرئيسية",
+    'home'            => "الرئيسية",
 
-	'users' 		=> 'مستخدم | مستخدمون',
+    'users'        => 'مستخدم | مستخدمون',
 
-	'groups'		=> "مجموعات",
+    'groups'        => "مجموعات",
 
-	'helloworld'	=> "مرحباً بالعالم!",
+    'helloworld'    => "مرحباً بالعالم!",
 
-	'description'	=> "هذا مثال عن
+    'description'    => "هذا مثال عن
 <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> مع الإضافات<a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> and <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "أنت متصل حاليا.",
+    'loginstatus'    => "أنت متصل حاليا.",
 
-	'sessiondata'	=> "بيانات Session",
+    'sessiondata'    => "بيانات Session",
 
-	'currentusers'	=> "الأعضاء المتصلون",
+    'currentusers'    => "الأعضاء المتصلون",
 
-	'options'		=> 'الخيارات',
+    'options'        => 'الخيارات',
 
-	'status'		=> "الحالة",
+    'status'        => "الحالة",
 
-	'active'		=> "مفعل",
+    'active'        => "مفعل",
 
-	'notactive'		=> "غير مفعل",
+    'notactive'        => "غير مفعل",
 
-	'suspended'		=> "معلق",
+    'suspended'        => "معلق",
 
-	'banned'		=> "محظور",
+    'banned'        => "محظور",
 
-	'actionedit'	=> "تعديل",
+    'actionedit'    => "تعديل",
 
-	'actionsuspend'	=> "تعليق",
+    'actionsuspend'    => "تعليق",
 
-	'actionunsuspend' => "رفع الحظر",
+    'actionunsuspend' => "رفع الحظر",
 
-	'actionban'		=> "حظر",
+    'actionban'        => "حظر",
 
-	'actionunban'	=> "رفع الحظر",
+    'actionunban'    => "رفع الحظر",
 
-	'actiondelete'	=> "حذف",
+    'actiondelete'    => "حذف",
 
 );

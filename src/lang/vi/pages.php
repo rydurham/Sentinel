@@ -2,64 +2,64 @@
 
 return array(
 
-	/*
-	|--------------------------------------------------------------------------
-	| Language strings for views
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Language strings for views
+    |--------------------------------------------------------------------------
+    */
 
-	'flashsuccess'	=> 'Thành công',
+    'flashsuccess'    => 'Thành công',
 
-	'flasherror'	=> 'Lỗi',
+    'flasherror'    => 'Lỗi',
 
-	'flashwarning'	=> 'Cảnh báo',
+    'flashwarning'    => 'Cảnh báo',
 
-	'flashinfo'		=> 'FYI',
+    'flashinfo'        => 'FYI',
 
-	'register'		=> 'Đăng ký',
+    'register'        => 'Đăng ký',
 
-	'login'			=> "Đăng nhập",
+    'login'            => "Đăng nhập",
 
-	'logout'		=> "Đăng xuất",
+    'logout'        => "Đăng xuất",
 
-	'home'			=> "Trang chủ",
+    'home'            => "Trang chủ",
 
-	'users' 		=> 'Thành viên| Người dùng',
+    'users'        => 'Thành viên| Người dùng',
 
-	'groups'		=> "Nhóm",
+    'groups'        => "Nhóm",
 
-	'helloworld'	=> "Chào thế giới!",
+    'helloworld'    => "Chào thế giới!",
 
-	'description'	=> "Đây là một ví dụ của <a href=\"https://github.com/laravel/laravel\"> Laravel 4.1</a> chạy với <a href=\"https://github.com/cartalyst/sentry\"> Sentry 2.0</a> và <a href=\"http://getbootstrap.com/\"> Bootstrap 3.0</a>.",
+    'description'    => "Đây là một ví dụ của <a href=\"https://github.com/laravel/laravel\"> Laravel 4.1</a> chạy với <a href=\"https://github.com/cartalyst/sentry\"> Sentry 2.0</a> và <a href=\"http://getbootstrap.com/\"> Bootstrap 3.0</a>.",
 
-	'loginstatus'	=> "Bạn hiện đang đăng nhập.",
+    'loginstatus'    => "Bạn hiện đang đăng nhập.",
 
-	'sessiondata'	=> "Dữ liệu Phiên",
+    'sessiondata'    => "Dữ liệu Phiên",
 
-	'currentusers'	=> "Người dùng hiện tại",
+    'currentusers'    => "Người dùng hiện tại",
 
-	'options'		=> 'Tùy chọn',
+    'options'        => 'Tùy chọn',
 
-	'status'		=> "Trạng thái",
+    'status'        => "Trạng thái",
 
-	'active'		=> "Hoạt động",
+    'active'        => "Hoạt động",
 
-	'notactive'		=> "Không hoạt động",
+    'notactive'        => "Không hoạt động",
 
-	'suspended'		=> "Tạm dừng",
+    'suspended'        => "Tạm dừng",
 
-	'banned'		=> "Bị Cấm",
+    'banned'        => "Bị Cấm",
 
-	'actionedit'	=> "Chỉnh sửa",
+    'actionedit'    => "Chỉnh sửa",
 
-	'actionsuspend'	=> "Đình chỉ",
+    'actionsuspend'    => "Đình chỉ",
 
-	'actionunsuspend' => "Hủy bỏ đình chỉ",
+    'actionunsuspend' => "Hủy bỏ đình chỉ",
 
-	'actionban'		=> "Cấm",
+    'actionban'        => "Cấm",
 
-	'actionunban'	=> "Bỏ cấm",
+    'actionunban'    => "Bỏ cấm",
 
-	'actiondelete'	=> "Xoá",
+    'actiondelete'    => "Xoá",
 
 );
