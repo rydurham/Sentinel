@@ -20,6 +20,7 @@ class SentryAuth
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
+                $request->session()->reflash();
                 return redirect()->guest(route('sentinel.login'));
             }
         }
