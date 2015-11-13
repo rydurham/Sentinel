@@ -36,12 +36,14 @@ Groups
 				<button onClick="location.href='{{ route('sentinel.groups.edit', [$group->hash]) }}'">Edit</button>
 				<button class="action_confirm {{ ($group->name == 'Admins') ? 'disabled' : '' }}" type="button" data-token="{{ Session::getToken() }}" data-method="delete" href="{{ route('sentinel.groups.destroy', [$group->hash]) }}">Delete</button>
 			 </td>
-		</tr>	
+		</tr>
 	@endforeach
 	</tbody>
-</table> 
-   
-<!--  
+</table>
+
+{!! $groups->render() !!}
+
+<!--
 	The delete button uses Resftulizer.js to restfully submit with "Delete".  The "action_confirm" class triggers an optional confirm dialog.
 	Also, I have hardcoded adding the "disabled" class to the Admin group - deleting your own admin access causes problems.
 -->

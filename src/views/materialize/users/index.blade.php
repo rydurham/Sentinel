@@ -52,4 +52,7 @@ Current Users
         </tbody>
     </table>
 </div>
+<div class="row">
+    {!! $users->render() !!}
+</div>
 @stop

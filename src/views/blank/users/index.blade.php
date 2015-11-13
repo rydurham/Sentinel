@@ -25,7 +25,7 @@ Current Users
 					<a href="{{ route('sentinel.users.show', array($user->hash)) }}">{{ $user->email }}</a>
 				</td>
 				<td>
-					{{ $user->status }} 
+					{{ $user->status }}
 				</td>
 				<td>
 					<button type="button" onClick="location.href='{{ route('sentinel.users.edit', array($user->hash)) }}'">Edit</button>
@@ -45,5 +45,7 @@ Current Users
 		@endforeach
 	</tbody>
 </table>
+
+{!! $users->render() !!}
 
 @stop

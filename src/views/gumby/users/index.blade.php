@@ -34,7 +34,7 @@
 						@else
 							<div class="medium info btn">
 								<a onClick="location.href='{{ action('\\Sentinel\Controllers\UserController@unsuspend', array($user->hash)) }}'">Un-Suspend</a>
-							</div> 
+							</div>
 						@endif
 						@if ($user->status != 'Banned')
 							<div class="medium info btn">
@@ -45,7 +45,7 @@
 								<a onClick="location.href='{{ action('\\Sentinel\Controllers\UserController@unban', array($user->hash)) }}'">Un-Ban</a>
 							</div>
 						@endif
-						
+
 						<div class="medium info btn">
 							<a href="{{ action('\\Sentinel\Controllers\UserController@destroy', array($user->hash)) }}" data-token="{{ csrf_token() }}" data-method="delete">Delete</a>
 						</div>
@@ -56,5 +56,8 @@
 		</tbody>
 	</table>
   </div>
+</div>
+<div class="row">
+	{!! $users->render() !!}
 </div>
 @stop

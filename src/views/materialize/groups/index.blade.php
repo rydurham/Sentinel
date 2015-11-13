@@ -46,7 +46,10 @@ Groups
         </tbody>
     </table>
 </div>
-<!--  
+<div class="row">
+    {!! $groups->render() !!}
+</div>
+<!--
 	The delete button uses Resftulizer.js to restfully submit with "Delete".  The "action_confirm" class triggers an optional confirm dialog.
 	Also, I have hardcoded adding the "disabled" class to the Admin group - deleting your own admin access causes problems.
 -->

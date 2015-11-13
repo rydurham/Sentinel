@@ -52,4 +52,7 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        {!! $users->render() !!}
+    </div>
 @stop

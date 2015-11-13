@@ -28,8 +28,8 @@
 				<tr>
 					<td><a href="{{ route('sentinel.groups.show', $group->hash) }}"></td>
 					<td>
-						<?php 
-							$permissions = $group->getPermissions(); 
+						<?php
+							$permissions = $group->getPermissions();
 							$keys = array_keys($permissions);
 							$last_key = end($keys);
 						?>
@@ -45,13 +45,16 @@
 					 		<a class="action_confirm {{ $group->name == 'Admins' ? 'disabled' : '' }}"  data-token="{{ csrf_token() }}" data-method="delete" href="{{ route('sentinel.groups.destroy', [$group->hash]) }}">Delete</a>
 					 	</div>
 					 </td>
-				</tr>	
+				</tr>
 			@endforeach
 			</tbody>
-		</table> 
+		</table>
    	</div>
 </div>
-<!--  
+<div class="row">
+	{!! $groups->render() !!}
+</div>
+<!--
 	The delete button uses Resftulizer.js to restfully submit with "Delete".  The "action_confirm" class triggers an optional confirm dialog.
 	Also, I have hardcoded adding the "disabled" class to the Admin group - deleting your own admin access causes problems.
 -->
