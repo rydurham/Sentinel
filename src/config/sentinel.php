@@ -157,7 +157,8 @@ return [
     */
 
     'view' => [
-        'session_login' => 'Sentinel::sessions.login'
+        'session_login' => 'Sentinel::sessions.login',
+        'user_register' => 'Sentinel::users.register'
     ],
 
     /*
