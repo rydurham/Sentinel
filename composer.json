@@ -1,5 +1,5 @@
 {
-    "name": "rydurham/sentinel",
+    "name": "bachmay/sentinel",
     "description": "An implementation of the Sentry User Manager for Laravel.",
     "keywords": ["laravel", "sentry", "auth"],
     "license": "BSD-3-Clause",
