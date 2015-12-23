@@ -146,6 +146,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | View selection
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for custom views, such as login for session creation,
+    | since this option is not available through the routing configurations
+    | above. If you will use a custom view, this points directly to the default
+    | views folder in your installation.
+    |
+    */
+
+    'view' => [
+        'session_login' => 'Sentinel::sessions.login'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Guest Middleware Redirection
     |--------------------------------------------------------------------------
     |
