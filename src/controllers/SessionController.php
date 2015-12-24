@@ -43,7 +43,7 @@ class SessionController extends BaseController
         }
 
         // No - they are not signed in.  Show the login form.
-        return $this->viewFinder(config('sentinel.view.session_login'));
+        return $this->viewFinder(config('sentinel.view.session_login', 'Sentinel::sessions.login'));
     }
 
     /**
