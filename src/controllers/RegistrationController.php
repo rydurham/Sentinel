@@ -61,7 +61,7 @@ class RegistrationController extends BaseController
         }
 
         // All clear - show the registration form.
-        return $this->viewFinder('Sentinel::users.register');
+        return $this->viewFinder(config('sentinel.view.user_register', 'Sentinel::users.register'));
     }
 
     /**
