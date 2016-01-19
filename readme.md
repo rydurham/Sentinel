@@ -6,7 +6,11 @@
 
 This package provides an implementation of  [Sentry 2](https://github.com/cartalyst/sentry) for [Laravel](https://github.com/laravel/laravel). By default it uses [Bootstrap 3.0](http://getbootstrap.com), but you can make use of whatever UI you want.  It is intended to be a very simple way to get up and running with User access control very quickly.  For simple projects you shouldn't need to do much more than drop it in and dial in the configuration.
 
-Make sure you use the version most appropriate for the type of Laravel application you have: 
+__Important__ There are two PHP packages named "Sentinel".  This is ```rydurham/sentinel```, not ```cartalyst/sentinel```.  The key difference is that this package is intended to be an implementation of Sentry v2, whereas Cartalyst released what would have been Sentry v3 under the name ```cartalyst/sentinel```. The instructions below are specifically for ```rydurham/sentinel```,  make sure you are using the right package before proceeding. 
+
+If you are looking for a quick way to get up and running with ```cartalyst/sentinel```. [I have created a bridge package  that may be helpful](https://github.com/srlabs/centaur).  
+
+__Releases__ There are several versions of this package, each intended for different versions of the laravel framework. 
 
 | Laravel Version  | Sentinel Version  | Packagist Branch |
 |---|---|---|
