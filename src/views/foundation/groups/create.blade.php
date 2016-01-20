@@ -11,9 +11,9 @@ Create Group
 <form method="POST" action="{{ route('sentinel.groups.store') }}" accept-charset="UTF-8">
     <div class="row">
         <div class="small-6 large-centered columns">
-            
+
             <h2>Create New Group</h2>
-    
+
             <div class="row">
                 <div class="small-2 columns">
                     <label for="right-label" class="right inline">Name</label>
@@ -30,9 +30,9 @@ Create Group
                 @foreach ($defaultPermissions as $permission)
                     <div class="small-10 small-offset-2 columns">
                         <input name="permissions[{{ $permission }}]" value="1" type="checkbox"
-                        @if (Input::old('permissions[' . $permission .']'))
+                        @if (Request::old('permissions[' . $permission .']'))
                             checked
-                        @endif        
+                        @endif
                         > {{ ucwords($permission) }}
                     </div>
                 @endforeach
@@ -44,7 +44,7 @@ Create Group
                     <input class="btn btn-primary" value="Create New Group" type="submit">
                 </div>
             </div>
-            
+
         </div>
     </div>
 </form>

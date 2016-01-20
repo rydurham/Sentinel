@@ -14,16 +14,16 @@ Edit Group
     <h2>Edit Group</h2>
 
     <p>
-        <input class="form-control" placeholder="Name" name="name" value="{{ (Input::old('name') ? Input::old('name') : $group->name) }}" type="text">
+        <input class="form-control" placeholder="Name" name="name" value="{{ (Request::old('name') ? Request::old('name') : $group->name) }}" type="text">
         {{ ($errors->has('name') ? $errors->first('name') : '') }}
     </p>
 
     <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>
-    
+
     <p>
         <ul>
             @foreach($defaultPermissions as $permission)
-                <li> 
+                <li>
                     <input name="permissions[{{ $permission }}]" value="1" type="checkbox" {{ (isset($permissions[$permission]) ? 'checked' : '') }}>
                     {{ ucwords($permission) }}
                 </li>
@@ -37,5 +37,5 @@ Edit Group
     <input value="Save Changes" type="submit">
 
 </form>
-   
+
 @stop

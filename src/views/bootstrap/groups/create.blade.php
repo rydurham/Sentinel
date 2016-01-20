@@ -15,7 +15,7 @@ Create Group
             <h2>Create New Group</h2>
 
             <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="Name" name="name" type="text"  value="{{ Input::old('email') }}">
+                <input class="form-control" placeholder="Name" name="name" type="text"  value="{{ Request::old('email') }}">
                 {{ ($errors->has('name') ? $errors->first('name') : '') }}
             </div>
 
@@ -25,9 +25,9 @@ Create Group
                 @foreach ($defaultPermissions as $permission)
                     <label class="checkbox-inline">
                         <input name="permissions[{{ $permission }}]" value="1" type="checkbox"
-                        @if (Input::old('permissions[' . $permission .']'))
+                        @if (Request::old('permissions[' . $permission .']'))
                            checked
-                        @endif        
+                        @endif
                         > {{ ucwords($permission) }}
                     </label>
                 @endforeach

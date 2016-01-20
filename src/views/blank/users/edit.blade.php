@@ -24,12 +24,12 @@ Edit Profile
     }
 ?>
 
-<h1>Edit 
+<h1>Edit
 @if ($isProfileUpdate)
 	Your
-@else 
-	{{ $user->email }}'s 
-@endif 
+@else
+	{{ $user->email }}'s
+@endif
 Account</h1>
 
 <?php $customFields = config('sentinel.additional_user_fields'); ?>
@@ -42,12 +42,12 @@ Account</h1>
         @foreach(config('sentinel.additional_user_fields') as $field => $rules)
         <p>
             <label for="{{ $field }}">{{ ucwords(str_replace('_',' ',$field)) }}</label>
-            <input class="form-control" name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
+            <input class="form-control" name="{{ $field }}" type="text" value="{{ Request::old($field) ? Request::old($field) : $user->$field }}">
             {{ ($errors->has($field) ? $errors->first($field) : '') }}
         </p>
         @endforeach
 
-        <p>         
+        <p>
             <input name="_method" value="PUT" type="hidden">
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
             <input class="btn btn-primary" value="Submit Changes" type="submit">
@@ -78,7 +78,7 @@ Account</h1>
 
 <h4>Change Password</h4>
 <form method="POST" action="{{ $passwordFormAction }}" accept-charset="UTF-8" class="form-inline" role="form">
-        
+
     @if(! Sentry::getUser()->hasAccess('admin'))
     <p>
        <label for="oldPassword">Old Password</label>

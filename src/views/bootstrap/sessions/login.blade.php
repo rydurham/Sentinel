@@ -14,7 +14,7 @@ Log In
             <h2 class="form-signin-heading">Sign In</h2>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
+                <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text" value="{{ Request::old('email') }}">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 

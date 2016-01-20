@@ -12,17 +12,17 @@
 <div class="row">
         <ul class="five columns">
         <form method="POST" action="{{ route('sentinel.users.store') }}" accept-charset="UTF-8">
-            
+
             <li class="field {{ ($errors->has('username')) ? 'danger' : '' }}">
-                <input class="text input" placeholder="Username" name="username" type="text" value="{{ Input::old('username') }}">
-            </li> 
+                <input class="text input" placeholder="Username" name="username" type="text" value="{{ Request::old('username') }}">
+            </li>
             {{ $errors->first('username',  '<p class="form_error">:message</p>') }}
 
             <li class="field {{ ($errors->has('email')) ? 'danger' : '' }}">
-                <input class="text input" placeholder="E-mail" name="email" type="text" value="{{ Input::old('email') }}">
-            </li> 
+                <input class="text input" placeholder="E-mail" name="email" type="text" value="{{ Request::old('email') }}">
+            </li>
             {{ $errors->first('email',  '<p class="form_error">:message</p>') }}
-            
+
             <li class="field {{ ($errors->has('password')) ? 'danger' : '' }}">
                 <input class="text input" placeholder="Password" name="password" value="" type="password">
             </li>
@@ -39,11 +39,11 @@
                     <span></span> Activate
                 </label>
             </li>
-    
+
             <div class="medium primary btn">
                 <input name="_token" value="{{ csrf_token() }}" type="hidden">
                 <input type="submit" value="Create">
-            </div>   
+            </div>
         </form>
     </ul>
 

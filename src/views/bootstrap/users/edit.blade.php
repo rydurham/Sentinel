@@ -50,7 +50,7 @@ Edit Profile
             <div class="form-group {{ ($errors->has($field)) ? 'has-error' : '' }}" for="{{ $field }}">
                 <label for="{{ $field }}" class="col-sm-2 control-label">{{ ucwords(str_replace('_',' ',$field)) }}</label>
                 <div class="col-sm-10">
-                    <input class="form-control" name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
+                    <input class="form-control" name="{{ $field }}" type="text" value="{{ Request::old($field) ? Request::old($field) : $user->$field }}">
                     {{ ($errors->has($field) ? $errors->first($field) : '') }}
                 </div>
             </div>

@@ -15,7 +15,7 @@ Edit Group
             <h2>Edit Group</h2>
 
             <div class="form-group {{ ($errors->has('name')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="Name" name="name" value="{{ Input::old('name') ? Input::old('name') : $group->name }}" type="text">
+                <input class="form-control" placeholder="Name" name="name" value="{{ Request::old('name') ? Request::old('name') : $group->name }}" type="text">
                 {{ ($errors->has('name') ? $errors->first('name') : '') }}
             </div>
 

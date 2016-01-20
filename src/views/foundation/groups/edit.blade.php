@@ -18,11 +18,11 @@ Edit Group
                     <label for="right-label" class="right inline">Name</label>
                 </div>
                 <div class="small-10 columns {{ ($errors->has('name')) ? 'error' : '' }}">
-                    <input placeholder="Name" name="name" value="{{ Input::old('name') ? Input::old('name') : $group->name }}" type="text">
+                    <input placeholder="Name" name="name" value="{{ Request::old('name') ? Request::old('name') : $group->name }}" type="text">
                     {{ ($errors->has('name') ? $errors->first('name', '<small class="error">:message</small>') : '') }}
                 </div>
             </div>
-    
+
             <div class="row">
                 <label class="right inline">Permissions</label>
                 <?php $defaultPermissions = config('sentinel.default_permissions', []); ?>

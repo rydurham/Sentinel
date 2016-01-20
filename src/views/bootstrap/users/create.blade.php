@@ -15,12 +15,12 @@ Create New User
             <h2>Create New User</h2>
 
             <div class="form-group {{ ($errors->has('username')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="Username" name="username" type="text"  value="{{ Input::old('username') }}">
+                <input class="form-control" placeholder="Username" name="username" type="text"  value="{{ Request::old('username') }}">
                 {{ ($errors->has('username') ? $errors->first('username') : '') }}
             </div>
 
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
-                <input class="form-control" placeholder="E-mail" name="email" type="text"  value="{{ Input::old('email') }}">
+                <input class="form-control" placeholder="E-mail" name="email" type="text"  value="{{ Request::old('email') }}">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
             </div>
 

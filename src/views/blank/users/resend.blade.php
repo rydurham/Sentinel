@@ -10,11 +10,11 @@ Resend Activation
 @section('content')
 
 <form method="POST" action="{{ route('sentinel.reactivate.send') }}" accept-charset="UTF-8">
-        	
+
     <h2>Resend Activation Email</h2>
-	
+
     <p>
-        <input class="form-control" placeholder="E-mail" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
+        <input class="form-control" placeholder="E-mail" autofocus="autofocus" name="email" type="text" value="{{ Request::old('email') }}">
         {{ ($errors->has('email') ? $errors->first('email') : '') }}
     </p>
 
@@ -22,5 +22,5 @@ Resend Activation
     <input class="btn btn-primary" value="Resend" type="submit">
 
 </form>
-  
+
 @stop

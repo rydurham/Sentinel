@@ -22,12 +22,12 @@
 ?>
 
 <div class="row">
-    <h4>Edit 
+    <h4>Edit
         @if ($isProfileUpdate)
             Your
-        @else 
-            {{ $user->email }}'s 
-        @endif 
+        @else
+            {{ $user->email }}'s
+        @endif
         Account</h4>
 </div>
 
@@ -38,27 +38,27 @@
 
             @foreach(config('sentinel.additional_user_fields') as $field => $rules)
                 <li class="form-group {{ ($errors->has('username')) ? 'danger' : '' }}">
-                    <input placeholder="{{ ucwords(str_replace('_',' ',$field)) }}" name="{{ $field }}" type="text" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
+                    <input placeholder="{{ ucwords(str_replace('_',' ',$field)) }}" name="{{ $field }}" type="text" value="{{ Request::old($field) ? Request::old($field) : $user->$field }}">
                     {{ ($errors->has($field) ? $errors->first($field, '<p class="form_error">:message</p>') : '') }}
                 </div>
-            @endforeach    
-  
+            @endforeach
+
             <div class="medium primary btn">
                 <input name="_method" value="PUT" type="hidden">
                 <input name="_token" value="{{ csrf_token() }}" type="hidden">
                 <input type="submit" value="Submit Changes">
-            </div>    
+            </div>
         </form>
     </ul>
 </div>
 @endif
-        
+
 @if (Sentry::getUser()->hasAccess('admin') && ($user->hash != Sentry::getUser()->hash))
 <div class="row">
     <h4>Group Memberships</h4>
     <ul class="five columns push_one">
         <form method="POST" action="{{ route('sentinel.users.memberships', $user->hash) }}" accept-charset="UTF-8">
-            
+
             <li class="field">
                 @foreach($groups as $group)
                     <label class="checkbox {{ ($user->inGroup($group) ? 'checked' : '') }}">
@@ -105,6 +105,6 @@
             </div>
         </form>
     </ul>
-</div>   
+</div>
 
 @stop

@@ -14,12 +14,12 @@ Create New User
     <h2>Create New User</h2>
 
     <p>
-    	<input class="form-control" placeholder="Username" name="username" type="text" value="{{ Input::old('username') }}">
+    	<input class="form-control" placeholder="Username" name="username" type="text" value="{{ Request::old('username') }}">
         {{ ($errors->has('email') ? $errors->first('email') : '') }}
     </p>
 
     <p>
-    	<input class="form-control" placeholder="E-mail" name="email" type="text" value="{{ Input::old('email') }}">
+    	<input class="form-control" placeholder="E-mail" name="email" type="text" value="{{ Request::old('email') }}">
        	{{ ($errors->has('password') ?  $errors->first('password') : '') }}
    </p>
 
@@ -31,12 +31,12 @@ Create New User
     <p>
     	<input name="activate" value="activate" type="checkbox"> Activate
     </p>
-            
+
     <p>
     	<input name="_token" value="{{ csrf_token() }}" type="hidden">
     	<input class="btn btn-primary" value="Create" type="submit">
     </p>
-            
-</form>   
+
+</form>
 
 @stop

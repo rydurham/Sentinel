@@ -13,12 +13,12 @@ Register
     <h2>Register New Account</h2>
 
     <p>
-        <input placeholder="Username" name="username" type="text"  value="{{ Input::old('username') }}">
+        <input placeholder="Username" name="username" type="text"  value="{{ Request::old('username') }}">
         {{ ($errors->has('username') ? $errors->first('username') : '') }}
     </p>
 
     <p>
-        <input placeholder="E-mail" name="email" type="text"  value="{{ Input::old('email') }}">
+        <input placeholder="E-mail" name="email" type="text"  value="{{ Request::old('email') }}">
         {{ ($errors->has('email') ? $errors->first('email') : '') }}
     </p>
 

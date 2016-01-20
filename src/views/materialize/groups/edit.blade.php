@@ -18,7 +18,7 @@ Edit Group
 
         <div class="row">
             <div class="input-field col s12">
-                <input id="name" name="name" type="text" class="validate" value="{{ Input::old('name') ? Input::old('name') : $group->name }}">
+                <input id="name" name="name" type="text" class="validate" value="{{ Request::old('name') ? Request::old('name') : $group->name }}">
                 <label for="name">Name</label>
                 {{ ($errors->has('name') ? $errors->first('name') : '') }}
             </div>
@@ -40,5 +40,5 @@ Edit Group
         </p>
 
 </form>
-   
+
 @stop

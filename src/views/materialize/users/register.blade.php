@@ -17,7 +17,7 @@ Register
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="username" name="username" type="text" class="validate" value="{{ Input::old('username') }}">
+                    <input id="username" name="username" type="text" class="validate" value="{{ Request::old('username') }}">
                     <label for="name">Username</label>
                     {{ ($errors->has('username') ? $errors->first('username') : '') }}
                 </div>
@@ -25,7 +25,7 @@ Register
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="email" name="email" type="text" class="validate" value="{{ Input::old('email') }}">
+                    <input id="email" name="email" type="text" class="validate" value="{{ Request::old('email') }}">
                     <label for="name">E-Mail</label>
                     {{ ($errors->has('email') ? $errors->first('email') : '') }}
                 </div>

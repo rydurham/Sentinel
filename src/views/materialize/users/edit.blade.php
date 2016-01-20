@@ -27,9 +27,9 @@ Edit Profile
 <h3>Edit
 @if ($isProfileUpdate)
 	Your
-@else 
-	{{ $user->email }}'s 
-@endif 
+@else
+	{{ $user->email }}'s
+@endif
 Account</h3>
 <div class="divider"></div>
 
@@ -47,7 +47,7 @@ Account</h3>
             @foreach(config('sentinel.additional_user_fields') as $field => $rules)
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="{{ $field }}" name="{{ $field }}" type="text" class="validate" value="{{ Input::old($field) ? Input::old($field) : $user->$field }}">
+                        <input id="{{ $field }}" name="{{ $field }}" type="text" class="validate" value="{{ Request::old($field) ? Request::old($field) : $user->$field }}">
                         <label for="{{ $field }}">{{ ucwords(str_replace('_',' ',$field)) }}</label>
                         {{ ($errors->has($field) ? $errors->first($field) : '') }}
                     </div>

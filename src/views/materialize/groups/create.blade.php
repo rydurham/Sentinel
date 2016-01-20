@@ -17,7 +17,7 @@ Create Group
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="name" name="name" type="text" class="validate" value="{{ Input::old('name') }}">
+                    <input id="name" name="name" type="text" class="validate" value="{{ Request::old('name') }}">
                     <label for="name">Name</label>
                     {{ ($errors->has('name') ? $errors->first('name') : '') }}
                 </div>
@@ -30,9 +30,9 @@ Create Group
             @foreach ($defaultPermissions as $permission)
                 <p>
                     <input name="permissions[{{ $permission }}]" value="1" type="checkbox"
-                    @if (Input::old('permissions[' . $permission .']'))
+                    @if (Request::old('permissions[' . $permission .']'))
                         checked
-                    @endif        
+                    @endif
                     > {{ ucwords($permission) }}
                     <label for="permissions[{{ $permission }}]">{{ ucwords($permission) }}</label>
                 </p>

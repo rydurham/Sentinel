@@ -10,9 +10,9 @@
         <form method="POST" action="{{ route('sentinel.groups.store') }}" accept-charset="UTF-8">
             <ul>
                 <h4>Create New Group</h4>
-        
+
                 <li class="field {{ ($errors->has('name')) ? 'danger' : '' }}">
-                    <input class="text-imput" placeholder="Name" name="name" type="text" value="{{ Input::old('name') }}">
+                    <input class="text-imput" placeholder="Name" name="name" type="text" value="{{ Request::old('name') }}">
                 </li>
                 {{ $errors->first('name', '<p class="form_error">:message</p>') }}
 
@@ -22,9 +22,9 @@
                     @foreach ($defaultPermissions as $permission)
                         <label class="checkbox" for="permissions[{{ $permission }}]" >
                             <input name="permissions[{{ $permission }}]" value="1" type="checkbox"
-                            @if (Input::old('permissions[' . $permission .']'))
+                            @if (Request::old('permissions[' . $permission .']'))
                               checked
-                            @endif        
+                            @endif
                             > {{ ucwords($permission) }}
                             <span></span> {{ ucwords($permission) }}
                         </label>
