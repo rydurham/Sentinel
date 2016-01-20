@@ -38,9 +38,6 @@ class RegistrationController extends BaseController
         $this->userRepository       = $userRepository;
         $this->groupRepository      = $groupRepository;
         $this->hashids              = $hashids;
-
-        //Check CSRF token on POST
-        $this->beforeFilter('Sentinel\csrf', array('on' => array('post', 'put', 'delete')));
     }
 
     /**
