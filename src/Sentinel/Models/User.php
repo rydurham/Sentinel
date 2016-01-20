@@ -27,6 +27,16 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
     }
 
     /**
+     * Get the name of the unique identifier for the user.
+     *
+     * @return string
+     */
+    public function getAuthIdentifierName()
+    {
+        return $this->getKey();
+    }
+
+    /**
      * Get the password for the user.
      *
      * @return string

@@ -39,7 +39,7 @@ class SentinelTestCase extends Orchestra\Testbench\TestCase
             'database' => __DIR__ . '/_data/db.sqlite',
             'prefix'   => '',
         ]);
-        $app['config']->set('mail.pretend', true);
+        $app['config']->set('mail.driver', 'log');
         $app['config']->set('mail.from', ['from' => 'noreply@example.com', 'name' => null]);
 
         // Prepare the sqlite database
