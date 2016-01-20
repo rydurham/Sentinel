@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
-Route::group(['namespace' => 'Sentinel\Controllers'], function () {
+Route::group(['namespace' => 'Sentinel\Controllers', 'middleware' => ['web']], function () {
 
     // Sentinel Session Routes
     Route::get('login', ['as' => 'sentinel.login', 'uses' => 'SessionController@create']);
