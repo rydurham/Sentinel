@@ -10,7 +10,7 @@ use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use View;
-use Input;
+use Request;
 use Redirect;
 
 class GroupController extends BaseController
@@ -45,7 +45,7 @@ class GroupController extends BaseController
         // Paginate the existing users
         $groups      = $this->groupRepository->all();
         $perPage     = 15;
-        $currentPage = Input::get('page') - 1;
+        $currentPage = Request::get('page') - 1;
         $pagedData   = array_slice($groups, $currentPage * $perPage, $perPage);
         $groups      = new Paginator($pagedData, $perPage, $currentPage);
 
@@ -70,7 +70,7 @@ class GroupController extends BaseController
     public function store(GroupCreateRequest $request)
     {
         // Gather input
-        $data = Input::all();
+        $data = Request::all();
 
         // Store the new group
         $result = $this->groupRepository->store($data);
@@ -121,7 +121,7 @@ class GroupController extends BaseController
     public function update($hash)
     {
         // Gather Input
-        $data = Input::all();
+        $data = Request::all();
 
         // Decode the hashid
         $data['id'] = $this->hashids->decode($hash)[0];

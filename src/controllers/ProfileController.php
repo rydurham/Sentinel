@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Sentinel\FormRequests\ChangePasswordRequest;
 use Sentinel\FormRequests\UserUpdateRequest;
 use Session;
-use Input;
+use Request;
 use Response;
 use Redirect;
 use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
@@ -80,7 +80,7 @@ class ProfileController extends BaseController
     public function update(UserUpdateRequest $request)
     {
         // Gather Input
-        $data       = Input::all();
+        $data       = $request->all();
         $data['id'] = $this->userRepository->getUser()->id;
 
         // Attempt to update the user
@@ -101,7 +101,7 @@ class ProfileController extends BaseController
         $user = $this->userRepository->getUser();
 
         // Gather input
-        $data       = Input::all();
+        $data       = $request->all();
         $data['id'] = $user->id;
 
         // Change the User's password

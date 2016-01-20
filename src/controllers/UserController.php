@@ -13,7 +13,7 @@ use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Vinkla\Hashids\HashidsManager;
 use View;
-use Input;
+use Request;
 use Event;
 use Redirect;
 use Session;
@@ -53,7 +53,7 @@ class UserController extends BaseController
         // Paginate the existing users
         $users       = $this->userRepository->all();
         $perPage     = 15;
-        $currentPage = Input::get('page') - 1;
+        $currentPage = Request::get('page') - 1;
         $pagedData   = array_slice($users, $currentPage * $perPage, $perPage);
         $users       = new Paginator($pagedData, $perPage, $currentPage);
 
@@ -79,7 +79,7 @@ class UserController extends BaseController
     public function store(UserCreateRequest $request)
     {
         // Create and store the new user
-        $result = $this->userRepository->store(Input::all());
+        $result = $this->userRepository->store($request->all());
 
         // Determine response message based on whether or not the user was activated
         $message = ($result->getPayload()['activated'] ? trans('Sentinel::users.addedactive') : trans('Sentinel::users.added'));
@@ -141,7 +141,7 @@ class UserController extends BaseController
     public function update(UserUpdateRequest $request, $hash)
     {
         // Gather Input
-        $data = Input::all();
+        $data = $request->all();
 
         // Decode the hashid
         $data['id'] = $this->hashids->decode($hash)[0];
@@ -185,7 +185,7 @@ class UserController extends BaseController
         $id = $this->hashids->decode($hash)[0];
 
         // Gather input
-        $groups = Input::get('groups');
+        $groups = Request::get('groups');
 
         // Change memberships
         $result = $this->userRepository->changeGroupMemberships($id, $groups);
@@ -204,7 +204,7 @@ class UserController extends BaseController
     public function changePassword(ChangePasswordRequest $request, $hash)
     {
         // Gather input
-        $data       = Input::all();
+        $data       = $request->all();
         $data['id'] = $this->hashids->decode($hash)[0];
 
         // Grab the current user

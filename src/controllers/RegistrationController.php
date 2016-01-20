@@ -13,7 +13,7 @@ use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Sentry;
 use View;
-use Input;
+use Request;
 use Event;
 use Redirect;
 use Session;
@@ -72,7 +72,7 @@ class RegistrationController extends BaseController
     public function register(RegisterRequest $request)
     {
         // Gather input
-        $data = Input::all();
+        $data = $request->all();
 
         // Attempt Registration
         $result = $this->userRepository->store($data);
@@ -118,7 +118,7 @@ class RegistrationController extends BaseController
     public function resendActivation(EmailRequest $request)
     {
         // Resend the activation email
-        $result = $this->userRepository->resend(['email' => e(Input::get('email'))]);
+        $result = $this->userRepository->resend(['email' => e($request->get('email'))]);
 
         // It worked!  Use config to determine where we should go.
         return $this->redirectViaResponse('registration_resend', $result);
@@ -142,7 +142,7 @@ class RegistrationController extends BaseController
     public function sendResetPasswordEmail(EmailRequest $request)
     {
         // Send Password Reset Email
-        $result = $this->userRepository->triggerPasswordReset(e(Input::get('email')));
+        $result = $this->userRepository->triggerPasswordReset(e($request->get('email')));
 
         // It worked!  Use config to determine where we should go.
         return $this->redirectViaResponse('registration_reset_triggered', $result);
@@ -187,7 +187,7 @@ class RegistrationController extends BaseController
         $id = $this->hashids->decode($hash)[0];
 
         // Gather input data
-        $data = Input::only('password', 'password_confirmation');
+        $data = $request->only('password', 'password_confirmation');
 
         // Change the user's password
         $result = $this->userRepository->resetPassword($id, $code, e($data['password']));

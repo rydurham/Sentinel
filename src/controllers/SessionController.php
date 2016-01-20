@@ -10,7 +10,7 @@ use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
 use Sentry;
 use View;
-use Input;
+use Request;
 use Event;
 use Redirect;
 use Session;
@@ -54,7 +54,7 @@ class SessionController extends BaseController
     public function store(LoginRequest $request)
     {
         // Gather the input
-        $data = Input::all();
+        $data = $request->all();
 
         // Attempt the login
         $result = $this->session->store($data);
