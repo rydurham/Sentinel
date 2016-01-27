@@ -135,16 +135,13 @@ class SentinelPublishCommand extends Command
      */
     protected function getOptions()
     {
-        return array(
-            array(
-                'theme',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'The name of the UI theme you want to use with Sentinel.',
-                'bootstrap'
-            ),
-            array('list', null, InputOption::VALUE_NONE, 'Show a list of currently supported UI Themes.'),
-        );
+        return [
+            ['theme', null, InputOption::VALUE_OPTIONAL, 'The name of the UI theme you want to use with Sentinel.', 'bootstrap'],
+
+            ['list', null, InputOption::VALUE_NONE, 'Show a list of currently supported UI Themes.'],
+
+            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
+        ];
     }
 
     /**
