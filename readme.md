@@ -119,6 +119,38 @@ This package is intended for simple sites but it is possible to integrate into a
 
 It is not advisable to extend the Sentinel controller classes; you will be better off in the long run creating your own controllers from scratch. 
 
+#### Using Sentinel in Tests
+If you find yourself in the situation whereby you need to do tests with user logged in, then go to your ``` tests/TestCase.php `` and add below method.
+```php
+   /**
+     * Login to sentry for Testing purpose
+     * @param  $email
+     * @return void
+     */
+    public function sentryUserBe($email='admin@admin.com')
+    {
+        $user = \Sentry::findUserByLogin($email);
+        \Sentry::login($user);
+       \Event::fire('sentinel.user.login', ['user' => $user]);
+    }
+```
+After adding the above method, you can start testing your application with user logged in like below example
+```php
+class ExampleTest extends TestCase
+{
+    /**
+     * Dashboard functional test example.
+     *
+     * @return void
+     */
+    public function testDashboardPage()
+    {
+        $this->sentryUserBe('admin@admin.com');
+        $this->visit('/dashboard')
+             ->see('dashboard;
+    }
+}
+```
 ### Documentation & Questions
 Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
 * Config Options
