@@ -2,22 +2,23 @@
 
 namespace Sentinel\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
+use View;
+use Event;
+use Config;
+use Sentry;
+use Request;
+use Session;
+use Redirect;
+use Vinkla\Hashids\HashidsManager;
 use Illuminate\Pagination\Paginator;
-use Sentinel\FormRequests\ChangePasswordRequest;
 use Sentinel\FormRequests\UserCreateRequest;
 use Sentinel\FormRequests\UserUpdateRequest;
-use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
-use Sentinel\Traits\SentinelRedirectionTrait;
 use Sentinel\Traits\SentinelViewfinderTrait;
-use Vinkla\Hashids\HashidsManager;
-use View;
-use Request;
-use Event;
-use Redirect;
-use Session;
-use Config;
+use Sentinel\Traits\SentinelRedirectionTrait;
+use Sentinel\FormRequests\ChangePasswordRequest;
+use Illuminate\Routing\Controller as BaseController;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
+use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 
 class UserController extends BaseController
 {
@@ -50,12 +51,8 @@ class UserController extends BaseController
      */
     public function index()
     {
-        // Paginate the existing users
-        $users       = $this->userRepository->all();
-        $perPage     = 15;
-        $currentPage = Request::get('page') - 1;
-        $pagedData   = array_slice($users, $currentPage * $perPage, $perPage);
-        $users       = new Paginator($pagedData, $perPage, $currentPage);
+        // Get a paginated set of users
+        $users = Sentry::getUserProvider()->createModel()->paginate(15);
 
         return $this->viewFinder('Sentinel::users.index', ['users' => $users]);
     }

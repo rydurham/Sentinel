@@ -2,16 +2,17 @@
 
 namespace Sentinel\Controllers;
 
-use Vinkla\Hashids\HashidsManager;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Pagination\Paginator;
-use Sentinel\FormRequests\GroupCreateRequest;
-use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
-use Sentinel\Traits\SentinelRedirectionTrait;
-use Sentinel\Traits\SentinelViewfinderTrait;
 use View;
+use Sentry;
 use Request;
 use Redirect;
+use Vinkla\Hashids\HashidsManager;
+use Illuminate\Pagination\Paginator;
+use Sentinel\Traits\SentinelViewfinderTrait;
+use Sentinel\FormRequests\GroupCreateRequest;
+use Sentinel\Traits\SentinelRedirectionTrait;
+use Illuminate\Routing\Controller as BaseController;
+use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
 
 class GroupController extends BaseController
 {
@@ -42,12 +43,8 @@ class GroupController extends BaseController
      */
     public function index()
     {
-        // Paginate the existing users
-        $groups      = $this->groupRepository->all();
-        $perPage     = 15;
-        $currentPage = Request::get('page') - 1;
-        $pagedData   = array_slice($groups, $currentPage * $perPage, $perPage);
-        $groups      = new Paginator($pagedData, $perPage, $currentPage);
+        // Get a paginated set of groups
+        $groups = Sentry::getGroupProvider()->createModel()->paginate(15);
 
         return $this->viewFinder('Sentinel::groups.index', ['groups' => $groups]);
     }
