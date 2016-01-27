@@ -8,9 +8,9 @@ This package provides an implementation of  [Sentry 2](https://github.com/cartal
 
 __Important__ There are two PHP packages named "Sentinel".  This is ```rydurham/sentinel```, not ```cartalyst/sentinel```.  The key difference is that this package is intended to be an implementation of Sentry v2, whereas Cartalyst released what would have been Sentry v3 under the name ```cartalyst/sentinel```. The instructions below are specifically for ```rydurham/sentinel```,  make sure you are using the right package before proceeding. 
 
-If you are looking for a quick way to get up and running with ```cartalyst/sentinel```. [I have created a bridge package  that may be helpful](https://github.com/srlabs/centaur).  
+If you are looking for a quick way to get up and running with ```cartalyst/sentinel```. [I have created a bridge package  that may be helpful](https://github.com/srlabs/centaur).  If you are starting a new Laravel 5.2 project, I recommend using that package instead of this one.
 
-__Releases__ There are several versions of this package, each intended for different versions of the laravel framework. 
+__Releases__ There are several versions of this package, each intended for different versions of the Laravel framework. 
 
 | Laravel Version  | Sentinel Version  | Packagist Branch |
 |---|---|---|
@@ -95,7 +95,7 @@ Once installed and seeded, you can make immediate use of the package via these r
 * ```yoursite.com/users``` - For user management.  Only available to admins
 * ```yoursite.com/groups``` - For group management. Only available to admins.
 
-Sentinel also provides these middlewares which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your application's routes & methods. 
+Sentinel also provides middleware which you can use to [prevent unauthorized access](http://laravel.com/docs/routing#route-filters) to your application's routes & methods. 
 
 * ```Sentinel\Middleware\SentryAuth``` - Require users to have an active session
 * ```Sentinel\Middleware\SentryAdminAccess``` - Block access for everyone except users who have the 'admin' permission.  
@@ -120,7 +120,7 @@ This package is intended for simple sites but it is possible to integrate into a
 It is not advisable to extend the Sentinel controller classes; you will be better off in the long run creating your own controllers from scratch. 
 
 #### Using Sentinel in Tests
-If you find yourself in the situation whereby you need to do tests with user logged in, then go to your ``` tests/TestCase.php `` and add below method.
+If you find yourself in the situation where you want to do tests with user logged in, go to your ``` tests/TestCase.php `` and add this method:
 ```php
    /**
      * Login to sentry for Testing purpose
@@ -131,10 +131,11 @@ If you find yourself in the situation whereby you need to do tests with user log
     {
         $user = \Sentry::findUserByLogin($email);
         \Sentry::login($user);
-       \Event::fire('sentinel.user.login', ['user' => $user]);
+        \Event::fire('sentinel.user.login', ['user' => $user]);
     }
 ```
-After adding the above method, you can start testing your application with user logged in like below example
+
+You can then start testing your application with user logged in, as such:
 ```php
 class ExampleTest extends TestCase
 {
@@ -147,13 +148,14 @@ class ExampleTest extends TestCase
     {
         $this->sentryUserBe('admin@admin.com');
         $this->visit('/dashboard')
-             ->see('dashboard;
+             ->see('dashboard');
     }
 }
 ```
+
 ### Documentation & Questions
 Check the [Wiki](https://github.com/rydurham/Sentinel/wiki) for more information about the package:
-* Config Options
+* Configuration Options
 * Events & Listeners
 * Seed & Migration Details
 * Default Routes
