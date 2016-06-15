@@ -3,10 +3,20 @@
 namespace Sentinel\Models;
 
 use Hashids;
+use Cartalyst\Sentry\Throttling\Eloquent\Throttle;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
 {
+    /**
+     * The throttle object for this user, if one exists
+     * @return Throttle|null
+     */
+    public function throttle()
+    {
+        return $this->hasOne('Cartalyst\Sentry\Throttling\Eloquent\Throttle', 'user_id');
+    }
+
     /**
      * Set the Sentry User Model Hasher to be the same as the configured Sentry Hasher
      */
@@ -88,5 +98,29 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
     public function getHashAttribute()
     {
         return Hashids::encode($this->attributes['id']);
+    }
+
+    /**
+     * Use an accessor method to get the user's status from the throttle table
+     * @return [type] [description]
+     */
+    public function getStatusAttribute()
+    {
+        $status = "Not Active";
+        if ($this->isActivated()) {
+            $status = "Active";
+        }
+
+        //Check for suspension
+        if ($this->throttle && $this->throttle->isSuspended()) {
+            $status = "Suspended";
+        }
+
+        //Check for ban
+        if ($this->throttle && $this->throttle->isBanned()) {
+            $status = "Banned";
+        }
+
+        return $status;
     }
 }
