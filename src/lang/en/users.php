@@ -34,6 +34,8 @@ return array(
 
     'alreadyactive'    =>    "That account has already been activated.",
 
+    'pendingactivation' => "You haven’t activated your account yet. Please check your email and activate your account.",
+
     'emailconfirm'    =>    "Check your email for the confirmation link.",
 
     'emailinfo'        =>    "Check your email for instructions.",

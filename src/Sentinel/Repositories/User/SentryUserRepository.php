@@ -111,8 +111,26 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             // Return a response
             return new SuccessResponse($message, $payload);
         } catch (UserExistsException $e) {
-            $message = trans('Sentinel::users.exists');
+            // If the User is already registered but hasn't yet completed the activation
+            // process resend the activation email and show appropriate message.
+            
+            if( $this->config->get('sentinel.require_activation', true) ) {
 
+                //Attempt to find the user.
+                $user = $this->sentry->getUserProvider()->findByLogin(e($data['email']));
+
+                // If the user is not currently activated resend the activation email
+                if (!$user->isActivated()) {
+                    $this->dispatcher->fire('sentinel.user.resend', [
+                        'user' => $user,
+                        'activated' => $user->activated,
+                    ]);
+
+                    return new FailureResponse(trans('Sentinel::users.pendingactivation'), ['user' => $user]);
+                }                
+            }
+
+            $message = trans('Sentinel::users.exists');
             return new ExceptionResponse($message);
         }
     }
