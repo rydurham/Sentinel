@@ -270,10 +270,12 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             // The user is already activated
             return new FailureResponse(trans('Sentinel::users.alreadyactive'), ['user' => $user]);
         } catch (UserNotFoundException $e) {
-            // The user is trying to "reactivate" an account that doesn't exist.
-            $message = trans('Sentinel::users.notfound');
+            // The user is trying to "reactivate" an account that doesn't exist.  This could be
+            // a vector for determining valid existing accounts, so we will send a vague
+            // response without actually sending a new activation email.
+            $message = trans('Sentinel::users.pendingactivation');
 
-            return new FailureResponse($message, []);
+            return new SuccessResponse($message, []);
         }
     }
 
