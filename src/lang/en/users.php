@@ -34,6 +34,8 @@ return array(
 
     'alreadyactive'    =>    "That account has already been activated.",
 
+    'pendingactivation' => "If an account for this email is found, you will receive the activation email in the next few minutes.",
+
     'emailconfirm'    =>    "Check your email for the confirmation link.",
 
     'emailinfo'        =>    "Check your email for instructions.",
