@@ -163,7 +163,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     }
 
     /**
-     * Test updating an existing user 
+     * Test updating an existing user
      */
     public function testUpdatingUser()
     {

@@ -33,7 +33,7 @@ interface SentinelGroupRepositoryInterface
 
     /**
      * Return a specific user by a given id
-     * 
+     *
      * @param  integer $id
      * @return User
      */
@@ -41,7 +41,7 @@ interface SentinelGroupRepositoryInterface
 
     /**
      * Return a specific user by a given name
-     * 
+     *
      * @param  string $name
      * @return User
      */
