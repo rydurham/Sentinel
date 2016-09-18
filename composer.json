@@ -11,14 +11,14 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "illuminate/support": "5.2.*@dev",
-        "illuminate/contracts": "5.2.*@dev",
-        "cartalyst/sentry": "2.1.*",
-        "vinkla/hashids": "~2.0"
+        "php": ">=5.6.4",
+        "illuminate/support": "5.3.*",
+        "illuminate/contracts": "5.3.*",
+        "cartalyst/sentry": "2.*",
+        "vinkla/hashids": "2.*"
     },
     "require-dev": {
-        "orchestra/testbench": "3.2.*",
+        "orchestra/testbench": "3.3.*",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0"
     },
