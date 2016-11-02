@@ -33,5 +33,5 @@ $(function() {
       return methodForm;
     })
     .removeAttr('href')
-    .attr('onclick', ' if ($(this).hasClass(\'action_confirm\')) { if(confirm($(this).data(\'message\') || "Are you sure you want to do this?")) { $(this).find("form").submit(); } } else { $(this).find("form").submit(); }');
+    .attr('onclick', ' if ($(this).hasClass(\'action_confirm\')) { if(confirm($(this).data(\'message\') || "Are you sure you want to do this?")) { $(this).find("form").submit(); } }');
 });
