@@ -2,6 +2,7 @@
 
 namespace Sentinel\Listeners;
 
+use Sentinel\Mail\Welcome;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Config\Repository;
 
@@ -54,14 +55,17 @@ class UserEventListener
      */
     public function welcome($user, $activated)
     {
-        $subject = $this->config->get('sentinel.subjects.welcome');
-        $view = $this->config->get('sentinel.email.views.welcome', 'Sentinel::emails.welcome');
-        $data['hash'] = $user->hash;
-        $data['code'] = $user->getActivationCode();
-        $data['email'] = $user->email;
-
+        // We only want to send this message if the account
+        // has not been activated
         if (! $activated) {
-            $this->sendTo($user->email, $subject, $view, $data);
+
+            Mail::to($user->email)->send(
+                new Welcome(
+                    $user->email,
+                    $user->hash,
+                    $user->getActivationCode()
+                )
+            );
         }
     }
 
@@ -77,52 +81,13 @@ class UserEventListener
      */
     public function passwordReset($user, $code)
     {
-        $subject = $this->config->get('sentinel.subjects.reset_password');
-        $view = $this->config->get('sentinel.email.views.reset', 'Sentinel::emails.reset');
-        $data['hash'] = $user->hash;
-        $data['code'] = $code;
-        $data['email'] = $user->email;
-
-        $this->sendTo($user->email, $subject, $view, $data);
+        Mail::to($user->email)->send(
+            new PasswordReset(
+                $user->email,
+                $user->hash,
+                $code
+            )
+        );
     }
 
-    /**
-     * Convenience function for sending mail
-     *
-     * @param $email
-     * @param $subject
-     * @param $view
-     * @param array $data
-     */
-    private function sendTo($email, $subject, $view, $data = array())
-    {
-        $sender = $this->gatherSenderAddress();
-
-        Mail::queue($view, $data, function ($message) use ($email, $subject, $sender) {
-            $message->to($email)
-                ->from($sender['address'], $sender['name'])
-                ->subject($subject);
-        });
-    }
-
-    /**
-     * If the application does not have a valid "from" address configured, we should stub in
-     * a temporary alternative so we have something to pass to the Mailer
-     *
-     * @return array|mixed
-     */
-    private function gatherSenderAddress()
-    {
-        $sender = config('mail.from', []);
-
-        if (!array_key_exists('address', $sender) || is_null($sender['address'])) {
-            return ['address' => 'noreply@example.com', 'name' => ''];
-        }
-
-        if (is_null($sender['name'])) {
-            $sender['name'] = '';
-        }
-
-        return $sender;
-    }
 }
