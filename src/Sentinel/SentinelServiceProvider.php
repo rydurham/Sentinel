@@ -124,7 +124,7 @@ class SentinelServiceProvider extends ServiceProvider
      */
     private function registerArtisanCommands()
     {
-        $this->app['sentinel.publisher'] = $this->app->share(function ($app) {
+        $this->app->singleton('sentinel.publisher', function ($app) {
             return new SentinelPublishCommand(
                 $app->make('files')
             );
