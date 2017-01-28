@@ -12,15 +12,15 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "illuminate/support": "5.3.*",
-        "illuminate/contracts": "5.3.*",
+        "illuminate/support": "5.4.*",
+        "illuminate/contracts": "5.4.*",
         "cartalyst/sentry": "2.*",
-        "vinkla/hashids": "2.*"
+        "vinkla/hashids": "3.*"
     },
     "require-dev": {
-        "orchestra/testbench": "3.3.*",
+        "orchestra/testbench": "3.4.*",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~5.0"
     },
     "autoload": {
         "classmap": [
