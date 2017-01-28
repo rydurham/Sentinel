@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.6.4",
+        "php": ">=7.0.1",
         "illuminate/support": "5.4.*",
         "illuminate/contracts": "5.4.*",
         "cartalyst/sentry": "2.*",
