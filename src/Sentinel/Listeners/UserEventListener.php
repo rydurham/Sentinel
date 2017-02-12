@@ -2,6 +2,7 @@
 
 namespace Sentinel\Listeners;
 
+use Sentinel\Mail\PasswordReset;
 use Sentinel\Mail\Welcome;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Config\Repository;
