@@ -2,64 +2,64 @@
 
 return array(
 
-    /*
-    |--------------------------------------------------------------------------
-    | Language strings for views
-    |--------------------------------------------------------------------------
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Language strings for views
+	|--------------------------------------------------------------------------
+	*/
 
-    'flashsuccess'    => 'Успешно выполнено',
+	'flashsuccess'	=> 'Успешно выполнено',
 
-    'flasherror'    => 'Ошибка',
+	'flasherror'	=> 'Ошибка',
 
-    'flashwarning'    => 'Внимание',
+	'flashwarning'	=> 'Внимание',
 
-    'flashinfo'        => 'Информация',
+	'flashinfo'		=> 'Информация',
 
-    'register'        => 'Регистрация',
+	'register'		=> 'Регистрация',
 
-    'login'            => "Войти",
+	'login'			=> "Войти",
 
-    'logout'        => "Выйти",
+	'logout'		=> "Выйти",
 
-    'home'            => "Домой",
+	'home'			=> "Домой",
 
-    'users'        => 'Пользователь|Пользователи',
+	'users' 		=> 'Пользователь|Пользователи',
 
-    'groups'        => "Группы",
+	'groups'		=> "Группы",
 
-    'helloworld'    => "Здравствуй, Мир!",
+	'helloworld'	=> "Здравствуй, Мир!",
 
-    'description'    => "Это пример приложения <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> запущенного с применением <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> и <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
+	'description'	=> "Это пример приложения <a href=\"https://github.com/laravel/laravel\">Laravel 4.1</a> запущенного с применением <a href=\"https://github.com/cartalyst/sentry\">Sentry 2.0</a> и <a href=\"http://getbootstrap.com/\">Bootstrap 3.0</a>.",
 
-    'loginstatus'    => "Вы авторизовались.",
+	'loginstatus'	=> "Вы авторизовались.",
 
-    'sessiondata'    => "Данные сессии",
+	'sessiondata'	=> "Данные сессии",
 
-    'currentusers'    => "Пользователи",
+	'currentusers'	=> "Пользователи",
 
-    'options'        => 'Опции',
+	'options'		=> 'Опции',
 
-    'status'        => "Статус",
+	'status'		=> "Статус",
 
-    'active'        => "Активный",
+	'active'		=> "Активный",
 
-    'notactive'        => "Не активный",
+	'notactive'		=> "Не активный",
 
-    'suspended'        => "Заблокирован",
+	'suspended'		=> "Заблокирован",
 
-    'banned'        => "Доступ запрещен",
+	'banned'		=> "Доступ запрещен",
 
-    'actionedit'    => "Редактировать",
+	'actionedit'	=> "Редактировать",
 
-    'actionsuspend'    => "Заблокировать",
+	'actionsuspend'	=> "Заблокировать",
 
-    'actionunsuspend' => "Разблокировать",
+	'actionunsuspend' => "Разблокировать",
 
-    'actionban'        => "Запретить доступ",
+	'actionban'		=> "Запретить доступ",
 
-    'actionunban'    => "Разрешить доступ",
+	'actionunban'	=> "Разрешить доступ",
 
-    'actiondelete'    => "Удалить",
+	'actiondelete'	=> "Удалить",
 
 );
