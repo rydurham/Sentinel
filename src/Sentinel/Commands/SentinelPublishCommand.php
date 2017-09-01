@@ -76,7 +76,7 @@ class SentinelPublishCommand extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Don't allow this command to run in a production environment
         if (!$this->confirmToProceed()) {
