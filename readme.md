@@ -23,6 +23,7 @@ __Releases__ There are several versions of this package, each intended for diffe
 | 5.3.*  | 2.5.*  | ```"rydurham/sentinel": "~2.5"``` |
 | 5.4.*  | 2.6.*  | ```"rydurham/sentinel": "~2.6"``` |
 | 5.5.*  | 2.7.*  | ```"rydurham/sentinel": "~2.7"``` |
+| 5.6.*  | 2.8.*  | ```"rydurham/sentinel": "~2.8"``` |
 
 ### Laravel 5 Instructions
 **Install the Package Via Composer:**
