@@ -14,7 +14,7 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User implements UserContract
      */
     public function throttle()
     {
-        return $this->hasOne('Cartalyst\Sentry\Throttling\Eloquent\Throttle', 'user_id');
+        return $this->hasOne(Throttle::class, 'user_id');
     }
 
     /**

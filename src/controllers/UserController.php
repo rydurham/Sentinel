@@ -52,7 +52,11 @@ class UserController extends BaseController
     public function index()
     {
         // Get a paginated set of users
-        $users = Sentry::getUserProvider()->createModel()->paginate(15);
+        $users = Sentry::getUserProvider()
+            ->createModel()
+            ->with('throttle')
+            ->paginate(15);
+
 
         return $this->viewFinder('Sentinel::users.index', ['users' => $users]);
     }
@@ -100,6 +104,9 @@ class UserController extends BaseController
 
         // Get the user
         $user = $this->userRepository->retrieveById($id);
+
+        // Load throttle data
+        $user->load('throttle');
 
         return $this->viewFinder('Sentinel::users.show', ['user' => $user]);
     }

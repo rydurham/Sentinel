@@ -113,7 +113,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         } catch (UserExistsException $e) {
             // If the User is already registered but hasn't yet completed the activation
             // process resend the activation email and show appropriate message.
-            
+
             if ($this->config->get('sentinel.require_activation', true)) {
 
                 //Attempt to find the user.
@@ -189,6 +189,9 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         try {
             // Find the user using the user id
             $user = $this->sentry->findUserById($id);
+
+            // Delete throttle records
+            $user->throttle()->delete();
 
             // Delete the user
             if ($user->delete()) {

@@ -2,6 +2,8 @@
 
 use Sentinel\Models\User;
 use Illuminate\Support\Facades\DB;
+use Cartalyst\Sentry\Throttling\Eloquent\Throttle;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 
 class SentinelUserModelTests extends SentinelTestCase
 {
@@ -16,7 +18,7 @@ class SentinelUserModelTests extends SentinelTestCase
     public function test_user_status_attribute_can_be_inactive()
     {
         // Fetch the user repository
-        $userRepository =  app()->make('Sentinel\Repositories\User\SentinelUserRepositoryInterface');
+        $userRepository =  app()->make(SentinelUserRepositoryInterface::class);
 
         // Create a new user that has not been activated
         $userResponse = $userRepository->store([
@@ -39,12 +41,12 @@ class SentinelUserModelTests extends SentinelTestCase
         $user = Sentry::findUserByLogin('user@user.com');
 
         // Fetch the User Repository
-        $userRepository =  app()->make('Sentinel\Repositories\User\SentinelUserRepositoryInterface');
+        $userRepository =  app()->make(SentinelUserRepositoryInterface::class);
 
         // Suspend the user
         $result = $userRepository->suspend($user->id, 15);
 
-        $this->assertInstanceOf('Cartalyst\Sentry\Throttling\Eloquent\Throttle', $user->throttle);
+        $this->assertInstanceOf(Throttle::class, $user->throttle);
         $this->assertEquals('Suspended', $user->status);
     }
 
@@ -54,12 +56,12 @@ class SentinelUserModelTests extends SentinelTestCase
         $user = Sentry::findUserByLogin('user@user.com');
 
         // Fetch the User Repository
-        $userRepository =  app()->make('Sentinel\Repositories\User\SentinelUserRepositoryInterface');
+        $userRepository =  app()->make(SentinelUserRepositoryInterface::class);
 
         // Suspend the user
         $result = $userRepository->ban($user->id);
 
-        $this->assertInstanceOf('Cartalyst\Sentry\Throttling\Eloquent\Throttle', $user->throttle);
+        $this->assertInstanceOf(Throttle::class, $user->throttle);
         $this->assertEquals('Banned', $user->status);
     }
 }
