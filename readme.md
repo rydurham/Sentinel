@@ -78,11 +78,10 @@ More details about the default usernames and passwords can be [found here](https
 
 Sentinel requires that you have a route named 'home' in your ```routes.php``` file:
 ```php
-// app/routes.php
- Route::get('/', array('as' => 'home', function()
-{
-    return View::make('home');
-}));
+// routes/web.php
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 ```
 
 ### Basic Usage
