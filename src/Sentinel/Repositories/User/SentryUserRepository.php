@@ -106,7 +106,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             ];
 
             // Fire the 'user registered' event
-            $this->dispatcher->fire('sentinel.user.registered', $payload);
+            $this->dispatcher->dispatch('sentinel.user.registered', $payload);
 
             // Return a response
             return new SuccessResponse($message, $payload);
@@ -121,7 +121,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
                 // If the user is not currently activated resend the activation email
                 if (!$user->isActivated()) {
-                    $this->dispatcher->fire('sentinel.user.resend', [
+                    $this->dispatcher->dispatch('sentinel.user.resend', [
                         'user' => $user,
                         'activated' => $user->activated,
                     ]);
@@ -160,7 +160,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             // Update the user
             if ($user->save()) {
                 // User information was updated
-                $this->dispatcher->fire('sentinel.user.updated', ['user' => $user]);
+                $this->dispatcher->dispatch('sentinel.user.updated', ['user' => $user]);
 
                 return new SuccessResponse(trans('Sentinel::users.updated'), ['user' => $user]);
             }
@@ -196,7 +196,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             // Delete the user
             if ($user->delete()) {
                 //Fire the sentinel.user.destroyed event
-                $this->dispatcher->fire('sentinel.user.destroyed', ['user' => $user]);
+                $this->dispatcher->dispatch('sentinel.user.destroyed', ['user' => $user]);
 
                 return new SuccessResponse(trans('Sentinel::users.destroyed'), ['user' => $user]);
             }
@@ -227,7 +227,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             // Attempt to activate the user
             if ($user->attemptActivation($code)) {
                 // User activation passed
-                $this->dispatcher->fire('sentinel.user.activated', ['user' => $user]);
+                $this->dispatcher->dispatch('sentinel.user.activated', ['user' => $user]);
 
                 // Generate login url
                 $url = route('sentinel.login');
@@ -262,7 +262,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
 
             // If the user is not currently activated resend the activation email
             if (!$user->isActivated()) {
-                $this->dispatcher->fire('sentinel.user.resend', [
+                $this->dispatcher->dispatch('sentinel.user.resend', [
                     'user' => $user,
                     'activated' => $user->activated,
                 ]);
@@ -294,7 +294,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
         try {
             $user = $this->sentry->getUserProvider()->findByLogin(e($email));
 
-            $this->dispatcher->fire('sentinel.user.reset', [
+            $this->dispatcher->dispatch('sentinel.user.reset', [
                 'user' => $user,
                 'code' => $user->getResetPasswordCode()
             ]);
@@ -354,7 +354,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             if ($user->attemptResetPassword($code, $password)) {
 
                 // Fire the 'password reset' event
-                $this->dispatcher->fire('sentinel.password.reset', ['user' => $user]);
+                $this->dispatcher->dispatch('sentinel.password.reset', ['user' => $user]);
 
                 return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
             }
@@ -388,7 +388,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
                 if ($user->save()) {
 
                     // User saved
-                    $this->dispatcher->fire('sentinel.user.passwordchange', ['user' => $user]);
+                    $this->dispatcher->dispatch('sentinel.user.passwordchange', ['user' => $user]);
 
                     return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
                 }
@@ -424,7 +424,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             if ($user->save()) {
 
                 // User saved
-                $this->dispatcher->fire('sentinel.user.passwordchange', ['user' => $user]);
+                $this->dispatcher->dispatch('sentinel.user.passwordchange', ['user' => $user]);
 
                 return new SuccessResponse(trans('Sentinel::users.passwordchg'), ['user' => $user]);
             }
@@ -488,7 +488,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $throttle->suspend();
 
             // Fire the 'user suspended' event
-            $this->dispatcher->fire('sentinel.user.suspended', ['userId' => $id]);
+            $this->dispatcher->dispatch('sentinel.user.suspended', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.suspended'), ['userId' => $id]);
         } catch (UserNotFoundException $e) {
@@ -516,7 +516,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $throttle->unsuspend();
 
             // Fire the 'user un-suspended' event
-            $this->dispatcher->fire('sentinel.user.unsuspended', ['userId' => $id]);
+            $this->dispatcher->dispatch('sentinel.user.unsuspended', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.unsuspended'), ['userId' => $id]);
         } catch (UserNotFoundException $e) {
@@ -549,7 +549,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $user->save();
 
             // Fire the 'banned user' event
-            $this->dispatcher->fire('sentinel.user.banned', ['user' => $user]);
+            $this->dispatcher->dispatch('sentinel.user.banned', ['user' => $user]);
 
             return new SuccessResponse(trans('Sentinel::users.banned'), ['userId' => $id]);
         } catch (UserNotFoundException $e) {
@@ -576,7 +576,7 @@ class SentryUserRepository implements SentinelUserRepositoryInterface, UserProvi
             $throttle->unBan();
 
             // Fire the 'un-ban user event'
-            $this->dispatcher->fire('sentinel.user.unbanned', ['userId' => $id]);
+            $this->dispatcher->dispatch('sentinel.user.unbanned', ['userId' => $id]);
 
             return new SuccessResponse(trans('Sentinel::users.unbanned'), ['userId' => $id]);
         } catch (UserNotFoundException $e) {

@@ -18,7 +18,7 @@
         "vinkla/hashids": "5.*"
     },
     "require-dev": {
-        "orchestra/testbench": "3.8.x@dev",
+        "orchestra/testbench": "3.8.*",
         "mockery/mockery": "^1.0",
         "phpunit/phpunit": "~7.0"
     },

@@ -18,7 +18,7 @@ class SentinelTestCase extends Orchestra\Testbench\TestCase
     /**
      * Destroy the test environment
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         \Mockery::close();

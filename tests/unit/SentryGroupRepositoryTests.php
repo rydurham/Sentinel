@@ -5,13 +5,13 @@ class SentryGroupRepositoryTests extends SentinelTestCase
     /**
      * Setup the test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->repo = app()->make('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface');
     }
-    
+
     /**
      * Test the instantiation of the Sentinel SentryUser repository
      */

@@ -84,7 +84,7 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
             $this->sentryUserProvider->getEmptyUser()->setLoginAttributeName('email');
 
             // Login was successful. Fire the Sentinel.user.login event
-            $this->dispatcher->fire('sentinel.user.login', ['user' => $user]);
+            $this->dispatcher->dispatch('sentinel.user.login', ['user' => $user]);
 
             // Return Response Object
             return new SuccessResponse('');
@@ -122,7 +122,7 @@ class SentrySessionRepository implements SentinelSessionRepositoryInterface
     {
         // Fire the Sentinel User Logout event
         $user = $this->sentry->getUser();
-        $this->dispatcher->fire('sentinel.user.logout', ['user' => $user]);
+        $this->dispatcher->dispatch('sentinel.user.logout', ['user' => $user]);
 
         // Destroy the user's session and log them out
         $this->sentry->logout();

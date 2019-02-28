@@ -7,7 +7,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     /**
      * Setup the test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -169,7 +169,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     {
         // Explicily disable additional user fields
         app()['config']->set('sentinel.additional_user_fields', []);
-        
+
         // Find the user we are going to update
         $user = Sentry::findUserByLogin('user@user.com');
 

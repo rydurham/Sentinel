@@ -45,7 +45,7 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface
             ]);
 
             // Fire the 'group created' event
-            $this->dispatcher->fire('sentinel.group.created', ['group' => $group]);
+            $this->dispatcher->dispatch('sentinel.group.created', ['group' => $group]);
 
             return new SuccessResponse(trans('Sentinel::groups.created'), ['group' => $group]);
         } catch (GroupExistsException $e) {
@@ -85,7 +85,7 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface
             // Update the group
             if ($group->save()) {
                 // Fire the 'group updated' event
-                $this->dispatcher->fire('sentinel.group.updated', ['group' => $group]);
+                $this->dispatcher->dispatch('sentinel.group.updated', ['group' => $group]);
 
                 return new SuccessResponse(trans('Sentinel::groups.updated'), ['group' => $group]);
             } else {
@@ -119,7 +119,7 @@ class SentryGroupRepository implements SentinelGroupRepositoryInterface
             $group->delete();
 
             // Fire the 'group destroyed' event
-            $this->dispatcher->fire('sentinel.group.destroyed', ['group' => $group]);
+            $this->dispatcher->dispatch('sentinel.group.destroyed', ['group' => $group]);
 
             return new SuccessResponse(trans('Sentinel::groups.destroyed'), ['group' => $group]);
         } catch (GroupNotFoundException $e) {
