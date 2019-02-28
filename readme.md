@@ -16,15 +16,9 @@ __Releases__ There are several versions of this package, each intended for diffe
 
 | Laravel Version  | Sentinel Version  | Packagist Branch |
 |---|---|---|
-| 4.2.*  | 1.4.*  | ```"rydurham/sentinel": "~1.4"``` |
-| 5.0.*  | 2.0.*  | ```"rydurham/sentinel": "~2.0"``` |
-| 5.1.*  | 2.2.*  | ```"rydurham/sentinel": "~2.2"``` |
-| 5.2.*  | 2.3.*  | ```"rydurham/sentinel": "~2.3"``` |
-| 5.3.*  | 2.5.*  | ```"rydurham/sentinel": "~2.5"``` |
-| 5.4.*  | 2.6.*  | ```"rydurham/sentinel": "~2.6"``` |
-| 5.5.*  | 2.7.*  | ```"rydurham/sentinel": "~2.7"``` |
 | 5.6.*  | 2.8.*  | ```"rydurham/sentinel": "~2.8"``` |
 | 5.7.*  | 2.9.*  | ```"rydurham/sentinel": "~2.9"``` |
+| 5.8.*  | 2.10.*  | ```"rydurham/sentinel": "~2.10"``` |
 
 ### Laravel 5 Instructions
 **Install the Package Via Composer:**
