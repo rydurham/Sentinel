@@ -335,11 +335,10 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $this->assertTrue($user->checkHash('sergeyevna', $user->getPassword()));
     }
 
-    /**
-     * @expectedException \Cartalyst\Sentry\Throttling\UserSuspendedException
-     */
     public function testSuspendUser()
     {
+        $this->expectException(Cartalyst\Sentry\Throttling\UserSuspendedException::class);
+
         // Find the user we are going to suspend
         $user = Sentry::findUserByLogin('user@user.com');
 
@@ -383,11 +382,10 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $this->assertTrue($result->isSuccessful());
     }
 
-    /**
-     * @expectedException \Cartalyst\Sentry\Throttling\UserBannedException
-     */
     public function testBanUser()
     {
+        $this->expectException(Cartalyst\Sentry\Throttling\UserBannedException::class);
+
         // Find the user we are going to suspend
         $user = Sentry::findUserByLogin('user@user.com');
 
