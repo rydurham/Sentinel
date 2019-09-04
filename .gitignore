@@ -6,3 +6,4 @@ composer.lock
 tests/_output/*
 tests/_output/*
 tests/_data/db.sqlite
+.phpunit.result.cache
