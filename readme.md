@@ -114,6 +114,9 @@ It is not advisable to extend the Sentinel controller classes; you will be bette
 #### Using Sentinel in Tests
 If you find yourself in the situation where you want to do tests with user logged in, go to your ``` tests/TestCase.php `` and add this method:
 ```php
+
+    use Illuminate\Events\Dispatcher;
+
    /**
      * Login to sentry for Testing purpose
      * @param  $email
@@ -123,7 +126,7 @@ If you find yourself in the situation where you want to do tests with user logge
     {
         $user = \Sentry::findUserByLogin($email);
         \Sentry::login($user);
-        \Event::fire('sentinel.user.login', ['user' => $user]);
+        (new dispatcher)->dispatch('sentinel.user.login', ['user' => $user]);
     }
 ```
 
