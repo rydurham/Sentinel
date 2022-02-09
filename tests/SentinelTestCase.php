@@ -41,6 +41,7 @@ class SentinelTestCase extends Orchestra\Testbench\TestCase
         ]);
         $app['config']->set('mail.driver', 'log');
         $app['config']->set('mail.from', ['from' => 'noreply@example.com', 'name' => null]);
+        app()['config']->set('hashids.connections.main.length', 6);
 
         // Prepare the sqlite database
         // http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/

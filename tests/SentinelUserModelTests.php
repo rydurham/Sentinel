@@ -1,7 +1,6 @@
 <?php
 
-use Sentinel\Models\User;
-use Illuminate\Support\Facades\DB;
+use Cartalyst\Sentry\Facades\Laravel\Sentry;
 use Cartalyst\Sentry\Throttling\Eloquent\Throttle;
 use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 
@@ -56,10 +55,10 @@ class SentinelUserModelTests extends SentinelTestCase
         $user = Sentry::findUserByLogin('user@user.com');
 
         // Fetch the User Repository
-        $userRepository =  app()->make(SentinelUserRepositoryInterface::class);
+        $userRepository = app()->make(SentinelUserRepositoryInterface::class);
 
         // Suspend the user
-        $result = $userRepository->ban($user->id);
+        $userRepository->ban($user->id);
 
         $this->assertInstanceOf(Throttle::class, $user->throttle);
         $this->assertEquals('Banned', $user->status);

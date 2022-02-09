@@ -1,7 +1,11 @@
 {
     "name": "rydurham/sentinel",
     "description": "An implementation of the Sentry User Manager for Laravel.",
-    "keywords": ["laravel", "sentry", "auth"],
+    "keywords": [
+        "laravel",
+        "sentry",
+        "auth"
+    ],
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -11,17 +15,17 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^8",
         "ext-bcmath": "*",
-        "illuminate/support": "^8.0",
-        "illuminate/contracts": "^8.0",
+        "illuminate/support": "^9.0",
+        "illuminate/contracts": "^9.0",
         "cartalyst/sentry": "^2.0",
-        "vinkla/hashids": "^9.0"
+        "vinkla/hashids": "^10.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0",
+        "orchestra/testbench": "^7.0",
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "classmap": [

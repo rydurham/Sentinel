@@ -1,5 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+use Cartalyst\Sentry\Groups\Eloquent\Group;
+use Cartalyst\Sentry\Facades\Laravel\Sentry;
+use Sentinel\Repositories\Group\SentryGroupRepository;
+use Sentinel\Repositories\Group\SentinelGroupRepositoryInterface;
+
 class SentryGroupRepositoryTests extends SentinelTestCase
 {
     /**
@@ -9,7 +15,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
     {
         parent::setUp();
 
-        $this->repo = app()->make('Sentinel\Repositories\Group\SentinelGroupRepositoryInterface');
+        $this->repo = app()->make(SentinelGroupRepositoryInterface::class);
     }
 
     /**
@@ -18,7 +24,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
     public function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
-        $this->assertInstanceOf('Sentinel\Repositories\Group\SentryGroupRepository', $this->repo);
+        $this->assertInstanceOf(SentryGroupRepository::class, $this->repo);
     }
 
     /**
@@ -27,7 +33,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
     public function testDatabaseSeeds()
     {
         // Check that the test data is present and correctly seeded
-        $user = \DB::table('users')->where('email', 'user@user.com')->first();
+        $user = DB::table('users')->where('email', 'user@user.com')->first();
         $this->assertEquals('user@user.com', $user->email);
     }
 
@@ -48,7 +54,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
         $this->assertArrayHasKey('family', $result->getPayload()['group']->getPermissions());
         $this->assertArrayNotHasKey('admin', $result->getPayload()['group']->getPermissions());
 
-        $group = \DB::table('groups')->where('name', 'Prozorovs')->first();
+        $group = DB::table('groups')->where('name', 'Prozorovs')->first();
         $this->assertEquals('Prozorovs', $group->name);
     }
 
@@ -81,7 +87,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
 
         // Assertions
         $this->assertTrue($result->isSuccessful());
-        $this->assertFalse(\DB::table('groups')->where('name', 'Users')->count() > 0);
+        $this->assertFalse(DB::table('groups')->where('name', 'Users')->count() > 0);
     }
 
     public function testRetrieveGroupById()
@@ -93,7 +99,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
         $group = $this->repo->retrieveById($reference->id);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\Group', $group);
+        $this->assertInstanceOf(Group::class, $group);
         $this->assertEquals('Users', $group->name);
     }
 
@@ -106,7 +112,7 @@ class SentryGroupRepositoryTests extends SentinelTestCase
         $group = $this->repo->retrieveByName($reference->name);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\Group', $group);
+        $this->assertInstanceOf(Group::class, $group);
         $this->assertEquals(1, $group->id);
     }
 
