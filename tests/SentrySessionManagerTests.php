@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+use Sentinel\Repositories\Session\SentrySessionRepository;
+use Sentinel\Repositories\Session\SentinelSessionRepositoryInterface;
+
 class SentrySessionTests extends SentinelTestCase
 {
     /**
@@ -9,7 +13,7 @@ class SentrySessionTests extends SentinelTestCase
     {
         parent::setUp();
 
-        $this->repo = app()->make('Sentinel\Repositories\Session\SentinelSessionRepositoryInterface');
+        $this->repo = app()->make(SentinelSessionRepositoryInterface::class);
     }
 
     /**
@@ -18,7 +22,7 @@ class SentrySessionTests extends SentinelTestCase
     public function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
-        $this->assertInstanceOf('Sentinel\Repositories\Session\SentrySessionRepository', $this->repo);
+        $this->assertInstanceOf(SentrySessionRepository::class, $this->repo);
     }
 
     /**
@@ -27,7 +31,7 @@ class SentrySessionTests extends SentinelTestCase
     public function testDatabaseSeeds()
     {
         // Check that the test data is present and correctly seeded
-        $user = \DB::table('users')->where('email', 'user@user.com')->first();
+        $user = DB::table('users')->where('email', 'user@user.com')->first();
         $this->assertEquals('user@user.com', $user->email);
     }
 

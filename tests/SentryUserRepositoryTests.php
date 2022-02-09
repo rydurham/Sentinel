@@ -1,6 +1,10 @@
 <?php
 
+use Sentinel\Models\User;
 use Illuminate\Support\Facades\DB;
+use Cartalyst\Sentry\Facades\Laravel\Sentry;
+use Sentinel\Repositories\User\SentryUserRepository;
+use Sentinel\Repositories\User\SentinelUserRepositoryInterface;
 
 class SentryUserRepositoryTests extends SentinelTestCase
 {
@@ -11,7 +15,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     {
         parent::setUp();
 
-        $this->repo = app()->make('Sentinel\Repositories\User\SentinelUserRepositoryInterface');
+        $this->repo = app()->make(SentinelUserRepositoryInterface::class);
     }
 
     /**
@@ -20,7 +24,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     public function testRepoInstantiation()
     {
         // Test that we are able to properly instantiate the SentryUser object for testing
-        $this->assertInstanceOf('Sentinel\Repositories\User\SentryUserRepository', $this->repo);
+        $this->assertInstanceOf(SentryUserRepository::class, $this->repo);
     }
 
     /**
@@ -41,7 +45,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         // Explicitly set the allow usernames config option to true
         app()['config']->set('sentinel.allow_usernames', true);
 
-        // Explicily disable additional user fields
+        // Explicitly disable additional user fields
         app()['config']->set('sentinel.additional_user_fields', []);
 
         // This is the code we are testing
@@ -57,7 +61,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $usersGroup = Sentry::findGroupByName('Users');
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $this->assertFalse($result->getPayload()['activated']);
         $this->assertTrue($result->getPayload()['user']->inGroup($usersGroup));
@@ -86,7 +90,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         ]);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $this->assertTrue($result->getPayload()['activated']);
         $testUser = DB::table('users')
@@ -106,6 +110,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
     {
         // Explicitly set the 'allow usernames' config option to false
         app()['config']->set('sentinel.allow_usernames', false);
+        app()['config']->set('hashids.connections.main.length', 6);
 
         // This is the code we are testing
         $result = $this->repo->store([
@@ -117,7 +122,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         ]);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $this->assertFalse($result->getPayload()['activated']);
         $testUser = DB::table('users')
@@ -137,8 +142,8 @@ class SentryUserRepositoryTests extends SentinelTestCase
 
         // Explicitly set the 'additional user fields'
         app()['config']->set('sentinel.additional_user_fields', [
-                'first_name' => 'alpha_spaces',
-                'last_name'  => 'alpha_spaces'
+            'first_name' => 'alpha_spaces',
+            'last_name'  => 'alpha_spaces'
         ]);
 
         // This is the code we are testing
@@ -151,7 +156,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         ]);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $this->assertFalse($result->getPayload()['activated']);
         $testUser = DB::table('users')
@@ -167,7 +172,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
      */
     public function testUpdatingUser()
     {
-        // Explicily disable additional user fields
+        // Explicitly disable additional user fields
         app()['config']->set('sentinel.additional_user_fields', []);
 
         // Find the user we are going to update
@@ -183,8 +188,8 @@ class SentryUserRepositoryTests extends SentinelTestCase
         ]);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $user);
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $testUser = DB::table('users')
             ->where('id', $user->id)
@@ -199,7 +204,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
      */
     public function testUpdatingUserWithNoUsername()
     {
-        // Explicily disable additional user fields
+        // Explicitly disable additional user fields
         app()['config']->set('sentinel.additional_user_fields', []);
 
         // Find the user we are going to update
@@ -218,8 +223,8 @@ class SentryUserRepositoryTests extends SentinelTestCase
         ]);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $user);
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $testUser = DB::table('users')
             ->where('id', $user->id)
@@ -258,8 +263,8 @@ class SentryUserRepositoryTests extends SentinelTestCase
         ]);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $user);
-        $this->assertInstanceOf('Sentinel\Models\User', $result->getPayload()['user']);
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(User::class, $result->getPayload()['user']);
         $this->assertTrue($result->isSuccessful());
         $testUser = DB::table('users')
             ->where('id', $user->id)
@@ -293,7 +298,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         // Explicitly set the 'allow usernames' config option to false
         app()['config']->set('sentinel.allow_usernames', false);
 
-        // Explicily disable additional user fields
+        // Explicitly disable additional user fields
         app()['config']->set('sentinel.additional_user_fields', []);
 
         // Create a new user that is not activated
@@ -312,7 +317,9 @@ class SentryUserRepositoryTests extends SentinelTestCase
 
         // Assertions
         $this->assertTrue($result->isSuccessful());
-        $this->assertTrue(DB::table('users')->where('email', 'andrei@prozorov.net')->where('activated', 1)->count() == 1);
+        $this->assertTrue(DB::table('users')
+            ->where('email', 'andrei@prozorov.net')
+            ->where('activated', 1)->count() == 1);
     }
 
     public function testChangeUserPassword()
@@ -432,7 +439,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $user = $this->repo->retrieveById(1);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $user);
+        $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('admin@admin.com', $user->email);
     }
 
@@ -442,7 +449,7 @@ class SentryUserRepositoryTests extends SentinelTestCase
         $user = $this->repo->retrieveByCredentials(['email' => 'admin@admin.com']);
 
         // Assertions
-        $this->assertInstanceOf('Sentinel\Models\User', $user);
+        $this->assertInstanceOf(User::class, $user);
         $this->assertEquals(1, $user->id);
     }
 
