@@ -18,7 +18,7 @@ __Releases__ There are several versions of this package, each intended for diffe
 |---|---|---|
 | 7.0.*  | 4.0.*  | ```"rydurham/sentinel": "~4.0"``` |
 | 8.0.*  | 5.0.*  | ```"rydurham/sentinel": "~5.0"``` |
-| 9.0.*  | 6.0.*  | ```"rydurham/sentinel": "~3.0"``` |
+| 9.0.*  | 6.0.*  | ```"rydurham/sentinel": "~6.0"``` |
 
 ### Laravel 5 Instructions
 **Install the Package Via Composer:**
