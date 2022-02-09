@@ -2,7 +2,7 @@
 
 namespace Sentinel\Models;
 
-use Hashids;
+use Vinkla\Hashids\Facades\Hashids;
 use Cartalyst\Sentry\Throttling\Eloquent\Throttle;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
