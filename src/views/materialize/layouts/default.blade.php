@@ -46,7 +46,7 @@
 
     <!-- Javascripts
     ================================================== -->
-    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('packages/rydurham/sentinel/js/materialize.min.js') }}"></script>
     <script src="{{ asset('packages/rydurham/sentinel/js/restfulizer.js') }}"></script>
     <!-- Thanks to Zizaco for the Restfulizer script.  http://zizaco.net  -->
