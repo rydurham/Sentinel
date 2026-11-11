@@ -64,7 +64,7 @@
 
 		<!-- Javascripts
 		================================================== -->
-		<script src="{{ asset('packages/rydurham/sentinel/js/libs/jquery-2.0.2.min.js') }}"></script>
+		<script src="{{ asset('packages/rydurham/sentinel/js/libs/jquery-3.7.1.min.js') }}"></script>
 		<script src="{{ asset('packages/rydurham/sentinel/js/libs/gumby.min.js') }}"></script>
 		<script src="{{ asset('packages/rydurham/sentinel/js/restfulizer.js') }}"></script> 
 		<!-- Thanks to Zizaco for the Restfulizer script.  http://zizaco.net  -->
